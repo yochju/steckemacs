@@ -128,8 +128,8 @@
         gist
         google-this
         grandshell-theme
+        grizzl
         haskell-mode
-        hackernews
         highlight
         helm
         helm-descbinds
@@ -249,6 +249,7 @@
 (key-chord-define-global ",." 'delete-frame)
 
 ;; ** movement / selections
+(define-key key-translation-map (kbd "C-t") (kbd "C-p"))
 (key-chord-define-global "sd" 'move-beginning-of-line)
 (key-chord-define-global "kl" 'move-end-of-line)
 (key-chord-define-global "wf" 'forward-word)
@@ -587,7 +588,9 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq
  deft-extension "org"
  deft-directory "~/org/deft"
- deft-text-mode 'org-mode)
+ deft-text-mode 'org-mode
+ deft-use-filename-as-title t
+ )
 (global-set-key (kbd "C-c c") 'deft)
 
 ;; ** diff-hl
@@ -700,9 +703,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (google-this-mode 1)
 (key-chord-define-global "gt" 'google-this)
 (key-chord-define-global "gs" 'google-search)
-
-;; ** hackernews
-(key-chord-define-global "bn" 'hackernews)
 
 ;; ** haskell-mode
 (require 'haskell-mode)
@@ -870,18 +870,29 @@ Dmitriy Igrishin's patched version of comint.el."
                                   ))
     ))
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(setq org-agenda-files
-      (delq nil
-            (mapcar
-             (lambda (file)
-               (if (file-exists-p file) file))
-             (file-expand-wildcards "~/org/*.org"))))
+(setq org-startup-indented t)
+(setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+(setq org-agenda-files '("~/org/todo.org" "~/org/deft/"))
+(setq org-startup-folded 'content)
+(setq org-src-fontify-natively t)
+
+;; minted
+(require 'ox-latex)
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+(setq org-latex-listings 'minted)
+
+(setq org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
 (setq
  appt-display-mode-line t     ; show in the modeline
  appt-display-format 'window)
 (appt-activate 1)              ; activate appt (appointment notification)
+
 (org-agenda-to-appt)           ; add appointments on startup
+
 ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
 (add-hook 'org-mode-hook
           (lambda ()
@@ -932,7 +943,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (define-key cm-map "p" 'outline-previous-visible-heading)  ; Previous
 (define-key cm-map "f" 'outline-forward-same-level)        ; Forward - same level
 (define-key cm-map "b" 'outline-backward-same-level)       ; Backward - same level
-(global-set-key "\C-t" cm-map)
+;(global-set-key "\C-t" cm-map)
 (setq outlined-elisp-startup-folded nil)
 (add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
 
@@ -1009,6 +1020,7 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; ** projectile
 ;(projectile-global-mode)
 (require 'projectile nil t)
+(setq projectile-completion-system 'grizzl)
 (key-chord-define-global "fr" 'projectile-find-file)
 (key-chord-define-global "rg" 'projectile-grep)
 (key-chord-define-global "ok" 'projectile-multi-occur)
