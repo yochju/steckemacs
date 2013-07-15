@@ -165,6 +165,7 @@
         robe
         restclient
         slime-js
+        smart-mode-line
         smartparens
         visual-regexp
         volatile-highlights
@@ -1066,6 +1067,16 @@ Dmitriy Igrishin's patched version of comint.el."
                      (add-hook 'after-save-hook 'slime-js-reload nil 'make-it-local))
                    )
             ))
+
+;; smart-mode-line
+(setq sml/show-encoding t)
+(setq sml/vc-mode-show-backend t)
+(setq sml/override-theme nil)
+(sml/setup)
+(set-face-attribute 'sml/prefix nil :foreground "#dcf692")
+(set-face-attribute 'sml/folder nil :foreground "#f09fff")
+(set-face-attribute 'sml/filename nil :foreground "#f6df92")
+(set-face-attribute 'sml/vc-edited nil :foreground "#ff5f87")
 
 ;; ** smartparens
 (require 'smartparens-config)
