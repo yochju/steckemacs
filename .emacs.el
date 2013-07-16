@@ -876,6 +876,8 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq org-agenda-files '("~/org/todo.org" "~/org/deft/"))
 (setq org-startup-folded 'nofold)
 (setq org-src-fontify-natively t)
+(setq org-default-notes-file (concat org-directory "/todo.org"))
+(global-set-key (kbd "C-c C-9") 'org-capture)
 
 ;; minted
 (require 'ox-latex)
