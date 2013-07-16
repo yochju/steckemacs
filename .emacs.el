@@ -874,7 +874,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq org-startup-indented t)
 (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
 (setq org-agenda-files '("~/org/todo.org" "~/org/deft/"))
-(setq org-startup-folded 'content)
+(setq org-startup-folded 'nofold)
 (setq org-src-fontify-natively t)
 
 ;; minted
