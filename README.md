@@ -116,7 +116,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
 
 ## Contributions
 
-I'm using **outline-mode** to keep `emacs.el` organized. There's a key map defined with the prefix `C-t`. Top level headings have one star:
+I'm using **outline-mode** to keep `emacs.el` organized. Top level headings have one star:
 
 ```lisp
 ;; * Top Level Heading
@@ -130,24 +130,11 @@ And so on:
 
 These commands are defined:
 
-|  combo  | description
-| --------|-------------------------------------------------
-| `C-t q` | Hide everything but the top-level headings
-| `C-t t` | Hide everything but headings (all body lines)
-| `C-t o` | Hide other branches
-| `C-t c` | Hide this entry's body
-| `C-t l` | Hide body lines in this entry and sub-entries
-| `C-t d` | Hide everything in this entry and sub-entries
-| `C-t a` | Show (expand) everything
-| `C-t e` | Show this heading's body
-| `C-t i` | Show this heading's immediate child sub-headings
-| `C-t k` | Show all sub-headings under this heading
-| `C-t s` | Show (expand) everything in this heading & below
-| `C-t u` | Up
-| `C-t n` | Next
-| `C-t p` | Previous
-| `C-t f` | Forward - same level
-| `C-t b` | Backward - same level
+|  combo    | description
+| ----------|-------------------------------------------------
+| `C-c C-r` | Cycle through the states of the outline buffer
+| `C-c C-q` | Hide everything but the top-level headings
+| `C-t C-a` | Show (expand) everything
 
 So... that's what should make it easier to keep an overview. If you want to help me out improving the config, fork the repo, create a new branch and open up a Pull Request so we can discuss the merge.
 

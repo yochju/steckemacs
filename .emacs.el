@@ -89,6 +89,9 @@
         (:name magit-inotify
                :type http
                :url "https://raw.github.com/magit/magit/master/contrib/magit-inotify.el")
+        (:name outline-magic
+               :type http
+               :url "https://raw.github.com/tj64/outline-magic/master/outline-magic.el")
         ))
 
 (setq my-el-get-packages
@@ -117,7 +120,6 @@
         buffer-move
         creole-mode
         clojure-mode
-        diff-hl
         dired+
         erc-hl-nicks
         expand-region
@@ -126,6 +128,7 @@
         flycheck
         geben
         gist
+        git-gutter-fringe+
         google-this
         grandshell-theme
         grizzl
@@ -594,19 +597,6 @@ Dmitriy Igrishin's patched version of comint.el."
  )
 (global-set-key (kbd "C-c c") 'deft)
 
-;; ** diff-hl
-(global-diff-hl-mode 1)
-(defun diff-hl-update-each-buffer ()
-  (interactive)
-  (mapc (lambda (buffer)
-          (condition-case nil
-              (with-current-buffer buffer
-                (diff-hl-update))
-            (buffer-read-only nil)))
-        (buffer-list)))
-(defadvice magit-update-vc-modeline (after my-magit-update-vc-modeline activate)
-  (progn (diff-hl-update-each-buffer)))
-
 ;; ** dired+
 (toggle-diredp-find-file-reuse-dir 1)
 
@@ -699,6 +689,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** fringe
 (setq indicate-buffer-boundaries 'left)
+
+;; ** git-gutter-fringe+
+(global-git-gutter+-mode)
 
 ;; ** google-this
 (google-this-mode 1)
@@ -929,26 +922,15 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** outline-mode
 (require 'outlined-elisp-mode)
-(define-prefix-command 'cm-map nil "Outline-") ; Outline-minor-mode key map
-(define-key cm-map "q" 'hide-sublevels)    ; Hide everything but the top-level headings
-(define-key cm-map "t" 'hide-body)         ; Hide everything but headings (all body lines)
-(define-key cm-map "o" 'hide-other)        ; Hide other branches
-(define-key cm-map "c" 'hide-entry)        ; Hide this entry's body
-(define-key cm-map "l" 'hide-leaves)       ; Hide body lines in this entry and sub-entries
-(define-key cm-map "d" 'hide-subtree)      ; Hide everything in this entry and sub-entries
-(define-key cm-map "a" 'show-all)          ; Show (expand) everything
-(define-key cm-map "e" 'show-entry)        ; Show this heading's body
-(define-key cm-map "i" 'show-children)     ; Show this heading's immediate child sub-headings
-(define-key cm-map "k" 'show-branches)     ; Show all sub-headings under this heading
-(define-key cm-map "s" 'show-subtree)      ; Show (expand) everything in this heading & below
-(define-key cm-map "u" 'outline-up-heading)                ; Up
-(define-key cm-map "n" 'outline-next-visible-heading)      ; Next
-(define-key cm-map "p" 'outline-previous-visible-heading)  ; Previous
-(define-key cm-map "f" 'outline-forward-same-level)        ; Forward - same level
-(define-key cm-map "b" 'outline-backward-same-level)       ; Backward - same level
-;(global-set-key "\C-t" cm-map)
+(require 'outline-magic)
 (setq outlined-elisp-startup-folded nil)
-(add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (outlined-elisp-find-file-hook)
+            (local-set-key (kbd "C-c C-r") 'outline-cycle)
+            (local-set-key (kbd "C-c C-a") 'outline-show-all)
+            (local-set-key (kbd "C-c C-q") 'outline-hide-sublevels)
+            ))
 
 ;; ** php-mode
 (require 'php-mode)
