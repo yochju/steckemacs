@@ -120,6 +120,7 @@
         buffer-move
         creole-mode
         clojure-mode
+        csv-mode
         dired+
         erc-hl-nicks
         expand-region
@@ -921,15 +922,15 @@ Dmitriy Igrishin's patched version of comint.el."
 (define-key org-mode-map (kbd "C-c C-v") 'org-reveal-export-to-html)
 
 ;; ** outline-mode
-(require 'outlined-elisp-mode)
+(require 'ulined-elisp-mode)
 (require 'outline-magic)
 (setq outlined-elisp-startup-folded nil)
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             (outlined-elisp-find-file-hook)
             (local-set-key (kbd "C-c C-r") 'outline-cycle)
-            (local-set-key (kbd "C-c C-a") 'outline-show-all)
-            (local-set-key (kbd "C-c C-q") 'outline-hide-sublevels)
+            (local-set-key (kbd "C-c C-a") 'show-all)
+            (local-set-key (kbd "C-c C-q") 'hide-sublevels)
             ))
 
 ;; ** php-mode
