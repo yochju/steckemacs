@@ -922,7 +922,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (define-key org-mode-map (kbd "C-c C-v") 'org-reveal-export-to-html)
 
 ;; ** outline-mode
-(require 'ulined-elisp-mode)
+(require 'outlined-elisp-mode)
 (require 'outline-magic)
 (setq outlined-elisp-startup-folded nil)
 (add-hook 'emacs-lisp-mode-hook
