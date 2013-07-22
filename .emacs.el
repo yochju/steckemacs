@@ -856,8 +856,10 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** org-mode
 ;; if todo.org exists, startup emacs with the org todo list
+(require 'org)
 (let ((todo "~/org/todo.org"))
   (when (file-readable-p todo)
+    (setq org-agenda-files '("~/org/todo.org" "~/org/deft/"))
     (setq initial-buffer-choice (lambda ()
                                   (org-agenda nil "n")
                                   (delete-other-windows)
@@ -867,7 +869,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (setq org-startup-indented t)
 (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
-(setq org-agenda-files '("~/org/todo.org" "~/org/deft/"))
 (setq org-startup-folded 'nofold)
 (setq org-src-fontify-natively t)
 (setq org-default-notes-file (concat org-directory "/todo.org"))
