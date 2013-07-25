@@ -116,6 +116,7 @@
         ac-slime
         ag
         auto-complete
+        auto-save-buffers-enhanced
         back-button
         buffer-move
         creole-mode
@@ -150,6 +151,7 @@
         key-chord
         magit
         markdown-mode+
+        melpa-upstream-visit
         mmm-mode
         mo-git-blame
         multi-web-mode
@@ -299,7 +301,7 @@
 (setq
  inhibit-startup-message t
  backup-directory-alist `((".*" . ,temporary-file-directory)) ;don't clutter my fs and put backups into tmp
- auto-save-default nil              ;disable auto save
+ auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
  require-final-newline t            ;auto add newline at the end of file
  column-number-mode t               ;show the column number
  default-major-mode 'text-mode      ;use text mode per default
@@ -580,8 +582,15 @@ Dmitriy Igrishin's patched version of comint.el."
 (define-key lisp-mode-shared-map (kbd "<f1>") 'stk/ac-show-help)
 (define-key lisp-mode-shared-map (kbd "C-c C-h") 'stk/ac-show-help)
 
+;; ** auto-save-buffers-enhanced
+(require 'auto-save-buffers-enhanced)
+(auto-save-buffers-enhanced-include-only-checkout-path t)
+(auto-save-buffers-enhanced t)
+(global-set-key (kbd "C-x a s") 'auto-save-buffers-enhanced-toggle-activity)
+
 ;; ** back-button
-(global-set-key (kbd "C-3") 'back-button-local-backward)
+(require 'back-button)
+(global-set-key (kbd "C-3") 'backbutton-local-backward)
 (global-set-key (kbd "C-4") 'back-button-local-forward)
 (back-button-mode 1)
 
@@ -791,6 +800,8 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
+;; ** melpa-upstream-visit
+(require 'melpa-upstream-visit)
 ;; ** mu4e
 (when (file-exists-p "/usr/local/share/emacs/site-lisp/mu4e")
   (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
