@@ -154,6 +154,7 @@
         melpa-upstream-visit
         mmm-mode
         mo-git-blame
+        move-text
         multi-web-mode
         multiple-cursors
         nav
@@ -239,8 +240,6 @@
 (global-set-key (kbd "C-9") (lambda () (interactive) (select-window (next-window))))     ;select next window
 (key-chord-define-global "ef" (lambda () (interactive) (select-window (previous-window))))
 (key-chord-define-global "ji" (lambda () (interactive) (select-window (next-window))))
-(global-set-key (kbd "<C-f8>") (lambda () (interactive) (select-window (previous-window)))) ;for the terminal
-(global-set-key (kbd "<C-f9>") (lambda () (interactive) (select-window (next-window)))) ;for the terminal
 (global-set-key (kbd "<f2>") 'split-window-vertically)
 (global-set-key (kbd "<f3>") 'split-window-horizontally)
 (global-set-key (kbd "<f4>") 'delete-window)
@@ -590,7 +589,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** back-button
 (require 'back-button)
-(global-set-key (kbd "C-3") 'backbutton-local-backward)
+(global-set-key (kbd "C-3") 'back-button-local-backward)
 (global-set-key (kbd "C-4") 'back-button-local-forward)
 (back-button-mode 1)
 
@@ -802,6 +801,10 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; ** melpa-upstream-visit
 (require 'melpa-upstream-visit)
+;; ** move-text
+(require 'move-text)
+(global-set-key (kbd "<C-f10>") 'move-text-up)
+(global-set-key (kbd "<C-f9>") 'move-text-down)
 ;; ** mu4e
 (when (file-exists-p "/usr/local/share/emacs/site-lisp/mu4e")
   (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
