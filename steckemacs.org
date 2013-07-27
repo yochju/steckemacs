@@ -83,7 +83,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
                            (    "melpa" . "http://melpa.milkbox.net/packages/")))
   
   (setq my-packages
-        
+
         '(ack-and-a-half
           ac-nrepl
           ac-slime
@@ -167,12 +167,18 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
                   unless (package-installed-p p) collect p)))
 #+END_SRC
 
-* key bindings (mode specific bindings are defined further below with the modes)
+* key bindings
 
 ** my keymap to override problematic bindings
 
 #+BEGIN_SRC emacs-lisp
   (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+#+END_SRC
+
+** key-chord
+#+BEGIN_SRC emacs-lisp
+  (key-chord-mode 1)
+  (setq key-chord-two-keys-delay 0.03)
 #+END_SRC
 
 ** general
