@@ -80,6 +80,8 @@ I only describe my custom key combinations currently. To learn the standard Emac
 |                            | `M-8`     | narrow the selection again
 |                            | `C->`     | add cursor downwards (try to get next occurrence if sth. is marked)
 |                            | `C-<`     | add cursor upwards (try to get previous occurrence if sth. is marked)
+|                            | `C-f9`    | move line/selection down
+|                            | `C-f10`   | move line/selection up
 |       **Elisp Evaluation** | `90`      | evaluate list (with visual feedback)
 |                            | `C-c C-c` | "
 |                            | `C-c C-e` | evaluate s-expression (with visual feedback)

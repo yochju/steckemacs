@@ -858,6 +858,14 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq nrepl-popup-stacktraces-in-repl nil)
 (setq nrepl-hide-special-buffers t)
 
+;; font-locking for the nrepl
+;; https://github.com/kylefeng/.emacs.d/commit/45f2bece4652f4345ec08e68e8ef0608b81c5db7
+(add-hook 'nrepl-mode-hook
+          (lambda ()
+            (font-lock-mode nil)
+            (clojure-mode-font-lock-setup)
+            (font-lock-mode t)))
+
 (require 'ac-nrepl)
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
