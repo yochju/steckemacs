@@ -3,9 +3,157 @@
 
 #+OPTIONS: toc:nil num:nil
 
-This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
+* Steckemacs
 
-* load-path
+An Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
+
+If you want to know more about how that works, read my blog entry here:  http://steckerhalter.co.vu/blog/201304/steckemacs
+
+**To use this setup please use Emacs 24 or later. Older versions do not work properly.**
+
+** Installation
+
+As the whole setup is just one file the easiest way to use it is like this:
+
+Change to a directory of your choice and clone **steckemacs**:
+
+#+BEGIN_SRC shell
+    cd <my directory>
+    git clone https://github.com/steckerhalter/steckemacs.git
+#+END_SRC
+
+And symlink =.emacs.el= into your home directory:
+
+#+BEGIN_SRC shell
+    cd ~
+    ln -s <path to the directory from above>/.emacs.el
+#+END_SRC
+
+That's it. Then you can run emacs and it should pick up the config, install all the packages and make you happy ;)
+
+** Keyboard shortcuts
+
+By using the =key-chord= mode we can avoid having to type C- or M- all the time. It allows for using keys pressed simultaneously and I'm using it quite often.
+
+When I write =fg= as a key combo it means you would have to press =f= and =g= at the same time.
+
+I only describe my custom key combinations currently. To learn the standard Emacs commands, go through the Tutorial =C-h t=, use =C-S-h= or =M-x= to see/filter the available commands/shortcuts.
+
+| Topic                   | Combo      | Description                                                               |
+|-------------------------+------------+---------------------------------------------------------------------------|
+| *General*               | =C-c X=    | kill emacs (including the daemon if it is running)                        |
+|                         | =C-S-h=    | show current keyboard shortcuts, allows search too                        |
+|                         | =C-S-l=    | list available packages                                                   |
+|                         | =C-h C-f=  | go to the definition of the function under cursor                         |
+|                         | =C-h C-v=  | go to the definition of the variable under cursor                         |
+| *Appearance*            | =C-c m=    | show/hide menu                                                            |
+|                         | =C--=      | decrease the font size                                                    |
+|                         | =C-==      | increase the font size                                                    |
+|                         | =ln=       | show/hide the line numbers                                                |
+|                         | =C-F8=     | show/hide comments                                                        |
+| *Buffers / Files*       | =C-return= | buffer switcher (helm-mini)                                               |
+|                         | =F6=       | delete the current buffer                                                 |
+|                         | =F8=       | switch to the "last" buffer                                               |
+|                         | =C-c r=    | revert a buffer to the saved state                                        |
+|                         | =sc=       | switch to \*scratch\* buffer                                              |
+|                         | =C-c n=    | copy the full path of the current file to the clipboard                   |
+| *Windows / Frames*      | =C-0=      | previous window                                                           |
+|                         | =C-9=      | next window                                                               |
+|                         | =F2=       | split window vertically                                                   |
+|                         | =F3=       | split window horizontally                                                 |
+|                         | =F4=       | delete current window (not the buffer)                                    |
+|                         | =F5=       | only keep the current window and delete all others                        |
+|                         | =F7=       | switch arrangement of two windows horizontally/vertically                 |
+|                         | =F9=       | split window and show last buffer, another press hides that window again  |
+|                         | =C-left=   | shrink window                                                             |
+|                         | =C-right=  | enlarge window                                                            |
+|                         | =C-up=     | shrink window horizontally                                                |
+|                         | =C-down=   | enlarge window horizontally                                               |
+|                         | =M-up=     | move buffer to window above                                               |
+|                         | =M-down=   | move buffer to window below                                               |
+|                         | =M-left=   | move buffer to left window                                                |
+|                         | =M-right=  | move buffer to right window                                               |
+|                         | =,.=       | Delete the current frame                                                  |
+| *Movement / Selections* | =M-i=      | move to next expression                                                   |
+|                         | =M-o=      | move to previous expression                                               |
+|                         | =C-{=      | select previous "thing"                                                   |
+|                         | =C-}=      | select next "thing"                                                       |
+|                         | =C-\=      | select/exchange previous "thing"                                          |
+|                         | =C-]=      | select/exchange next "thing"                                              |
+|                         | =C-3=      | go to last automatically saved position                                   |
+|                         | =C-4=      | go to next automatically saved  position                                  |
+|                         | =M-2=      | show all symbols like the one cursor is located at                        |
+|                         | =M-3=      | previous symbol like the one the cursor is on                             |
+|                         | =M-4=      | next symbol like the one the cursor is on                                 |
+|                         | =i9=       | toggle automatic identation                                               |
+|                         | =C-8=      | select symbol under cursor, pressing again will smartly expand the region |
+|                         | =M-8=      | narrow the selection again                                                |
+|                         | =C->=      | add cursor downwards (try to get next occurrence if sth. is marked)       |
+|                         | =C-<=      | add cursor upwards (try to get previous occurrence if sth. is marked)     |
+|                         | =C-f9=     | move line/selection down                                                  |
+|                         | =C-f10=    | move line/selection up                                                    |
+| *Elisp Evaluation*      | =90=       | evaluate list (with visual feedback)                                      |
+|                         | =C-c C-c=  | "                                                                         |
+|                         | =C-c C-e=  | evaluate s-expression (with visual feedback)                              |
+| *Completion*            | =C-7=      | Trigger auto-completion explicitly (with fuzzy matching)                  |
+| *Formatting*            | =C-c w=    | cleanup whitespace                                                        |
+|                         | =C-c j=    | join two lines (also mapped to M-^ by default)                            |
+|                         | =ac=       | align expressions, e.g. align all === in 3 lines with assignments         |
+| *Search / Replace*      | =34=       | find definitions (functions, headings etc.) in current file               |
+|                         | =gt=       | google selection / word under cursor (in web browser)                     |
+|                         | =gs=       | google (prompt and search in web browser)                                 |
+|                         | =vr=       | search/replace with visual regexp                                         |
+|                         | =lo=       | locate (helm)                                                             |
+|                         | =34=       | imenu (helm)                                                              |
+|                         | =M-9=      | occur (helm)                                                              |
+|                         | =C-;=      | edit occurences of current word on the fly, press again to exit           |
+| *Rings*                 | =M-7=      | show kill ring (helm)                                                     |
+|                         | =C-5=      | show all mark rings (helm)                                                |
+| *Project related*       | =fr=       | find files in current project                                             |
+|                         | =rg=       | grep through current project                                              |
+|                         | =ok=       | show occurrences of a string in current project                           |
+|                         | =aw=       | ack through current project                                               |
+|                         | =ag=       | ag through current project                                                |
+|                         | =C-c g=    | magit status - manual: http://magit.github.io/magit/                      |
+|                         | =C-c l=    | magit log                                                                 |
+| *Tags*                  | =M-.=      | find tag                                                                  |
+|                         | =M-5=      | select etag (helm)                                                        |
+|                         | =M-6=      | find tag in other window                                                  |
+| *Code/Spell checking*   | =cf=       | toggle code checking (flycheck)                                           |
+|                         | =C-c f=    | toggle spell checking (flyspell)                                          |
+|                         | =C-c d=    | change dictionary                                                         |
+| *Shell*                 | =C-c s=    | open emacs shell                                                          |
+| *PHP*                   | =vd=       | insert var_dump around selection                                          |
+|                         | =vb=       | insert var_dump + die around selection                                    |
+
+** Contributions
+
+I'm using *outline-mode* to keep =emacs.el= organized. Top level headings have one star:
+
+#+BEGIN_SRC emacs-lisp
+  ;; * Top Level Heading
+#+END_SRC
+
+And so on:
+
+#+BEGIN_SRC emacs-lisp
+  ;; ** Second Level Heading
+#+END_SRC
+
+These commands are defined:
+
+|  combo    | description
+| ----------|-------------------------------------------------
+| =C-c C-r= | Cycle through the states of the outline buffer
+| =C-c C-q= | Hide everything but the top-level headings
+| =C-t C-a= | Show (expand) everything
+
+So... that's what should make it easier to keep an overview. If you want to help me out improving the config, fork the repo, create a new branch and open up a Pull Request so we can discuss the merge.
+
+Of course you can also just [[https://github.com/steckerhalter/steckemacs/issues][report issues]] :)
+
+* COMMENT Code
+** load-path
 
 #+BEGIN_SRC emacs-lisp
   ;; http://emacswiki.org/emacs/LoadPath
@@ -21,7 +169,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
            load-path)))
 #+END_SRC
 
-* el-get
+** el-get
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -73,7 +221,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (el-get 'sync my-el-get-packages)
 #+END_SRC
 
-* package.el
+** package.el
 
 #+BEGIN_SRC emacs-lisp
   (package-initialize)
@@ -167,21 +315,21 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
                   unless (package-installed-p p) collect p)))
 #+END_SRC
 
-* key bindings
+** key bindings
 
-** my keymap to override problematic bindings
+*** my keymap to override problematic bindings
 
 #+BEGIN_SRC emacs-lisp
   (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
 #+END_SRC
 
-** key-chord
+*** key-chord
 #+BEGIN_SRC emacs-lisp
   (key-chord-mode 1)
   (setq key-chord-two-keys-delay 0.03)
 #+END_SRC
 
-** general
+*** general
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c X") (lambda () (interactive) (shell-command "pkill emacs")))
@@ -196,7 +344,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (global-set-key (kbd "C-c C-w") 'browse-url-at-point)
 #+END_SRC
 
-** appearance
+*** appearance
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c m") 'menu-bar-mode)
@@ -205,7 +353,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (key-chord-define-global "ln" 'linum-mode)
 #+END_SRC
 
-** buffer / file
+*** buffer / file
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c r")  'revert-buffer)
@@ -223,7 +371,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (key-chord-define-global "sc" (lambda () (interactive)(switch-to-buffer "*scratch*")))
 #+END_SRC
 
-** window / frame
+*** window / frame
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-0") (lambda () (interactive) (select-window (previous-window)))) ;select prev window
@@ -245,7 +393,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (key-chord-define-global ",." 'delete-frame)
 #+END_SRC
 
-** movement / selections
+*** movement / selections
 
 #+BEGIN_SRC emacs-lisp
   (define-key key-translation-map (kbd "C-t") (kbd "C-p"))
@@ -268,7 +416,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
                                         (delete-region beg (point)))))
 #+END_SRC
 
-** formatting
+*** formatting
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c w") 'whitespace-cleanup)     ;cleanup whitespaces
@@ -278,7 +426,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (global-set-key (kbd "C-c q") 'auto-fill-mode) ;toggles word wrap
 #+END_SRC
 
-** searching / grepping
+*** searching / grepping
 
 #+BEGIN_SRC emacs-lisp
   (key-chord-define-global "vg" 'vc-git-grep)
@@ -287,7 +435,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (global-set-key (kbd "M-6") 'find-tag-other-window)
 #+END_SRC
 
-* general options
+** general options
 
 #+BEGIN_SRC emacs-lisp
   ;; load the secrets if available
@@ -353,7 +501,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
    ;; '(session-use-package t nil (session)))
 #+END_SRC
 
-** system specific settings
+*** system specific settings
 
 #+BEGIN_SRC emacs-lisp
   (when (eq system-type 'gnu/linux)
@@ -363,7 +511,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
     )
 #+END_SRC
 
-* theme, faces, frame
+** theme, faces, frame
 
 #+BEGIN_SRC emacs-lisp
   (load-theme 'grandshell t)
@@ -379,7 +527,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
                                       "%b"))))
 #+END_SRC
 
-* custom functions
+** custom functions
 
 #+BEGIN_SRC emacs-lisp
   ;; copy filename of current buffer to kill ring
@@ -488,7 +636,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
     )
 #+END_SRC
 
-* advices
+** advices
 
 #+BEGIN_SRC emacs-lisp
   ;; slick-copy: make copy-past a bit more intelligent
@@ -541,15 +689,15 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
         ad-do-it)))
 #+END_SRC
 
-* modes
+** modes
 
-** ag
+*** ag
 
 #+BEGIN_SRC emacs-lisp
   (key-chord-define-global "ag" 'ag-project)
 #+END_SRC
 
-** auctex-mode
+*** auctex-mode
 
 #+BEGIN_SRC emacs-lisp
   (setq TeX-PDF-mode t)
@@ -568,7 +716,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
             )
 #+END_SRC
 
-** auto-complete
+*** auto-complete
 
 #+BEGIN_SRC emacs-lisp
   (require 'auto-complete-config)
@@ -601,7 +749,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (define-key lisp-mode-shared-map (kbd "C-c C-h") 'stk/ac-show-help)
 #+END_SRC
 
-** auto-save-buffers-enhanced
+*** auto-save-buffers-enhanced
 
 #+BEGIN_SRC emacs-lisp
   (require 'auto-save-buffers-enhanced)
@@ -610,7 +758,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (global-set-key (kbd "C-x a s") 'auto-save-buffers-enhanced-toggle-activity)
 #+END_SRC
 
-** back-button
+*** back-button
 
 #+BEGIN_SRC emacs-lisp
   (require 'back-button)
@@ -619,14 +767,14 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (back-button-mode 1)
 #+END_SRC
 
-** conf-mode
+*** conf-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.tks\\'" . conf-mode))
   (add-to-list 'ac-modes 'conf-mode)
 #+END_SRC
 
-** deft
+*** deft
 
 #+BEGIN_SRC emacs-lisp
   (setq
@@ -638,13 +786,13 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (global-set-key (kbd "C-c c") 'deft)
 #+END_SRC
 
-** dired+
+*** dired+
 
 #+BEGIN_SRC emacs-lisp
   (toggle-diredp-find-file-reuse-dir 1)
 #+END_SRC
 
-** eval-sexp-fu
+*** eval-sexp-fu
 
 #+BEGIN_SRC emacs-lisp
   (when (and (>= emacs-major-version 24) (>= emacs-minor-version 3))
@@ -660,7 +808,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   )
 #+END_SRC
 
-** ecb
+*** ecb
 
 #+BEGIN_SRC emacs-lisp
   (setq
@@ -674,7 +822,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
                                   ))
 #+END_SRC
 
-** erc mode
+*** erc mode
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'erc-mode-hook (lambda ()
@@ -719,27 +867,27 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   ;;       )
 #+END_SRC
 
-** expand-region
+*** expand-region
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-8") 'er/expand-region)
   (global-set-key (kbd "M-8") 'er/contract-region)
 #+END_SRC
 
-** fic-ext-mode
+*** fic-ext-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'fic-ext-mode) ;; highlight TODO/FIXME/...
 #+END_SRC
 
-** flex-isearch
+*** flex-isearch
 
 #+BEGIN_SRC emacs-lisp
   (setq flex-isearch-auto 'on-failed)
   (flex-isearch-mode 1)
 #+END_SRC
 
-** flycheck-mode
+*** flycheck-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'php-mode-hook 'flycheck-mode)
@@ -749,25 +897,25 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (key-chord-define-global "fc" 'flycheck-mode)
 #+END_SRC
 
-** flyspell-mode
+*** flyspell-mode
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c f")  'flyspell-mode)
 #+END_SRC
 
-** fringe
+*** fringe
 
 #+BEGIN_SRC emacs-lisp
   (setq indicate-buffer-boundaries 'left)
 #+END_SRC
 
-** git-gutter-fringe+
+*** git-gutter-fringe+
 
 #+BEGIN_SRC emacs-lisp
   (global-git-gutter+-mode)
 #+END_SRC
 
-** google-this
+*** google-this
 
 #+BEGIN_SRC emacs-lisp
   (google-this-mode 1)
@@ -775,7 +923,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (key-chord-define-global "gs" 'google-search)
 #+END_SRC
 
-** haskell-mode
+*** haskell-mode
 
 #+BEGIN_SRC emacs-lisp
   (require 'haskell-mode)
@@ -784,7 +932,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 #+END_SRC
 
-** helm
+*** helm
 
 #+BEGIN_SRC emacs-lisp
   (require 'helm-config)
@@ -815,13 +963,13 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (global-set-key (kbd "M-0") 'helm-git-find-files)
 #+END_SRC
 
-** hide-comnt
+*** hide-comnt
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<C-f8>") 'hide/show-comments-toggle)
 #+END_SRC
 
-** highlight-symbol
+*** highlight-symbol
 
 #+BEGIN_SRC emacs-lisp
   (setq highlight-symbol-on-navigation-p t)
@@ -832,13 +980,13 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 #+END_SRC
 
-** html-mode
+*** html-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'ac-modes 'html-mode)
 #+END_SRC
 
-** ido-mode
+*** ido-mode
 
 #+BEGIN_SRC emacs-lisp
   (setq ido-enable-flex-matching t
@@ -851,27 +999,27 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (ido-mode 1)
 #+END_SRC
 
-** iedit
+*** iedit
 
 #+BEGIN_SRC emacs-lisp
   (require 'iedit)
   (setq iedit-unmatched-lines-invisible-default t)
 #+END_SRC
 
-** isearch+
+*** isearch+
 
 #+BEGIN_SRC emacs-lisp
   (eval-after-load "isearch" '(require 'isearch+))
 #+END_SRC
 
-** jinja2-mode for twig
+*** jinja2-mode for twig
 
 #+BEGIN_SRC emacs-lisp
   (require 'jinja2-mode)
   (add-to-list 'auto-mode-alist '("\\.twig$" . jinja2-mode))
 #+END_SRC
 
-** js2-mode
+*** js2-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
@@ -885,13 +1033,13 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
               ))
 #+END_SRC
 
-** json-mode
+*** json-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 #+END_SRC
 
-** magit
+*** magit
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c g") 'magit-status)
@@ -902,20 +1050,20 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (add-hook 'magit-status-mode-hook 'magit-inotify-mode)
 #+END_SRC
 
-** markdown
+*** markdown
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
   (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 #+END_SRC
 
-** melpa-upstream-visit
+*** melpa-upstream-visit
 
 #+BEGIN_SRC emacs-lisp
   (require 'melpa-upstream-visit)
 #+END_SRC
 
-** move-text
+*** move-text
 
 #+BEGIN_SRC emacs-lisp
   (require 'move-text)
@@ -923,7 +1071,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (global-set-key (kbd "<C-f9>") 'move-text-down)
 #+END_SRC
 
-** mu4e
+*** mu4e
 
 #+BEGIN_SRC emacs-lisp
   (when (file-exists-p "/usr/local/share/emacs/site-lisp/mu4e")
@@ -961,7 +1109,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
     )
 #+END_SRC
 
-** multiple-cursors
+*** multiple-cursors
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -970,7 +1118,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (global-set-key (kbd "C-*") 'mc/mark-all-like-this)
 #+END_SRC
 
-** mutt, load mail-mode
+*** mutt, load mail-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
@@ -979,7 +1127,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
                               ))
 #+END_SRC
 
-** nrepl
+*** nrepl
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
@@ -1002,14 +1150,14 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 #+END_SRC
 
-** nrepl-eval-sexp-fu
+*** nrepl-eval-sexp-fu
 
 #+BEGIN_SRC emacs-lisp
   (require 'nrepl-eval-sexp-fu)
   (setq nrepl-eval-sexp-fu-flash-duration 0.4)
 #+END_SRC
 
-** org-mode
+*** org-mode
 
 #+BEGIN_SRC emacs-lisp
   ;; if todo.org exists, startup emacs with the org todo (list )
@@ -1081,14 +1229,14 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
 #+RESULTS:
 | lambda | nil | (interactive) | (org-agenda nil n) |
 
-** org-reveal
+*** org-reveal
 
 #+BEGIN_SRC emacs-lisp
   (load "org-reveal")
   (define-key org-mode-map (kbd "C-c C-v") 'org-reveal-export-to-html)
 #+END_SRC
 
-** php-mode
+*** php-mode
 
 #+BEGIN_SRC emacs-lisp
   (require 'php-mode)
@@ -1158,13 +1306,13 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (key-chord-define-global "dv" 'var_dump)
 #+END_SRC
 
-** prog-mode
+*** prog-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1))) ; show whitespace errors
 #+END_SRC
 
-** projectile
+*** projectile
 
 #+BEGIN_SRC emacs-lisp
   (require 'projectile nil t)
@@ -1175,7 +1323,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (key-chord-define-global "aw" 'projectile-ack)
 #+END_SRC
 
-** rainbow-mode
+*** rainbow-mode
 
 #+BEGIN_SRC emacs-lisp
   (dolist (hook '(css-mode-hook
@@ -1189,7 +1337,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
     )
 #+END_SRC
 
-** rcirc
+*** rcirc
 
 #+BEGIN_SRC emacs-lisp
   (eval-after-load 'rcirc '(require 'rcirc-color))
@@ -1202,7 +1350,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (global-set-key (kbd "C-c I") 'irc)
 #+END_SRC
 
-** robe
+*** robe
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'ruby-mode-hook
@@ -1211,14 +1359,14 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
               (push 'ac-source-robe ac-sources)))
 #+END_SRC
 
-** saveplace
+*** saveplace
 
 #+BEGIN_SRC emacs-lisp
   (require 'saveplace)
   (setq-default save-place t)
 #+END_SRC
 
-** slime-js
+*** slime-js
 
 #+BEGIN_SRC emacs-lisp
   (dolist (hook '(css-mode-hook
@@ -1241,7 +1389,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (set-face-attribute 'sml/vc-edited nil :foreground "#ff5f87")
 #+END_SRC
 
-** smartparens
+*** smartparens
 
 #+BEGIN_SRC emacs-lisp
   (require 'smartparens-config)
@@ -1256,14 +1404,14 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (custom-set-faces '(sp-pair-overlay-face ((t ()))))
 #+END_SRC
 
-** sgml
+*** sgml
 
 #+BEGIN_SRC emacs-lisp
   (setq sgml-basic-offset 4)
   (add-hook 'sgml-mode-hook 'sgml-electric-tag-pair-mode)
 #+END_SRC
 
-** slime
+*** slime
 
 #+BEGIN_SRC emacs-lisp
   (when (file-exists-p "~/quicklisp/slime-helper.el") (load "~/quicklisp/slime-helper.el"))
@@ -1273,7 +1421,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
     '(add-to-list 'ac-modes 'slime-repl-mode))
 #+END_SRC
 
-** sql-completion
+*** sql-completion
 
 #+BEGIN_SRC emacs-lisp
   (when (require 'sql-completion nil t)
@@ -1284,20 +1432,20 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
     )
 #+END_SRC
 
-** term-mode
+*** term-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'term-mode-hook (lambda()
                   (yas-minor-mode -1)))
 #+END_SRC
 
-** tempo
+*** tempo
 
 #+BEGIN_SRC emacs-lisp
   (require 'tempo nil t)
 #+END_SRC
 
-** uniqify
+*** uniqify
 
 #+BEGIN_SRC emacs-lisp
   (require 'uniquify)
@@ -1305,20 +1453,20 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (setq uniquify-min-dir-content 2)
 #+END_SRC
 
-** yasnippets
+*** yasnippets
 
 #+BEGIN_SRC emacs-lisp
   (yas-global-mode 1)
   (setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt yas-x-prompt yas-dropdown-prompt yas-no-prompt))
 #+END_SRC
 
-** visual-regexp
+*** visual-regexp
 
 #+BEGIN_SRC emacs-lisp
   (key-chord-define-global "vr" 'vr/replace)
 #+END_SRC
 
-** w3m, optional
+*** w3m, optional
 
 #+BEGIN_SRC emacs-lisp
   (when (require 'w3m nil t)
@@ -1359,20 +1507,20 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
     )
 #+END_SRC
 
-** whole-line-or-region // actually the defadvice works better than this mode
+*** whole-line-or-region // actually the defadvice works better than this mode
 
 #+BEGIN_SRC emacs-lisp;(whole-line-or-region-mode 1)
 #+END_SRC
 
-** yaml-mode
+*** yaml-mode
 
 #+BEGIN_SRC emacs-lisp
   (setq yaml-indent-offset 4)
 #+END_SRC
 
-* end
+** end
 
-** turn on the keyboard overrides
+*** turn on the keyboard overrides
 
 #+BEGIN_SRC emacs-lisp
   (define-minor-mode my-keys-minor-mode
@@ -1381,7 +1529,7 @@ This is part of [[https://github.com/steckerhalter/steckemacs][Steckemacs]].
   (my-keys-minor-mode 1)
 #+END_SRC
 
-** makes it possible to do /sudo:host: , reads pws from ~/.authinfo.gpg
+*** makes it possible to do /sudo:host: , reads pws from ~/.authinfo.gpg
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'tramp-default-proxies-alist '(nil "\\`root\\'" "/ssh:%h:"))
