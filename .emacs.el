@@ -135,6 +135,7 @@
         grandshell-theme
         grizzl
         haskell-mode
+        hide-comnt
         highlight
         helm
         helm-descbinds
@@ -740,6 +741,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (require 'helm-git)
 (global-set-key (kbd "M-0") 'helm-git-find-files)
+
+;; ** hide-comnt
+(global-set-key (kbd "<C-f8>") 'hide/show-comments-toggle)
 
 ;; ** highlight-symbol
 (setq highlight-symbol-on-navigation-p t)

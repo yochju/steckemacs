@@ -41,6 +41,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
 |                            | `C--`     | decrease the font size
 |                            | `C-=`     | increase the font size
 |                            | `ln`      | show/hide the line numbers
+|                            | `C-F8`    | show/hide comments
 |        **Buffers / Files** | `C-return`| buffer switcher (helm-mini)
 |                            | `F6`      | delete the current buffer
 |                            | `F8`      | switch to the "last" buffer
