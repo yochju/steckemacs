@@ -122,7 +122,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
 I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains this documentation which is used to generate =README.org= by calling:
 
 #+BEGIN_SRC emacs-lisp
-  ;;Press =C-c C-c= inside this block to generate a new README.org
+  ;;Press C-c C-c inside this block to generate a new README.org
   (org-export-to-file 'org "README.org")
 #+END_SRC
 
