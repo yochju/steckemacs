@@ -1,5 +1,4 @@
 ;;; .emacs.el --- steckemacs
-;; * header
 
 ;; Copyright 2013, Steckerhalter
 
@@ -33,7 +32,7 @@
 
 ;;; Requirements:
 
-;; Emacs 24, should also work with Emacs 23 but I'm not testing that very often
+;; Emacs 24
 
 ;;; Code:
 

@@ -1,32 +1,25 @@
-#+TITLE: Steckemacs
-#+AUTHOR: steckerhalter
-
-#+OPTIONS: toc:nil num:nil
-
 * Steckemacs
 
-An Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
+An Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
 
 If you want to know more about how that works, read my blog entry here:  http://steckerhalter.co.vu/blog/201304/steckemacs
 
-**To use this setup please use Emacs 24 or later. Older versions do not work properly.**
+*To use this setup please use Emacs 24 or later. Older versions do not work properly.*
 
 ** Installation
 
-As the whole setup is just one file the easiest way to use it is like this:
-
-Change to a directory of your choice and clone **steckemacs**:
+Change to a directory of your choice and clone *steckemacs*:
 
 #+BEGIN_SRC shell
     cd <my directory>
     git clone https://github.com/steckerhalter/steckemacs.git
 #+END_SRC
 
-And symlink =.emacs.el= into your home directory:
+And symlink =.emacs= into your home directory:
 
 #+BEGIN_SRC shell
     cd ~
-    ln -s <path to the directory from above>/.emacs.el
+    ln -s <path to the directory from above>/.emacs
 #+END_SRC
 
 That's it. Then you can run emacs and it should pick up the config, install all the packages and make you happy ;)
@@ -128,27 +121,15 @@ I only describe my custom key combinations currently. To learn the standard Emac
 
 ** Contributions
 
-I'm using *outline-mode* to keep =emacs.el= organized. Top level headings have one star:
+I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains this documentation which is used to generate =README.org= by calling:
 
-#+BEGIN_SRC emacs-lisp
-  ;; * Top Level Heading
+#+BEGIN_SRC emacs-lisp :results silent
+  (org-export-to-file 'org "README.org")
 #+END_SRC
 
-And so on:
+You can find more information about *Literate Programming* and *org-mode* here: http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming
 
-#+BEGIN_SRC emacs-lisp
-  ;; ** Second Level Heading
-#+END_SRC
-
-These commands are defined:
-
-|  combo    | description
-| ----------|-------------------------------------------------
-| =C-c C-r= | Cycle through the states of the outline buffer
-| =C-c C-q= | Hide everything but the top-level headings
-| =C-t C-a= | Show (expand) everything
-
-So... that's what should make it easier to keep an overview. If you want to help me out improving the config, fork the repo, create a new branch and open up a Pull Request so we can discuss the merge.
+If you want to help me out improving the config, fork the repo, create a new branch and open up a Pull Request so we can discuss the merge.
 
 Of course you can also just [[https://github.com/steckerhalter/steckemacs/issues][report issues]] :)
 
