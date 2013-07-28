@@ -346,21 +346,32 @@ Quite a big list of packages. When Emacs starts up the first time it takes quite
 
 This part first checks if there is an internet connection. If true it refreshes the package archive cache and goes on to install all the packages that are not yet installed.
 
-** key bindings
+** Key Bindings
 
-*** my keymap to override problematic bindings
+*** my-keys-minor-mode-map
+
+Custom keymap to override some Emacs keys permanently.
 
 #+BEGIN_SRC emacs-lisp
   (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
 #+END_SRC
 
 *** key-chord
+
+#+BEGIN_QUOTE
+Key-chord lets you bind commands to combination of key-strokes. Here a "key chord" means two keys pressed simultaneously, or a single key quickly pressed twice.
+#+END_QUOTE
+
+The source code can be found on [[http://www.emacswiki.org/emacs/key-chord.el][EmacsWiki]].
+
 #+BEGIN_SRC emacs-lisp
   (key-chord-mode 1)
   (setq key-chord-two-keys-delay 0.03)
 #+END_SRC
 
-*** general
+We need to turn the mode on here so that we can map keys further below. We lower the delay so that chords are not triggered too easily.
+
+*** General
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c X") (lambda () (interactive) (shell-command "pkill emacs")))
@@ -1211,6 +1222,13 @@ This part first checks if there is an internet connection. If true it refreshes 
   (setq org-confirm-babel-evaluate nil)
   (setq org-use-speed-commands t)
   (setq org-default-notes-file (concat org-directory "/todo.org"))
+
+  (setq org-capture-templates
+        '(
+          ("t" "Task" entry (file+headline "" "Tasks") "* TODO %?\n  %u\n  %a")
+          ("n" "Task" entry (file+headline "" "Tasks") "* TODO %?\n  %U\n")
+          ))
+
   (global-set-key (kbd "C-c C-9") 'org-capture)
 
   (add-to-list 'org-structure-template-alist '("m" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC\n"))
