@@ -10,14 +10,14 @@ If you want to know more about how that works, read my blog entry here:  http://
 
 Change to a directory of your choice and clone *steckemacs*:
 
-#+BEGIN_SRC shell
+#+BEGIN_SRC shell-script
     cd <my directory>
     git clone https://github.com/steckerhalter/steckemacs.git
 #+END_SRC
 
 And symlink =.emacs= into your home directory:
 
-#+BEGIN_SRC shell
+#+BEGIN_SRC shell-script
     cd ~
     ln -s <path to the directory from above>/.emacs
 #+END_SRC
