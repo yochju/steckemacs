@@ -66,7 +66,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
 |                         | =M-down=   | move buffer to window below                                               |
 |                         | =M-left=   | move buffer to left window                                                |
 |                         | =M-right=  | move buffer to right window                                               |
-|                         | =,.=       | Delete the current frame                                                  |
+|                         | =\,.=      | Delete the current frame                                                  |
 | *Movement / Selections* | =M-i=      | move to next expression                                                   |
 |                         | =M-o=      | move to previous expression                                               |
 |                         | =C-{=      | select previous "thing"                                                   |
@@ -124,6 +124,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
 I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains this documentation which is used to generate =README.org= by calling:
 
 #+BEGIN_SRC emacs-lisp :tangle no :results silent
+  ;;Press =C-c C-c= inside this block to generate a new README.org
   (org-export-to-file 'org "README.org")
 #+END_SRC
 
