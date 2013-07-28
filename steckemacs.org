@@ -2,9 +2,9 @@
 #+OPTIONS: todo:nil
 #+LaTeX_CLASS_OPTIONS: [16pt]
 #+LaTeX_HEADER: \usemintedstyle{monokai}
-#+LaTeX_HEADER: \usepackage[T1]{fontenc} 
+#+LaTeX_HEADER: \usepackage[T1]{fontenc}
 #+LaTeX_HEADER: \usepackage[scaled]{beraserif}
-#+LaTeX_HEADER: \usepackage[scaled]{berasans} 
+#+LaTeX_HEADER: \usepackage[scaled]{berasans}
 #+LaTeX_HEADER: \usepackage[scaled]{beramono}
 
 * Steckemacs
@@ -149,6 +149,8 @@ Of course you can also just [[https://github.com/steckerhalter/steckemacs/issues
 
 The variable =load-path= lists all the directories where Emacs should look for Elisp files. The first file found is used, therefore the order of the directories is relevant.
 
+=load-path= is documented in the [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Lisp-Libraries.html][Emacs Online Manual]], in chapter *Libraries of Lisp Code for Emacs*. Useful tips are also on [[http://www.emacswiki.org/emacs/LoadPath][EmacsWiki]].
+
 #+BEGIN_SRC emacs-lisp
   (let ((default-directory "~/.emacs.d/elisp/"))
     (unless (file-exists-p default-directory)
@@ -164,30 +166,36 @@ The variable =load-path= lists all the directories where Emacs should look for E
 
 Here we create the directory =~/.emacs.d/elisp/= if it does'nt exist, add it to the =load-path= and also add all subdirectories. Doing that any =.el= or =.elc= files in these directories will be available to *emacs*.
 
-| HTML Manual | [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Lisp-Libraries.html][Lisp Libraries]] |
-| EmacsWiki   | [[http://www.emacswiki.org/emacs/LoadPath][LoadPath]]       |
-| Info Manual | [[info:emacs#Lisp%20Libraries][Lisp Libraries]] |
-
-
 ** El-Get
 
+#+CAPTION: El-Get Logo
+#+NAME: el-get-logo
 [[./img/el-get.png]]
 
 #+BEGIN_QUOTE
 El-Get is designed to simplify this process and allow access to all the various methods of obtaining packages from a single interface. Every package has a recipe that allows you to locate the original source, and that can be updated if the package is moved.
 #+END_QUOTE
 
-#+BEGIN_SRC emacs-lisp
+#+CAPTION: Dimitri Fontaine
+#+NAME: fig:dimitri
+[[http://tapoueh.org/images/dim.jpeg]]
+
+Dimitri (on the image above, [[fig:dimitri]]) is the clever guy that brougth us El-Get. The code is hosted [[https://github.com/dimitri/el-get][on Github]].
+
+#+BEGIN_SRC emacs-lisp -n -r
   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-  (setq el-get-install-skip-emacswiki-recipes t)
-  
+  (setq el-get-install-skip-emacswiki-recipes t) (ref:wiki)
   (unless (require 'el-get nil 'noerror)
     (with-current-buffer
         (url-retrieve-synchronously
          "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
       (goto-char (point-max))
       (eval-print-last-sexp)))
-  
+#+END_SRC
+
+This sets up the load path and fetches and evaluates the stable El-Get branch if not already loaded (as described [[https://github.com/dimitri/el-get#basic-setup][on Github]]). In line [[(wiki)]] we make sure El-Get doesn't load all the Wiki recipes as we don't use them.
+
+#+BEGIN_SRC emacs-lisp
   (setq el-get-sources
         '(
           (:name php-documentor
@@ -218,24 +226,35 @@ El-Get is designed to simplify this process and allow access to all the various 
                  :type http
                  :url "https://raw.github.com/tj64/outline-magic/master/outline-magic.el")
           ))
-  
+#+END_SRC
+
+These are simple El-Get recipes that will fetch single Elisp files.
+
+#+BEGIN_SRC emacs-lisp -n -r
   (setq my-el-get-packages
         (append
          '()
          (mapcar 'el-get-source-name el-get-sources)))
-  
-  (el-get 'sync my-el-get-packages)
+
+  (el-get 'sync my-el-get-packages) (ref:sync)
 #+END_SRC
 
-** package.el
+The sync function expects the package names which are extracted from =el-get-sources=. In line [[(sync)]] El-Get does the magic and gets the files specified in =el-get-sources=.
+
+** Packages
 
 #+BEGIN_SRC emacs-lisp
-  (package-initialize)
-  
-  (setq package-archives '((     "elpa" . "http://elpa.gnu.org/packages/")
-                           ("marmalade" . "http://marmalade-repo.org/packages/")
-                           (    "melpa" . "http://melpa.milkbox.net/packages/")))
-  
+  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+#+END_SRC
+
+This adds two remote package repositories. The repo from the FSF is already included in Emacs 24 (see http://elpa.gnu.org/).
+
+[[http://marmalade-repo.org/][Marmalade]] is run by Nic Ferrier who wrote the Emacs webserver [[http://elnode.org/][Elnode]]. Some packages are slightly outdated but it's still a useful resource.
+
+The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds packages directly from upstream source code. There's a nice [[https://twitter.com/melpa_emacs][Twitter Feed]] showing the packages that have been updated, which is great to discover new modes.
+
+#+BEGIN_SRC emacs-lisp
   (setq my-packages
 
         '(ack-and-a-half
@@ -307,7 +326,11 @@ El-Get is designed to simplify this process and allow access to all the various 
           yari
           yasnippet)
         )
-  
+#+END_SRC
+
+Quite a big list of packages. When Emacs starts up the first time it takes quite a while to install all of them.
+
+#+BEGIN_SRC emacs-lisp
   (unless (condition-case nil
               (delete-process
                (make-network-process
@@ -320,6 +343,8 @@ El-Get is designed to simplify this process and allow access to all the various 
             (loop for p in my-packages
                   unless (package-installed-p p) collect p)))
 #+END_SRC
+
+This part first checks if there is an internet connection. If true it refreshes the package archive cache and goes on to install all the packages that are not yet installed.
 
 ** key bindings
 
@@ -409,7 +434,7 @@ El-Get is designed to simplify this process and allow access to all the various 
   (key-chord-define-global "aj" (lambda ()  (interactive) (end-of-line) (set-mark (line-beginning-position))))
   (key-chord-define-global "wa" 'backward-word)
   (key-chord-define-global "i9" 'electric-indent-mode)
-  
+
   ;; editing
   (global-set-key (kbd "M-W" ) 'delete-region)  ;delete region (but don't put it into kill ring)
   (key-chord-define-global "wd" 'kill-word)
@@ -446,12 +471,12 @@ El-Get is designed to simplify this process and allow access to all the various 
 #+BEGIN_SRC emacs-lisp
   ;; load the secrets if available
   (when (file-readable-p "~/.secrets.el") (load "~/.secrets.el"))
-  
+
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
   (set-language-environment "UTF-8")
   (prefer-coding-system 'utf-8)
-  
+
   (setq
    inhibit-startup-message t
    backup-directory-alist `((".*" . ,temporary-file-directory)) ;don't clutter my fs and put backups into tmp
@@ -467,14 +492,14 @@ El-Get is designed to simplify this process and allow access to all the various 
    vc-follow-symlinks t
    recentf-max-saved-items 5000
    )
-  
+
   (setq-default
    tab-width 4
    indent-tabs-mode nil                ;use spaces instead of tabs
    c-basic-offset 4
    c-auto-hungry-state 1
    )
-  
+
   (global-auto-revert-mode 1)          ;auto revert buffers when changed on disk
   (show-paren-mode t)                  ;visualize()
   (iswitchb-mode t)                    ;use advanced tab switching
@@ -483,19 +508,19 @@ El-Get is designed to simplify this process and allow access to all the various 
   (menu-bar-mode -1)                   ;no menu
   (scroll-bar-mode -1)
   (savehist-mode 1)                    ;save minibuffer history
-  
+
   ;(global-hl-line-mode 0)
-  
+
   ;(defun yes-or-no-p (&rest ignored) t)    ;turn off most confirmations
   (defalias 'yes-or-no-p 'y-or-n-p)
-  
+
   ; http://www.masteringemacs.org/articles/2010/11/14/disabling-prompts-emacs/
   (setq kill-buffer-query-functions
     (remq 'process-kill-buffer-query-function
            kill-buffer-query-functions))
-  
+
   (put 'dired-find-alternate-file 'disabled nil) ;don't always open new buffers in dired
-  
+
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
@@ -521,10 +546,10 @@ El-Get is designed to simplify this process and allow access to all the various 
 
 #+BEGIN_SRC emacs-lisp
   (load-theme 'grandshell t)
-  
+
   (custom-set-faces
    '(default ((t (:background "black" :foreground "#babdb6" :family "Bitstream Vera Sans Mono" :height 89)))))
-  
+
   ;; more useful frame title, that show either a file or a
   ;; buffer name (if the buffer isn't visiting a file)
   (setq frame-title-format
@@ -544,7 +569,7 @@ El-Get is designed to simplify this process and allow access to all the various 
     (kill-new (file-truename buffer-file-name))
     )
   (global-set-key (kbd "C-c n") 'show-file-name)
-  
+
   (defun my/split-window()
     "Split the window to see the most recent buffer in the other window.
   Call a second time to restore the original window configuration."
@@ -555,9 +580,9 @@ El-Get is designed to simplify this process and allow access to all the various 
           (setq this-command 'my/unsplit-window))
       (window-configuration-to-register :my/split-window)
       (switch-to-buffer-other-window nil)))
-  
+
   (global-set-key (kbd "<f9>") 'my/split-window)
-  
+
   (defun toggle-window-split ()
     (interactive)
     (if (= (count-windows) 2)
@@ -582,13 +607,13 @@ El-Get is designed to simplify this process and allow access to all the various 
         (set-window-buffer (next-window) next-win-buffer)
         (select-window first-win)
         (if this-win-2nd (other-window 1))))))
-  
+
   (global-set-key (kbd "<f7>") 'toggle-window-split)
-  
+
   (defvar stk/terminal '("gnome-terminal" . "--working-directory=" )
     "Terminal executable and after the dot the working directory option for the terminal"
     )
-  
+
   (defun stk/open-terminal (project-root-p)
     "Open the terminal emulator either from the project root or
     from the location of the current file."
@@ -600,10 +625,10 @@ El-Get is designed to simplify this process and allow access to all the various 
       ))
      )
     )
-  
+
   (global-set-key (kbd "C-c t") (lambda () (interactive) (stk/open-terminal nil)))
   (global-set-key (kbd "C-c T") (lambda () (interactive) (stk/open-terminal t)))
-  
+
   (when (executable-find "autojump")
     (defun ido-autojump (&optional query)
       "Use autojump to open a directory with dired"
@@ -629,16 +654,16 @@ El-Get is designed to simplify this process and allow access to all the various 
           (message "No directory found")
           )
         ))
-  
+
     (global-set-key (kbd "C-6") 'ido-autojump)
-  
+
     (defun autojump-add-directory ()
       "Adds the directory of the current buffer/file to the autojump database"
       (start-process "*autojump*" nil "autojump" "--add" (file-name-directory (buffer-file-name)))
       )
-  
+
     (add-hook 'find-file-hook 'autojump-add-directory)
-  
+
     )
 #+END_SRC
 
@@ -655,7 +680,7 @@ El-Get is designed to simplify this process and allow access to all the various 
         (message "Copied line")
         (list (line-beginning-position)
                  (line-beginning-position 2)))))
-  
+
   (defadvice kill-region (before slick-cut activate compile)
     "When called interactively with no active region, kill a single
   line instead."
@@ -663,7 +688,7 @@ El-Get is designed to simplify this process and allow access to all the various 
       (if mark-active (list (region-beginning) (region-end))
         (list (line-beginning-position)
           (line-beginning-position 2)))))
-  
+
   ;; auto-close shell completion buffer from http://snarfed.org/automatically_close_completions_in_emacs_shell_comint_mode
   (defun comint-close-completions ()
     "Close the comint completions buffer.
@@ -686,7 +711,7 @@ El-Get is designed to simplify this process and allow access to all the various 
       (if (not unread-command-events)
           ;; comint's "Type space to flush" swallows space. put it back in.
           (setq unread-command-events (listify-key-sequence " "))))
-  
+
   ;; bury *scratch* buffer instead of kill it
   (defadvice kill-buffer (around kill-buffer-around-advice activate)
     (let ((buffer-to-kill (ad-get-arg 0)))
@@ -710,7 +735,7 @@ El-Get is designed to simplify this process and allow access to all the various 
   (setq TeX-parse-self t)
   (setq TeX-auto-save t)
   (setq TeX-save-query nil)
-  
+
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
   (add-hook 'TeX-mode-hook
             '(lambda ()
@@ -861,7 +886,7 @@ El-Get is designed to simplify this process and allow access to all the various 
                      :full-name erc-user-full-name
                      :password erc-password
                      )))
-  
+
   ;; ------ template for .secrets.el
   ;; (setq erc-prompt-for-nickserv-password nil)
   ;; (setq erc-server "hostname"
@@ -964,7 +989,7 @@ El-Get is designed to simplify this process and allow access to all the various 
   (key-chord-define-global "hg" (lambda () (interactive) (let ((current-prefix-arg t)) (helm-do-grep))))
   (key-chord-define-global "lo" 'helm-locate)
   (key-chord-define-global "34" 'helm-imenu)
-  
+
   (require 'helm-git)
   (global-set-key (kbd "M-0") 'helm-git-find-files)
 #+END_SRC
@@ -1051,7 +1076,7 @@ El-Get is designed to simplify this process and allow access to all the various 
   (global-set-key (kbd "C-c g") 'magit-status)
   (global-set-key (kbd "C-c l") 'magit-log)
   (key-chord-define-global "bm" 'magit-blame-mode)
-  
+
   (setq magit-commit-all-when-nothing-staged t)
   (add-hook 'magit-status-mode-hook 'magit-inotify-mode)
 #+END_SRC
@@ -1093,24 +1118,24 @@ El-Get is designed to simplify this process and allow access to all the various 
     (setq mu4e-auto-retrieve-keys t)
     (setq mu4e-headers-leave-behavior 'apply)
     (setq mu4e-headers-visible-lines 20)
-  
+
     (add-hook 'mu4e-headers-mode-hook (lambda () (local-set-key (kbd "X") (lambda () (interactive) (mu4e-mark-execute-all t)))))
     (add-hook 'mu4e-view-mode-hook (lambda () (local-set-key (kbd "X") (lambda () (interactive) (mu4e-mark-execute-all t)))))
-  
+
     (defun mu4e-headers-mark-all-unread-read ()
       (interactive)
       (mu4e~headers-mark-for-each-if
        (cons 'read nil)
        (lambda (msg param)
          (memq 'unread (mu4e-msg-field msg :flags)))))
-  
+
     (defun mu4e-flag-all-read ()
       (interactive)
       (mu4e-headers-mark-all-unread-read)
       (mu4e-mark-execute-all t))
-  
+
     (setq message-kill-buffer-on-exit t)
-  
+
     (key-chord-define-global "nm" 'mu4e)
     )
 #+END_SRC
@@ -1140,7 +1165,7 @@ El-Get is designed to simplify this process and allow access to all the various 
   (setq nrepl-popup-stacktraces nil)
   (setq nrepl-popup-stacktraces-in-repl nil)
   (setq nrepl-hide-special-buffers t)
-  
+
   ;; font-locking for the nrepl
   ;; https://github.com/kylefeng/.emacs.d/commit/45f2bece4652f4345ec08e68e8ef0608b81c5db7
   (add-hook 'nrepl-mode-hook
@@ -1148,7 +1173,7 @@ El-Get is designed to simplify this process and allow access to all the various 
               (font-lock-mode nil)
               (clojure-mode-font-lock-setup)
               (font-lock-mode t)))
-  
+
   (require 'ac-nrepl)
   (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
   (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
@@ -1184,26 +1209,29 @@ El-Get is designed to simplify this process and allow access to all the various 
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
   (setq org-confirm-babel-evaluate nil)
+  (setq org-use-speed-commands t)
   (setq org-default-notes-file (concat org-directory "/todo.org"))
   (global-set-key (kbd "C-c C-9") 'org-capture)
-  
+
+  (add-to-list 'org-structure-template-alist '("m" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC\n"))
+
   ;; minted
   (require 'ox-latex)
   (add-to-list 'org-latex-packages-alist '("" "minted"))
   (setq org-latex-listings 'minted)
-  
+
   (setq org-latex-pdf-process
         '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-  
+
   (setq
    appt-display-mode-line t     ; show in the modeline
    appt-display-format 'window)
   (appt-activate 1)              ; activate appt (appointment notification)
-  
+
   (org-agenda-to-appt)           ; add appointments on startup
-  
+
   ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
   (add-hook 'org-mode-hook
             (lambda ()
@@ -1227,7 +1255,7 @@ El-Get is designed to simplify this process and allow access to all the various 
            "|"
            "DONE(d!)"
            )))
-  
+
   (global-set-key (kbd "C-c A") 'org-agenda)
   (global-set-key (kbd "C-c a") (lambda () (interactive) (org-agenda nil "n")))
 #+END_SRC
@@ -1249,11 +1277,11 @@ El-Get is designed to simplify this process and allow access to all the various 
   (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
   (setq php-mode-coding-style "Symfony2")
   (setq php-template-compatibility nil)
-  
+
   (let ((manual "/usr/share/doc/php-doc/html/"))
     (when (file-readable-p manual)
       (setq php-manual-path manual)))
-  
+
   (defun setup-php-mode ()
     (require 'php-documentor nil t)
     (local-set-key (kbd "C-c p") 'php-documentor-dwim)
@@ -1262,9 +1290,9 @@ El-Get is designed to simplify this process and allow access to all the various 
     (php-eldoc-enable)
     (set-up-php-ac)
     )
-  
+
   (add-hook 'php-mode-hook 'setup-php-mode)
-  
+
   ;; die me some var_dump quickly
   (defun var_dump-die ()
     (interactive)
@@ -1296,7 +1324,7 @@ El-Get is designed to simplify this process and allow access to all the various 
         )))
   (key-chord-define-global "bv" 'var_dump-die)
   (key-chord-define-global "pm" 'php-mode)
-  
+
   (defun var_dump ()
     (interactive)
     (if (region-active-p)
@@ -1308,7 +1336,7 @@ El-Get is designed to simplify this process and allow access to all the various 
       (insert "var_dump();")
       (backward-char 3)
       ))
-  
+
   (key-chord-define-global "dv" 'var_dump)
 #+END_SRC
 
@@ -1383,7 +1411,7 @@ El-Get is designed to simplify this process and allow access to all the various 
                        (add-hook 'after-save-hook 'slime-js-reload nil 'make-it-local))
                      )
               ))
-  
+
   ;; smart-mode-line
   (setq sml/show-encoding t)
   (setq sml/vc-mode-show-backend t)
@@ -1547,4 +1575,3 @@ El-Get is designed to simplify this process and allow access to all the various 
   (add-to-list 'tramp-default-proxies-alist '(nil "\\`root\\'" "/ssh:%h:"))
   (add-to-list 'tramp-default-proxies-alist '((regexp-quote (system-name)) nil nil))
 #+END_SRC
-
