@@ -123,7 +123,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
 
 I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains this documentation which is used to generate =README.org= by calling:
 
-#+BEGIN_SRC emacs-lisp :results silent
+#+BEGIN_SRC emacs-lisp :tangle no :results silent
   (org-export-to-file 'org "README.org")
 #+END_SRC
 
@@ -1141,8 +1141,8 @@ Of course you can also just [[https://github.com/steckerhalter/steckemacs/issues
 *** org-mode
 
 #+BEGIN_SRC emacs-lisp
-  ;; if todo.org exists, startup emacs with the org todo (list )
   (require 'org)
+  (require 'ox-org)
   (let ((todo "~/org/todo.org"))
     (when (file-readable-p todo)
       (setq org-agenda-files '("~/org/todo.org" "~/org/deft/"))
