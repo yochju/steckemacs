@@ -1,5 +1,11 @@
-* COMMENT Options
+* Options                                                  :noexport:ARCHIVE:
 #+OPTIONS: todo:nil
+#+LaTeX_CLASS_OPTIONS: [16pt]
+#+LaTeX_HEADER: \usemintedstyle{monokai}
+#+LaTeX_HEADER: \usepackage[T1]{fontenc} 
+#+LaTeX_HEADER: \usepackage[scaled]{beraserif}
+#+LaTeX_HEADER: \usepackage[scaled]{berasans} 
+#+LaTeX_HEADER: \usepackage[scaled]{beramono}
 
 * Steckemacs
 
@@ -137,11 +143,13 @@ If you want to help me out improving the config, fork the repo, create a new bra
 
 Of course you can also just [[https://github.com/steckerhalter/steckemacs/issues][report issues]] :)
 
-* COMMENT Code
-** load-path
+* Code
+
+** Load Path
+
+The variable =load-path= lists all the directories where Emacs should look for Elisp files. The first file found is used, therefore the order of the directories is relevant.
 
 #+BEGIN_SRC emacs-lisp
-  ;; http://emacswiki.org/emacs/LoadPath
   (let ((default-directory "~/.emacs.d/elisp/"))
     (unless (file-exists-p default-directory)
       (make-directory default-directory))
@@ -154,7 +162,20 @@ Of course you can also just [[https://github.com/steckerhalter/steckemacs/issues
            load-path)))
 #+END_SRC
 
-** el-get
+Here we create the directory =~/.emacs.d/elisp/= if it does'nt exist, add it to the =load-path= and also add all subdirectories. Doing that any =.el= or =.elc= files in these directories will be available to *emacs*.
+
+| HTML Manual | [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Lisp-Libraries.html][Lisp Libraries]] |
+| EmacsWiki   | [[http://www.emacswiki.org/emacs/LoadPath][LoadPath]]       |
+| Info Manual | [[info:emacs#Lisp%20Libraries][Lisp Libraries]] |
+
+
+** El-Get
+
+[[./img/el-get.png?raw%3Dtrue][file:img/el-get.png]]
+
+#+BEGIN_QUOTE
+El-Get is designed to simplify this process and allow access to all the various methods of obtaining packages from a single interface. Every package has a recipe that allows you to locate the original source, and that can be updated if the package is moved.
+#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -1436,6 +1457,12 @@ Of course you can also just [[https://github.com/steckerhalter/steckemacs/issues
   (require 'uniquify)
   (setq uniquify-buffer-name-style 'forward)
   (setq uniquify-min-dir-content 2)
+#+END_SRC
+
+*** yaml-mode
+
+#+BEGIN_SRC emacs-lisp
+  (setq yaml-indent-offset 4)
 #+END_SRC
 
 *** yasnippets
