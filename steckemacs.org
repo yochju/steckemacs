@@ -350,11 +350,11 @@ This part first checks if there is an internet connection. If true it refreshes 
 
 *** my-keys-minor-mode-map
 
-Custom keymap to override some Emacs keys permanently.
-
 #+BEGIN_SRC emacs-lisp
   (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
 #+END_SRC
+
+This is a custom keymap. It is used for a [[my-keys-minor-mode][minor mode that is activated at the end]]. This is the only way I know of to make sure no other minor modes to these override special keys. Setting a global key will not suffice.
 
 *** key-chord
 
@@ -370,20 +370,30 @@ The source code can be found on [[http://www.emacswiki.org/emacs/key-chord.el][E
 #+END_SRC
 
 We need to turn the mode on here so that we can map keys further below. We lower the delay so that chords are not triggered too easily.
+        | |     
+*** TODO General
+#+TBLNAME: keys
+| C-c X   | Kill emacs (including the daemon if it is running) | General | (lambda () (interactive) (shell-command "pkill emacs")))                                      | global-set-key          |
+| C-c s   | Open emacs shell                                   | General | 'shell                                                                                        | global-set-key          |
+| C-S-l   | List available packages                            | General | 'package-list-packages-no-fetch                                                               | global-set-key          |
+| C-c d   | Change dictionary                                  | General | 'ispell-change-dictionary                                                                     | global-set-key          |
+| C-h C-f | Go to the definition of the function under cursor  | General | 'find-function-at-point                                                                       | global-set-key          |
+| C-h C-v | Go to the definition of the variable under cursor  | General | 'find-variable-at-point                                                                       | global-set-key          |
+| C-c C-w | Browse URL under cursor                            | General | 'browse-url-at-point                                                                          | global-set-key          |
+| cd      |                                                    | General | (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name))))  | key-chord-define-global |
+| sb      |                                                    | General | 'speedbar                                                                                     | key-chord-define-global |
+| cg      |                                                    | General | 'customize-group                                                                              | key-chord-define-global |
 
-*** General
+#+NAME: gen-keys
+#+BEGIN_SRC emacs-lisp :var keys=keys :results output :tangle no :exports none
+  (mapcar (lambda (l) 
+            (let ((global (equal (car (last l)) "global-set-key"))) 
+              (princ (format "(%s %s\"%s\"%s %s)\n" (car (last l)) (if global "(kbd" "") (car l) (if global ")" "") (nth 3 l))))
+            ) 
+          keys)
+#+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-c X") (lambda () (interactive) (shell-command "pkill emacs")))
-  (global-set-key (kbd "C-c s") 'shell)
-  (key-chord-define-global "cd" (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name)))))
-  (key-chord-define-global "sb" 'speedbar)
-  (global-set-key (kbd "C-S-l") 'package-list-packages-no-fetch)
-  (global-set-key (kbd "C-c d")  'ispell-change-dictionary)
-  (key-chord-define-global "cg" 'customize-group)
-  (global-set-key (kbd "C-h C-f") 'find-function-at-point)
-  (global-set-key (kbd "C-h C-v") 'find-variable-at-point)
-  (global-set-key (kbd "C-c C-w") 'browse-url-at-point)
+#+BEGIN_SRC emacs-lisp :noweb yes
 #+END_SRC
 
 *** appearance
@@ -502,6 +512,8 @@ We need to turn the mode on here so that we can map keys further below. We lower
    confirm-nonexistent-file-or-buffer nil
    vc-follow-symlinks t
    recentf-max-saved-items 5000
+   eval-expression-print-length nil
+   eval-expression-print-level nil
    )
 
   (setq-default
@@ -797,6 +809,8 @@ We need to turn the mode on here so that we can map keys further below. We lower
   (require 'auto-save-buffers-enhanced)
   (auto-save-buffers-enhanced-include-only-checkout-path t)
   (auto-save-buffers-enhanced t)
+  (setq auto-save-buffers-enhanced-interval 1.5)
+  (setq auto-save-buffers-enhanced-quiet-save-p t)
   (global-set-key (kbd "C-x a s") 'auto-save-buffers-enhanced-toggle-activity)
 #+END_SRC
 
@@ -1119,6 +1133,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
   (when (file-exists-p "/usr/local/share/emacs/site-lisp/mu4e")
     (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
     (autoload 'mu4e "mu4e" "Mail client based on mu (maildir-utils)." t)
+    (require 'org-mu4e)
     ;; enable inline images
     (setq mu4e-view-show-images t)
     ;; use imagemagick, if available
@@ -1226,7 +1241,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
   (setq org-capture-templates
         '(
           ("t" "Task" entry (file+headline "" "Tasks") "* TODO %?\n  %u\n  %a")
-          ("n" "Task" entry (file+headline "" "Tasks") "* TODO %?\n  %U\n")
+          ("s" "Simple Task" entry (file+headline "" "Tasks") "* TODO %?\n  %U\n")
           ))
 
   (global-set-key (kbd "C-c C-9") 'org-capture)
@@ -1578,18 +1593,11 @@ We need to turn the mode on here so that we can map keys further below. We lower
 
 ** end
 
-*** turn on the keyboard overrides
+*** my-keys-minor-mode
 
 #+BEGIN_SRC emacs-lisp
   (define-minor-mode my-keys-minor-mode
     "A minor mode so that my key settings override annoying major modes."
     t " K" 'my-keys-minor-mode-map)
   (my-keys-minor-mode 1)
-#+END_SRC
-
-*** makes it possible to do /sudo:host: , reads pws from ~/.authinfo.gpg
-
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'tramp-default-proxies-alist '(nil "\\`root\\'" "/ssh:%h:"))
-  (add-to-list 'tramp-default-proxies-alist '((regexp-quote (system-name)) nil nil))
 #+END_SRC

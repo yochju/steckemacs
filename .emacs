@@ -36,8 +36,8 @@
 
 ;;; Code:
 
-(setq steckemacs-directory
-      (file-name-directory (file-truename load-file-name)))
+(setq steckemacs-directory (file-name-directory (file-truename load-file-name)))
+(setq org-confirm-babel-evaluate nil)
 
 (add-hook 'after-init-hook
  (lambda ()
