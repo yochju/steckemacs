@@ -370,26 +370,35 @@ The source code can be found on [[http://www.emacswiki.org/emacs/key-chord.el][E
 #+END_SRC
 
 We need to turn the mode on here so that we can map keys further below. We lower the delay so that chords are not triggered too easily.
-        | |     
+        | |
 *** TODO General
+
+#+PROPERTY: header :exports none
 #+TBLNAME: keys
-| C-c X   | Kill emacs (including the daemon if it is running) | General | (lambda () (interactive) (shell-command "pkill emacs"))                                       | global-set-key          |
-| C-c s   | Open emacs shell                                   | General | 'shell                                                                                        | global-set-key          |
-| C-S-l   | List available packages                            | General | 'package-list-packages-no-fetch                                                               | global-set-key          |
-| C-c d   | Change dictionary                                  | General | 'ispell-change-dictionary                                                                     | global-set-key          |
-| C-h C-f | Go to the definition of the function under cursor  | General | 'find-function-at-point                                                                       | global-set-key          |
-| C-h C-v | Go to the definition of the variable under cursor  | General | 'find-variable-at-point                                                                       | global-set-key          |
-| C-c C-w | Browse URL under cursor                            | General | 'browse-url-at-point                                                                          | global-set-key          |
-| cd      |                                                    | General | (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name))))  | key-chord-define-global |
-| sb      |                                                    | General | 'speedbar                                                                                     | key-chord-define-global |
-| cg      |                                                    | General | 'customize-group                                                                              | key-chord-define-global |
+| C-c X   | Kill emacs (including the daemon if it is running) | General | (lambda () (interactive) (shell-command "pkill emacs"))                                      | global    |
+| C-c s   | Open emacs shell                                   | General | 'shell                                                                                       | global    |
+| C-S-l   | List available packages                            | General | 'package-list-packages-no-fetch                                                              | global    |
+| C-c d   | Change dictionary                                  | General | 'ispell-change-dictionary                                                                    | global    |
+| C-h C-f | Go to the definition of the function under cursor  | General | 'find-function-at-point                                                                      | global    |
+| C-h C-v | Go to the definition of the variable under cursor  | General | 'find-variable-at-point                                                                      | global    |
+| C-c C-w | Browse URL under cursor                            | General | 'browse-url-at-point                                                                         | global    |
+| cd      |                                                    | General | (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name)))) | key-chord |
+| sb      |                                                    | General | 'speedbar                                                                                    | key-chord |
+| cg      |                                                    | General | 'customize-group                                                                             | key-chord |
 
 #+NAME: gen-keys
 #+BEGIN_SRC emacs-lisp :var keys=keys :results output :tangle no :exports none
-  (mapcar (lambda (l) 
-            (let ((global (equal (car (last l)) "global-set-key"))) 
-              (princ (format "(%s %s\"%s\"%s %s)\n" (car (last l)) (if global "(kbd" "") (car l) (if global ")" "") (nth 3 l))))
-            ) 
+  (mapcar (lambda (l)
+            (let* ((type (car (last l)))
+                   (key (cond
+                        ((equal type "global")
+                         (setq type "global-set-key")
+                         (concat "(kbd \"" (car l) "\")"))
+                        ((equal type "key-chord")
+                         (setq type "key-chord-define-global")
+                         (concat "\""(car l) "\""))
+                        )))
+              (princ (format "(%s %s %s)\n" type key (nth 3 l)))))
           keys)
 #+END_SRC
 
