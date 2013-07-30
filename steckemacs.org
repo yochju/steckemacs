@@ -373,7 +373,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
         | |     
 *** TODO General
 #+TBLNAME: keys
-| C-c X   | Kill emacs (including the daemon if it is running) | General | (lambda () (interactive) (shell-command "pkill emacs")))                                      | global-set-key          |
+| C-c X   | Kill emacs (including the daemon if it is running) | General | (lambda () (interactive) (shell-command "pkill emacs"))                                       | global-set-key          |
 | C-c s   | Open emacs shell                                   | General | 'shell                                                                                        | global-set-key          |
 | C-S-l   | List available packages                            | General | 'package-list-packages-no-fetch                                                               | global-set-key          |
 | C-c d   | Change dictionary                                  | General | 'ispell-change-dictionary                                                                     | global-set-key          |
@@ -394,6 +394,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :noweb yes
+  <<gen-keys()>>
 #+END_SRC
 
 *** appearance
