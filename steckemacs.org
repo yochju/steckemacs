@@ -370,10 +370,31 @@ The source code can be found on [[http://www.emacswiki.org/emacs/key-chord.el][E
 #+END_SRC
 
 We need to turn the mode on here so that we can map keys further below. We lower the delay so that chords are not triggered too easily.
-        | |
+
 *** TODO General
 
-#+PROPERTY: header :exports none
+#+NAME: gen-keys
+#+BEGIN_SRC emacs-lisp :var keys=keys :results output :tangle no :exports none
+  (mapcar (lambda (l)
+            (let* ((type (car (last l)))
+                   (key (pcase type
+                        (`"global"
+                         (setq type "global-set-key")
+                         (concat "(kbd \"" (car l) "\")"))
+                        (`"key-chord"
+                         (setq type "key-chord-define-global")
+                         (concat "\""(car l) "\""))
+                        )))
+              (princ (format "(%s %s %s)\n" type key (nth 3 l)))))
+          keys)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :noweb yes
+  <<gen-keys()>>
+#+END_SRC
+
+
+****                                                            :noexport:
 #+TBLNAME: keys
 | C-c X   | Kill emacs (including the daemon if it is running) | General | (lambda () (interactive) (shell-command "pkill emacs"))                                      | global    |
 | C-c s   | Open emacs shell                                   | General | 'shell                                                                                       | global    |
@@ -385,26 +406,6 @@ We need to turn the mode on here so that we can map keys further below. We lower
 | cd      |                                                    | General | (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name)))) | key-chord |
 | sb      |                                                    | General | 'speedbar                                                                                    | key-chord |
 | cg      |                                                    | General | 'customize-group                                                                             | key-chord |
-
-#+NAME: gen-keys
-#+BEGIN_SRC emacs-lisp :var keys=keys :results output :tangle no :exports none
-  (mapcar (lambda (l)
-            (let* ((type (car (last l)))
-                   (key (cond
-                        ((equal type "global")
-                         (setq type "global-set-key")
-                         (concat "(kbd \"" (car l) "\")"))
-                        ((equal type "key-chord")
-                         (setq type "key-chord-define-global")
-                         (concat "\""(car l) "\""))
-                        )))
-              (princ (format "(%s %s %s)\n" type key (nth 3 l)))))
-          keys)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :noweb yes
-  <<gen-keys()>>
-#+END_SRC
 
 *** appearance
 
