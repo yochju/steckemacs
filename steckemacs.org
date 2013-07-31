@@ -348,15 +348,16 @@ This part first checks if there is an internet connection. If true it refreshes 
 
 ** Key Bindings
 
-*** my-keys-minor-mode-map
-
 #+BEGIN_SRC emacs-lisp
   (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
 #+END_SRC
 
 This is a custom keymap. It is used for a [[my-keys-minor-mode][minor mode that is activated at the end]]. This is the only way I know of to make sure no other minor modes to these override special keys. Setting a global key will not suffice.
 
-*** key-chord
+#+BEGIN_SRC emacs-lisp
+  (key-chord-mode 1)
+  (setq key-chord-two-keys-delay 0.03)
+#+END_SRC
 
 #+BEGIN_QUOTE
 Key-chord lets you bind commands to combination of key-strokes. Here a "key chord" means two keys pressed simultaneously, or a single key quickly pressed twice.
@@ -364,14 +365,7 @@ Key-chord lets you bind commands to combination of key-strokes. Here a "key chor
 
 The source code can be found on [[http://www.emacswiki.org/emacs/key-chord.el][EmacsWiki]].
 
-#+BEGIN_SRC emacs-lisp
-  (key-chord-mode 1)
-  (setq key-chord-two-keys-delay 0.03)
-#+END_SRC
-
 We need to turn the mode on here so that we can map keys further below. We lower the delay so that chords are not triggered too easily.
-
-*** TODO General
 
 #+NAME: gen-keys
 #+BEGIN_SRC emacs-lisp :var keys=keys :results output :tangle no :exports none
@@ -392,6 +386,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
 #+BEGIN_SRC emacs-lisp :noweb yes
   <<gen-keys()>>
 #+END_SRC
+
 
 ****                                                            :noexport:
 #+TBLNAME: keys
@@ -435,29 +430,14 @@ We need to turn the mode on here so that we can map keys further below. We lower
 | i9        | Toggle electric indent mode                        | 'electric-indent-mode                                                                        | key-chord |
 | M-W       | delete region (but don't put it into kill ring)    | 'delete-region                                                                               | global    |
 | C-c j     | Join lines together                                | 'join-line                                                                                   | global    |
-
-#+BEGIN_SRC emacs-lisp
-(define-key key-translation-map (kbd "C-t") (kbd "C-p"))
-#+END_SRC
-
-*** formatting
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-c w") 'whitespace-cleanup)     ;cleanup whitespaces
-  (global-set-key (kbd "C-c i") (lambda () (interactive) ;indent the whole the buffer
-                            (indent-region (point-min) (point-max))))
-  (key-chord-define-global "ac" 'align-current)
-  (global-set-key (kbd "C-c q") 'auto-fill-mode) ;toggles word wrap
-#+END_SRC
-
-*** searching / grepping
-
-#+BEGIN_SRC emacs-lisp
-  (key-chord-define-global "vg" 'vc-git-grep)
-  (key-chord-define-global "fg" 'grep-find)
-  (global-set-key (kbd "C-c o") 'occur) ;list matching regexp
-  (global-set-key (kbd "M-6") 'find-tag-other-window)
-#+END_SRC
+| C-c w     | cleanup whitespaces                                | 'whitespace-cleanup                                                                          | global    |
+| C-c i     | indent the whole the buffer                        | (lambda () (interactive) (indent-region (point-min) (point-max)))                            | global    |
+| ac        |                                                    | 'align-current                                                                               | key-chord |
+| C-c q     | toggles word wrap                                  | 'auto-fill-mode                                                                              | global    |
+| vg        |                                                    | 'vc-git-grep                                                                                 | key-chord |
+| fg        |                                                    | 'grep-find                                                                                   | key-chord |
+| C-c o     | list matching regexp                               | 'occur                                                                                       | global    |
+| M-6       |                                                    | 'find-tag-other-window                                                                       | global    |
 
 ** general options
 
