@@ -385,7 +385,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
                          (setq type "key-chord-define-global")
                          (concat "\""(car l) "\""))
                         )))
-              (princ (format "(%s %s %s)\n" type key (nth 3 l)))))
+              (princ (format "(%s %s %s)\n" type key (nth 2 l)))))
           keys)
 #+END_SRC
 
@@ -393,90 +393,51 @@ We need to turn the mode on here so that we can map keys further below. We lower
   <<gen-keys()>>
 #+END_SRC
 
-
 ****                                                            :noexport:
 #+TBLNAME: keys
-| C-c X   | Kill emacs (including the daemon if it is running) | General | (lambda () (interactive) (shell-command "pkill emacs"))                                      | global    |
-| C-c s   | Open emacs shell                                   | General | 'shell                                                                                       | global    |
-| C-S-l   | List available packages                            | General | 'package-list-packages-no-fetch                                                              | global    |
-| C-c d   | Change dictionary                                  | General | 'ispell-change-dictionary                                                                    | global    |
-| C-h C-f | Go to the definition of the function under cursor  | General | 'find-function-at-point                                                                      | global    |
-| C-h C-v | Go to the definition of the variable under cursor  | General | 'find-variable-at-point                                                                      | global    |
-| C-c C-w | Browse URL under cursor                            | General | 'browse-url-at-point                                                                         | global    |
-| cd      |                                                    | General | (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name)))) | key-chord |
-| sb      |                                                    | General | 'speedbar                                                                                    | key-chord |
-| cg      |                                                    | General | 'customize-group                                                                             | key-chord |
-
-*** appearance
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-c m") 'menu-bar-mode)
-  (global-set-key (kbd "C--") 'text-scale-decrease)
-  (global-set-key (kbd "C-=") 'text-scale-increase)
-  (key-chord-define-global "ln" 'linum-mode)
-#+END_SRC
-
-*** buffer / file
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-c r")  'revert-buffer)
-  (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)   ;use ido to switch buffers
-  (global-set-key (kbd "<f6>") (lambda () (interactive) (kill-buffer (buffer-name)))) ;kill current buffer
-  (global-set-key (kbd "<f8>") (lambda () (interactive) (switch-to-buffer nil))) ;"other" buffer
-  (key-chord-define-global "jn" (lambda () (interactive) (switch-to-buffer nil))) ;"other" buffer
-  (key-chord-define-global "fv" (lambda () (interactive) (kill-buffer (buffer-name)))) ;kill current buff
-  (global-set-key (kbd "<M-up>")    'buf-move-up)
-  (global-set-key (kbd "<M-down>")  'buf-move-down)
-  (global-set-key (kbd "<M-left>")  'buf-move-left)
-  (global-set-key (kbd "<M-right>") 'buf-move-right)
-  (key-chord-define-global "eb" 'eval-buffer)
-  (key-chord-define-global "sv" 'save-buffer)
-  (key-chord-define-global "sc" (lambda () (interactive)(switch-to-buffer "*scratch*")))
-#+END_SRC
-
-*** window / frame
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-0") (lambda () (interactive) (select-window (previous-window)))) ;select prev window
-  (global-set-key (kbd "C-9") (lambda () (interactive) (select-window (next-window))))     ;select next window
-  (key-chord-define-global "ef" (lambda () (interactive) (select-window (previous-window))))
-  (key-chord-define-global "ji" (lambda () (interactive) (select-window (next-window))))
-  (global-set-key (kbd "<f2>") 'split-window-vertically)
-  (global-set-key (kbd "<f3>") 'split-window-horizontally)
-  (global-set-key (kbd "<f4>") 'delete-window)
-  (global-set-key (kbd "<f5>") 'delete-other-windows)
-  (global-set-key (kbd "<C-left>") 'shrink-window)
-  (global-set-key (kbd "<C-right>") 'enlarge-window)
-  (global-set-key (kbd "<C-up>") 'shrink-window-horizontally)
-  (global-set-key (kbd "<C-down>") 'enlarge-window-horizontally)
-  (key-chord-define-global "jo" 'delete-window)
-  (key-chord-define-global "fw" 'delete-other-windows)
-  (key-chord-define-global "sf" 'split-window-horizontally)
-  (key-chord-define-global "jl" 'split-window-vertically)
-  (key-chord-define-global ",." 'delete-frame)
-#+END_SRC
-
-*** movement / selections
+| C-c X     | Kill emacs (including the daemon if it is running) | (lambda () (interactive) (shell-command "pkill emacs"))                                      | global    |
+| C-c s     | Open emacs shell                                   | 'shell                                                                                       | global    |
+| C-S-l     | List available packages                            | 'package-list-packages-no-fetch                                                              | global    |
+| C-c d     | Change dictionary                                  | 'ispell-change-dictionary                                                                    | global    |
+| C-h C-f   | Go to the definition of the function under cursor  | 'find-function-at-point                                                                      | global    |
+| C-h C-v   | Go to the definition of the variable under cursor  | 'find-variable-at-point                                                                      | global    |
+| C-c C-w   | Browse URL under cursor                            | 'browse-url-at-point                                                                         | global    |
+| cd        | Open dired in current file location                | (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name)))) | key-chord |
+| sb        | Open the speedbar                                  | 'speedbar                                                                                    | key-chord |
+| cg        | Customize group                                    | 'customize-group                                                                             | key-chord |
+| C-c m     | Toggle the menu bar                                | 'menu-bar-mode                                                                               | global    |
+| C--       | Decrease the font size                             | 'text-scale-decrease                                                                         | global    |
+| C-=       | Increase the font size                             | 'text-scale-increase                                                                         | global    |
+| ln        | Show/hide the line numbers                         | 'linum-mode                                                                                  | key-chord |
+| C-c r     | Revert a buffer to the saved state                 | 'revert-buffer                                                                               | global    |
+| C-x C-b   | use ido to switch buffers                          | 'ido-switch-buffer                                                                           | global    |
+| <f6>      | Kill current buffer                                | (lambda () (interactive) (kill-buffer (buffer-name)))                                        | global    |
+| <f8>      | Switch to "other" buffer                           | (lambda () (interactive) (switch-to-buffer nil))                                             | global    |
+| jn        | Switch to "other" buffer                           | (lambda () (interactive) (switch-to-buffer nil))                                             | key-chord |
+| fv        | Kill current buffer                                | (lambda () (interactive) (kill-buffer (buffer-name)))                                        | key-chord |
+| <M-up>    | Move the current buffer window up                  | 'buf-move-up                                                                                 | global    |
+| <M-down>  | Move the current buffer window down                | 'buf-move-down                                                                               | global    |
+| <M-left>  | Move the current buffer window left                | 'buf-move-left                                                                               | global    |
+| <M-right> | Move the current buffer window right               | 'buf-move-right                                                                              | global    |
+| eb        | Evaluate the current buffer                        | 'eval-buffer                                                                                 | key-chord |
+| sv        | Save the current buffer                            | 'save-buffer                                                                                 | key-chord |
+| sc        | Switch to scratch buffer                           | (lambda () (interactive)(switch-to-buffer "*scratch*"))                                      | key-chord |
+| C-0       | Select previous window                             | (lambda () (interactive) (select-window (previous-window)))                                  | global    |
+| C-9       | Select next window                                 | (lambda () (interactive) (select-window (next-window)))                                      | global    |
+| <f2>      | Split window vertically                            | 'split-window-vertically                                                                     | global    |
+| <f3>      | Split window horizontally                          | 'split-window-horizontally                                                                   | global    |
+| <f4>      | Delete current window (not the buffer)             | 'delete-window                                                                               | global    |
+| <f5>      | Only keep the current window and delete all others | 'delete-other-windows                                                                        | global    |
+| <C-left>  | Shrink window                                      | 'shrink-window                                                                               | global    |
+| <C-right> | Enlarge window                                     | 'enlarge-window                                                                              | global    |
+| <C-up>    | Shrink window horizontally                         | 'shrink-window-horizontally                                                                  | global    |
+| <C-down>  | Enlarge window horizontally                        | 'enlarge-window-horizontally                                                                 | global    |
+| i9        | Toggle electric indent mode                        | 'electric-indent-mode                                                                        | key-chord |
+| M-W       | delete region (but don't put it into kill ring)    | 'delete-region                                                                               | global    |
+| C-c j     | Join lines together                                | 'join-line                                                                                   | global    |
 
 #+BEGIN_SRC emacs-lisp
-  (define-key key-translation-map (kbd "C-t") (kbd "C-p"))
-  (key-chord-define-global "sd" 'move-beginning-of-line)
-  (key-chord-define-global "kl" 'move-end-of-line)
-  (key-chord-define-global "wf" 'forward-word)
-  (key-chord-define-global "aj" (lambda ()  (interactive) (end-of-line) (set-mark (line-beginning-position))))
-  (key-chord-define-global "wa" 'backward-word)
-  (key-chord-define-global "i9" 'electric-indent-mode)
-
-  ;; editing
-  (global-set-key (kbd "M-W" ) 'delete-region)  ;delete region (but don't put it into kill ring)
-  (key-chord-define-global "wd" 'kill-word)
-  (key-chord-define-global "wr" 'kill-whole-line)
-  (global-set-key (kbd "C-c j") 'join-line)
-  (global-set-key (kbd "<C-backspace>") (lambda ()
-                                        (interactive)
-                                        (let ((beg (point)))
-                                          (backward-word)
-                                        (delete-region beg (point)))))
+(define-key key-translation-map (kbd "C-t") (kbd "C-p"))
 #+END_SRC
 
 *** formatting
