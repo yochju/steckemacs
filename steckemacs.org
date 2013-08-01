@@ -387,6 +387,9 @@ We need to turn the mode on here so that we can map keys further below. We lower
   <<gen-keys()>>
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(define-key key-translation-map (kbd "C-t") (kbd "C-p"))
+#+END_SRC
 
 ****                                                            :noexport:
 #+TBLNAME: keys
@@ -757,7 +760,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
 
 *** auto-save-buffers-enhanced
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (require 'auto-save-buffers-enhanced)
   (auto-save-buffers-enhanced-include-only-checkout-path t)
   (auto-save-buffers-enhanced t)
