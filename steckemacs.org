@@ -374,10 +374,10 @@ We need to turn the mode on here so that we can map keys further below. We lower
                    (key (pcase type
                         (`"global"
                          (setq type "global-set-key")
-                         (concat "(kbd \"" (car l) "\")"))
+                         (format "(kbd \"%s\")" (car l)))
                         (`"key-chord"
                          (setq type "key-chord-define-global")
-                         (concat "\""(car l) "\""))
+                         (format "\"%s\"" (car l)))
                         )))
               (princ (format "(%s %s %s)\n" type key (nth 2 l)))))
           keys)
