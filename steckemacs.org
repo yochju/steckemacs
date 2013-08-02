@@ -1,3 +1,6 @@
+#+Title: Steckemacs
+#+Author: steckerhalter
+
 * Options                                                  :noexport:ARCHIVE:
 #+OPTIONS: todo:nil
 #+LaTeX_CLASS_OPTIONS: [16pt]
@@ -9,20 +12,15 @@
 
 * Usage
 
-#+BEGIN_SRC emacs-lisp :tangle no :results silent :exports none
-  ;;Press C-c C-c inside this block to generate a new README.org
-  (org-export-to-file 'md "README.md")
-#+END_SRC
+*Warning - currently the setup might be unstable. I'm working on integrating the configuration with Org mode*
 
-** Steckemacs
-
-An Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
+*steckemacs* is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
 
 If you want to know more about how that works, read my blog entry here:  http://steckerhalter.co.vu/blog/201304/steckemacs
 
 *To use this setup please use Emacs 24 or later. Older versions do not work properly.*
 
-*** Installation
+** Installation
 
 Change to a directory of your choice and clone *steckemacs*:
 
@@ -40,7 +38,7 @@ And symlink =.emacs= into your home directory:
 
 That's it. Then you can run emacs and it should pick up the config, install all the packages and make you happy ;)
 
-*** Keyboard shortcuts
+** Keyboard shortcuts
 
 By using the =key-chord= mode we can avoid having to type C- or M- all the time. It allows for using keys pressed simultaneously and I'm using it quite often.
 
@@ -56,9 +54,14 @@ I only describe my custom key combinations currently. To learn the standard Emac
             keys)
 #+END_SRC
 
-*** Contributions
+** Contributions
 
-I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains this documentation which is used to generate =README.org= by calling:
+I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains this documentation which is used to generate =README.md= by calling:
+
+#+BEGIN_SRC emacs-lisp :tangle no :results silent :exports code
+  ;;Press C-c C-c inside this block to generate a new README.org
+  (org-export-to-file 'md "README.md")
+#+END_SRC
 
 You can find more information about *Literate Programming* and *org-mode* here: http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming
 
@@ -1079,40 +1082,41 @@ We need to turn the mode on here so that we can map keys further below. We lower
                                     ))
       ))
   (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-  (setq org-startup-indented t)
-  (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (setq org-startup-folded 'nofold)
+  (setq org-startup-indented t)
+  (setq org-startup-with-inline-images t)
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
   (setq org-confirm-babel-evaluate nil)
   (setq org-use-speed-commands t)
   (setq org-default-notes-file (concat org-directory "/todo.org"))
-
+    
   (setq org-capture-templates
         '(
           ("t" "Task" entry (file+headline "" "Tasks") "* TODO %?\n  %u\n  %a")
           ("s" "Simple Task" entry (file+headline "" "Tasks") "* TODO %?\n  %U\n")
           ))
-
+    
   (add-to-list 'org-structure-template-alist '("m" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC\n"))
-
+    
   ;; minted
   (require 'ox-latex)
   (add-to-list 'org-latex-packages-alist '("" "minted"))
   (setq org-latex-listings 'minted)
-
+    
   (setq org-latex-pdf-process
         '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
+    
   (setq
    appt-display-mode-line t     ; show in the modeline
    appt-display-format 'window)
   (appt-activate 1)              ; activate appt (appointment notification)
-
+    
   (org-agenda-to-appt)           ; add appointments on startup
-
+    
   ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
   (add-hook 'org-mode-hook
             (lambda ()

@@ -4,13 +4,9 @@
 <ul>
 <li><a href="#sec-1">1. Usage</a>
 <ul>
-<li><a href="#sec-1-1">1.1. Steckemacs</a>
-<ul>
-<li><a href="#sec-1-1-1">1.1.1. Installation</a></li>
-<li><a href="#sec-1-1-2">1.1.2. Keyboard shortcuts</a></li>
-<li><a href="#sec-1-1-3">1.1.3. Contributions</a></li>
-</ul>
-</li>
+<li><a href="#sec-1-1">1.1. Installation</a></li>
+<li><a href="#sec-1-2">1.2. Keyboard shortcuts</a></li>
+<li><a href="#sec-1-3">1.3. Contributions</a></li>
 </ul>
 </li>
 <li><a href="#sec-2">2. Code</a>
@@ -96,17 +92,18 @@
 </ul>
 </div>
 </div>
+
 # Usage
 
-## Steckemacs
+**Warning - currently the setup might be unstable. I'm working on integrating the configuration with Org mode**
 
-An Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file `steckemacs.org` (plus `.emacs` for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
+**steckemacs** is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file `steckemacs.org` (plus `.emacs` for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
 
 If you want to know more about how that works, read my blog entry here:  <http://steckerhalter.co.vu/blog/201304/steckemacs>
 
 **To use this setup please use Emacs 24 or later. Older versions do not work properly.**
 
-### Installation
+## Installation
 
 Change to a directory of your choice and clone **steckemacs**:
 
@@ -120,7 +117,7 @@ And symlink `.emacs` into your home directory:
 
 That's it. Then you can run emacs and it should pick up the config, install all the packages and make you happy ;)
 
-### Keyboard shortcuts
+## Keyboard shortcuts
 
 By using the `key-chord` mode we can avoid having to type C- or M- all the time. It allows for using keys pressed simultaneously and I'm using it quite often.
 
@@ -775,9 +772,12 @@ I only describe my custom key combinations currently. To learn the standard Emac
 </tbody>
 </table>
 
-### Contributions
+## Contributions
 
-I'm using **org-mode** to manage **steckemacs**. `.emacs` loads `steckemacs.org`, exports all the code blocks to `steckemacs.el` and loads that file to initialize **emacs**. `steckemacs.org` also contains this documentation which is used to generate `README.org` by calling:
+I'm using **org-mode** to manage **steckemacs**. `.emacs` loads `steckemacs.org`, exports all the code blocks to `steckemacs.el` and loads that file to initialize **emacs**. `steckemacs.org` also contains this documentation which is used to generate `README.md` by calling:
+
+    ;;Press C-c C-c inside this block to generate a new README.org
+    (org-export-to-file 'md "README.md")
 
 You can find more information about **Literate Programming** and **org-mode** here: <http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming>
 
@@ -814,7 +814,7 @@ Here we create the directory `~/.emacs.d/elisp/` if it does'nt exist, add it to 
 
 ![Dimitri Fontaine](//tapoueh.org/images/dim.jpeg)
 
-Dimitri (on the image above, 19) is the clever guy that brougth us El-Get. The code is hosted [on Github](https://github.com/dimitri/el-get).
+Dimitri (on the image above, 20) is the clever guy that brougth us El-Get. The code is hosted [on Github](https://github.com/dimitri/el-get).
 
     (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
     (setq el-get-install-skip-emacswiki-recipes t) (ref:wiki)
@@ -1666,9 +1666,10 @@ We need to turn the mode on here so that we can map keys further below. We lower
                                       ))
         ))
     (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-    (setq org-startup-indented t)
-    (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
     (setq org-startup-folded 'nofold)
+    (setq org-startup-indented t)
+    (setq org-startup-with-inline-images t)
+    (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
     (setq org-src-fontify-natively t)
     (setq org-src-tab-acts-natively t)
     (setq org-confirm-babel-evaluate nil)
