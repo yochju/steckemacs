@@ -6,8 +6,8 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/site.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/steckemacs.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/bootstrap-responsive.css" />
-#+HTML_HEAD: <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-#+HTML_HEAD: <script src="/stuff/js/bootstrap.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="/stuff/js/bootstrap.min.js"></script>
 #+INFOJS_OPT: view:showall toc:t ftoc:t mouse:#555555
 
 * Usage
@@ -15,6 +15,8 @@
 *Warning - currently the setup might be unstable. I'm working on integrating the configuration with Org mode*
 
 *steckemacs* is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
+
+The source code is hosted on Github: [[https://github.com/steckerhalter/steckemacs]]
 
 *To use this setup please use Emacs 24 or later. Older versions do not work properly.*
 

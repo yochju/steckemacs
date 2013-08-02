@@ -1,7 +1,7 @@
 # in .bashrc use:
 # export STECKEMACS_REMOTE=<remote location>
 
-emacs := emacs --no-site-file --batch
+emacs := emacs -Q -nw --kill
 steckemacs_remote := $(STECKEMACS_REMOTE)
 dir := $(dir $(lastword $(MAKEFILE_LIST)))
 
@@ -14,16 +14,16 @@ deploy:
 	else \
 		return 1; \
 	fi
-	@echo
 
 html:
-	@echo Starting Emacs...
+	@echo Creating html...
 	@$(emacs) --eval \
 	"(progn \
 	(package-initialize) \
+	(load-theme 'grandshell t) \
 	(require 'org) \
 	(setq org-confirm-babel-evaluate nil) \
 	(find-file \"steckemacs.org\") \
 	(org-export-to-file 'html \"steckemacs.html\") \
 	)"
-	@echo
+	@echo Done.
