@@ -1,0 +1,57 @@
+
+* Usage
+
+
+*Warning - currently the setup might be unstable. I'm working on integrating the configuration with Org mode*
+
+*steckemacs* is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
+
+You can find the complete documentation nicely browsable at [[http://steckerhalter.co.vu/stuff/steckemacs.html]].
+
+*To use this setup please use Emacs 24 or later. Older versions do not work properly.*
+
+** Installation
+
+Change to a directory of your choice and clone *steckemacs*:
+
+#+BEGIN_SRC shell-script
+    cd <my directory>
+    git clone https://github.com/steckerhalter/steckemacs.git
+#+END_SRC
+
+And symlink =.emacs= into your home directory:
+
+#+BEGIN_SRC shell-script
+    cd ~
+    ln -s <path to the directory from above>/.emacs
+#+END_SRC
+
+That's it. Then you can run emacs and it should pick up the config, install all the packages and make you happy ;)
+
+** Keyboard shortcuts
+
+By using the =key-chord= mode we can avoid having to type C- or M- all the time. It allows for using keys pressed simultaneously and I'm using it quite often.
+
+When I write =fg= as a key combo it means you would have to press =f= and =g= at the same time.
+
+I only describe my custom key combinations currently. To learn the standard Emacs commands, go through the Tutorial =C-h t=, use =C-S-h= or =M-x= to see/filter the available commands/shortcuts.
+
+#+NAME: keys-doc
+#+BEGIN_SRC emacs-lisp :var keys=keys :tangle no :results output raw :exports results
+  (mapcar (lambda (l) (if (listp l)
+                          (princ (format "| %s | %s |\n"(car l) (nth 1 l)))
+                        (princ "|-\n")))
+            keys)
+#+END_SRC
+
+** Contributions
+
+I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains the code for =README.org=
+
+To generate =README.org= and the HTML
+
+You can find more information about *Literate Programming* and *org-mode* here: http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming
+
+If you want to help me out improving the config, fork the repo, create a new branch and open up a Pull Request so we can discuss the merge.
+
+Of course you can also just [[https://github.com/steckerhalter/steckemacs/issues][report issues]] :)

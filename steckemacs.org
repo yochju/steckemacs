@@ -2,21 +2,31 @@
 #+Author: steckerhalter
 
 * Options                                                  :noexport:ARCHIVE:
-#+OPTIONS: todo:nil
-#+LaTeX_CLASS_OPTIONS: [16pt]
-#+LaTeX_HEADER: \usemintedstyle{monokai}
-#+LaTeX_HEADER: \usepackage[T1]{fontenc}
-#+LaTeX_HEADER: \usepackage[scaled]{beraserif}
-#+LaTeX_HEADER: \usepackage[scaled]{berasans}
-#+LaTeX_HEADER: \usepackage[scaled]{beramono}
+#+OPTIONS: todo:nil html-style:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/site.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/steckemacs.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/bootstrap-responsive.css" />
+#+HTML_HEAD: <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+#+HTML_HEAD: <script src="/stuff/js/bootstrap.min.js"></script>
+#+INFOJS_OPT: view:showall toc:t ftoc:t mouse:#555555
 
+#+NAME: usage
+#+BEGIN_SRC emacs-lisp :exports none :results value :tangle no
+  (org-forward-heading-same-level 1)
+  (org-copy-subtree)
+  (current-kill 1)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :noweb yes :exports none :tangle README.org
+  <<usage()>>
+#+END_SRC
 * Usage
 
 *Warning - currently the setup might be unstable. I'm working on integrating the configuration with Org mode*
 
 *steckemacs* is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
 
-If you want to know more about how that works, read my blog entry here:  http://steckerhalter.co.vu/blog/201304/steckemacs
+You can find the complete documentation nicely browsable at [[http://steckerhalter.co.vu/stuff/steckemacs.html]].
 
 *To use this setup please use Emacs 24 or later. Older versions do not work properly.*
 
@@ -56,12 +66,9 @@ I only describe my custom key combinations currently. To learn the standard Emac
 
 ** Contributions
 
-I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains this documentation which is used to generate =README.md= by calling:
+I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains the code for =README.org=
 
-#+BEGIN_SRC emacs-lisp :tangle no :results silent :exports code
-  ;;Press C-c C-c inside this block to generate a new README.org
-  (org-export-to-file 'md "README.md")
-#+END_SRC
+To generate =README.org= and the HTML
 
 You can find more information about *Literate Programming* and *org-mode* here: http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming
 
@@ -96,7 +103,7 @@ Here we create the directory =~/.emacs.d/elisp/= if it does'nt exist, add it to 
 
 #+CAPTION: El-Get Logo
 #+NAME: el-get-logo
-[[./img/el-get.png]]
+[[https://raw.github.com/dimitri/el-get/master/logo/el-get.png]]
 
 #+BEGIN_QUOTE
 El-Get is designed to simplify this process and allow access to all the various methods of obtaining packages from a single interface. Every package has a recipe that allows you to locate the original source, and that can be updated if the package is moved.
