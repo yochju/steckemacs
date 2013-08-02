@@ -1,4 +1,4 @@
-* Steckemacs
+** Steckemacs
 
 An Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
 
@@ -6,7 +6,7 @@ If you want to know more about how that works, read my blog entry here:  [[http:
 
 *To use this setup please use Emacs 24 or later. Older versions do not work properly.*
 
-** Installation
+*** Installation
 
 Change to a directory of your choice and clone *steckemacs*:
 
@@ -23,7 +23,7 @@ And symlink =.emacs= into your home directory:
 #+END_SRC
 
 That's it. Then you can run emacs and it should pick up the config, install all the packages and make you happy ;)
-** Keyboard shortcuts
+*** Keyboard shortcuts
 
 By using the =key-chord= mode we can avoid having to type C- or M- all the time. It allows for using keys pressed simultaneously and I'm using it quite often.
 
@@ -31,100 +31,117 @@ When I write =fg= as a key combo it means you would have to press =f= and =g= at
 
 I only describe my custom key combinations currently. To learn the standard Emacs commands, go through the Tutorial =C-h t=, use =C-S-h= or =M-x= to see/filter the available commands/shortcuts.
 
-| Topic                   | Combo      | Description                                                               |
-|-------------------------+------------+---------------------------------------------------------------------------|
-| *General*               | =C-c X=    | kill emacs (including the daemon if it is running)                        |
-|                         | =C-S-h=    | show current keyboard shortcuts, allows search too                        |
-|                         | =C-S-l=    | list available packages                                                   |
-|                         | =C-h C-f=  | go to the definition of the function under cursor                         |
-|                         | =C-h C-v=  | go to the definition of the variable under cursor                         |
-| *Appearance*            | =C-c m=    | show/hide menu                                                            |
-|                         | =C--=      | decrease the font size                                                    |
-|                         | =C-==      | increase the font size                                                    |
-|                         | =ln=       | show/hide the line numbers                                                |
-|                         | =C-F8=     | show/hide comments                                                        |
-| *Buffers / Files*       | =C-return= | buffer switcher (helm-mini)                                               |
-|                         | =F6=       | delete the current buffer                                                 |
-|                         | =F8=       | switch to the "last" buffer                                               |
-|                         | =C-c r=    | revert a buffer to the saved state                                        |
-|                         | =sc=       | switch to \*scratch\* buffer                                              |
-|                         | =C-c n=    | copy the full path of the current file to the clipboard                   |
-| *Windows / Frames*      | =C-0=      | previous window                                                           |
-|                         | =C-9=      | next window                                                               |
-|                         | =F2=       | split window vertically                                                   |
-|                         | =F3=       | split window horizontally                                                 |
-|                         | =F4=       | delete current window (not the buffer)                                    |
-|                         | =F5=       | only keep the current window and delete all others                        |
-|                         | =F7=       | switch arrangement of two windows horizontally/vertically                 |
-|                         | =F9=       | split window and show last buffer, another press hides that window again  |
-|                         | =C-left=   | shrink window                                                             |
-|                         | =C-right=  | enlarge window                                                            |
-|                         | =C-up=     | shrink window horizontally                                                |
-|                         | =C-down=   | enlarge window horizontally                                               |
-|                         | =M-up=     | move buffer to window above                                               |
-|                         | =M-down=   | move buffer to window below                                               |
-|                         | =M-left=   | move buffer to left window                                                |
-|                         | =M-right=  | move buffer to right window                                               |
-|                         | =\,.=      | Delete the current frame                                                  |
-| *Movement / Selections* | =M-i=      | move to next expression                                                   |
-|                         | =M-o=      | move to previous expression                                               |
-|                         | =C-{=      | select previous "thing"                                                   |
-|                         | =C-}=      | select next "thing"                                                       |
-|                         | =C-\=      | select/exchange previous "thing"                                          |
-|                         | =C-]=      | select/exchange next "thing"                                              |
-|                         | =C-3=      | go to last automatically saved position                                   |
-|                         | =C-4=      | go to next automatically saved  position                                  |
-|                         | =M-2=      | show all symbols like the one cursor is located at                        |
-|                         | =M-3=      | previous symbol like the one the cursor is on                             |
-|                         | =M-4=      | next symbol like the one the cursor is on                                 |
-|                         | =i9=       | toggle automatic identation                                               |
-|                         | =C-8=      | select symbol under cursor, pressing again will smartly expand the region |
-|                         | =M-8=      | narrow the selection again                                                |
-|                         | =C->=      | add cursor downwards (try to get next occurrence if sth. is marked)       |
-|                         | =C-<=      | add cursor upwards (try to get previous occurrence if sth. is marked)     |
-|                         | =C-f9=     | move line/selection down                                                  |
-|                         | =C-f10=    | move line/selection up                                                    |
-| *Elisp Evaluation*      | =90=       | evaluate list (with visual feedback)                                      |
-|                         | =C-c C-c=  | "                                                                         |
-|                         | =C-c C-e=  | evaluate s-expression (with visual feedback)                              |
-| *Completion*            | =C-7=      | Trigger auto-completion explicitly (with fuzzy matching)                  |
-| *Formatting*            | =C-c w=    | cleanup whitespace                                                        |
-|                         | =C-c j=    | join two lines (also mapped to M-^ by default)                            |
-|                         | =ac=       | align expressions, e.g. align all === in 3 lines with assignments         |
-| *Search / Replace*      | =34=       | find definitions (functions, headings etc.) in current file               |
-|                         | =gt=       | google selection / word under cursor (in web browser)                     |
-|                         | =gs=       | google (prompt and search in web browser)                                 |
-|                         | =vr=       | search/replace with visual regexp                                         |
-|                         | =lo=       | locate (helm)                                                             |
-|                         | =34=       | imenu (helm)                                                              |
-|                         | =M-9=      | occur (helm)                                                              |
-|                         | =C-;=      | edit occurences of current word on the fly, press again to exit           |
-| *Rings*                 | =M-7=      | show kill ring (helm)                                                     |
-|                         | =C-5=      | show all mark rings (helm)                                                |
-| *Project related*       | =fr=       | find files in current project                                             |
-|                         | =rg=       | grep through current project                                              |
-|                         | =ok=       | show occurrences of a string in current project                           |
-|                         | =aw=       | ack through current project                                               |
-|                         | =ag=       | ag through current project                                                |
-|                         | =C-c g=    | magit status - manual: [[http://magit.github.io/magit/]]                      |
-|                         | =C-c l=    | magit log                                                                 |
-| *Tags*                  | =M-.=      | find tag                                                                  |
-|                         | =M-5=      | select etag (helm)                                                        |
-|                         | =M-6=      | find tag in other window                                                  |
-| *Code/Spell checking*   | =cf=       | toggle code checking (flycheck)                                           |
-|                         | =C-c f=    | toggle spell checking (flyspell)                                          |
-|                         | =C-c d=    | change dictionary                                                         |
-| *Shell*                 | =C-c s=    | open emacs shell                                                          |
-| *PHP*                   | =vd=       | insert var_dump around selection                                          |
-|                         | =vb=       | insert var_dump + die around selection                                    |
-** Contributions
+#+RESULTS: keys-doc
+| Combo             | Desciption                                                |
+|-------------------+-----------------------------------------------------------|
+| C-c X             | Kill emacs (including the daemon if it is running)        |
+| C-c s             | Open emacs shell                                          |
+| C-S-l             | List available packages                                   |
+| C-c d             | Change dictionary                                         |
+| C-h C-f           | Go to the definition of the function under cursor         |
+| C-h C-v           | Go to the definition of the variable under cursor         |
+| C-c C-w           | Browse URL under cursor                                   |
+| cd                | Open dired in current file location                       |
+| sb                | Open the speedbar                                         |
+| cg                | Customize group                                           |
+| C-c m             | Toggle the menu bar                                       |
+| C--               | Decrease the font size                                    |
+| C-=               | Increase the font size                                    |
+| ln                | Show/hide the line numbers                                |
+| C-c r             | Revert a buffer to the saved state                        |
+| C-x C-b           | use ido to switch buffers                                 |
+| <f6>              | Kill current buffer                                       |
+| <f8>              | Switch to "other" buffer                                  |
+| jn                | Switch to "other" buffer                                  |
+| fv                | Kill current buffer                                       |
+| <M-up>            | Move the current buffer window up                         |
+| <M-down>          | Move the current buffer window down                       |
+| <M-left>          | Move the current buffer window left                       |
+| <M-right>         | Move the current buffer window right                      |
+| eb                | Evaluate the current buffer                               |
+| sv                | Save the current buffer                                   |
+| sc                | Switch to scratch buffer                                  |
+| C-0               | Select previous window                                    |
+| C-9               | Select next window                                        |
+| <f2>              | Split window vertically                                   |
+| <f3>              | Split window horizontally                                 |
+| <f4>              | Delete current window (not the buffer)                    |
+| <f5>              | Only keep the current window and delete all others        |
+| <C-left>          | Shrink window                                             |
+| <C-right>         | Enlarge window                                            |
+| <C-up>            | Shrink window horizontally                                |
+| <C-down>          | Enlarge window horizontally                               |
+| i9                | Toggle electric indent mode                               |
+| M-W               | delete region (but don't put it into kill ring)           |
+| C-c j             | Join lines together                                       |
+| C-c w             | cleanup whitespaces                                       |
+| C-c i             | indent the whole the buffer                               |
+| ac                | Align nearby elements                                     |
+| C-c q             | toggles word wrap                                         |
+| vg                | VC git grep                                               |
+| fg                | Grep find                                                 |
+| C-c o             | list matching regexp                                      |
+| M-6               | Find tag in a new window                                  |
+| C-c n             | Show file name + path, save to clipboard                  |
+| <f9>              | Split window and show/hide last buffer                    |
+| <f7>              | Toggle arrangement of two windows horizontally/vertically |
+| C-c t             | Open terminal in current directory                        |
+| C-c T             | Open terminal in current project root                     |
+| C-6               | Use autojump to navigate to a directory (with IDO)        |
+| ag                | Use the ag cli tool to grep project                       |
+| C-3               | Go backward in movement history                           |
+| C-4               | Go forward in movement history                            |
+| C-c c             | Open deft (quick notes tool)                              |
+| C-c e             | Connect with  ERC                                         |
+| C-8               | Select symbol under cursor, repeat to expand              |
+| M-8               | Contract the current selection                            |
+| fc                | Toggle flycheck mode                                      |
+| C-c f             | Toggle flyspell mode                                      |
+| gt                | Google "this"                                             |
+| gs                | Google search                                             |
+| M-x               | Helm M-x                                                  |
+| <C-f7>            | Helm mini                                                 |
+| <C-S-iso-lefttab> | Helm for files                                            |
+| C-x f             | Helm find files                                           |
+| M-5               | Helm select etags                                         |
+| M-7               | Helm show the kill ring                                   |
+| C-5               | Helm show all mark rings                                  |
+| M-9               | Helm search for occurences in open buffers                |
+| M--               | Helm resume                                               |
+| C-S-h             | Helm describe key Bindings                                |
+| C-c h             | Helm navigate project files                               |
+| fw                | Helm find files                                           |
+| hg                | Helm grep                                                 |
+| lo                | Helm locate                                               |
+| 34                | Helm imenu                                                |
+| M-0               | Helm find files with Git                                  |
+| <C-f8>            | Show/hide comments                                        |
+| M-2               | Show all symbols like the one cursor is located at        |
+| M-3               | Previous symbol like the one the cursor is on             |
+| M-4               | Next symbol like the one the cursor is on                 |
+| C-c g             | Magit status - manual: [[http://magit.github.io/magit/]]      |
+| C-c l             | Magit log                                                 |
+| bm                | Magit blame mode                                          |
+| <C-f10>           | Move line or region up                                    |
+| <C-f9>            | Move line or region down                                  |
+| nm                | Open mu4e                                                 |
+| C-S-c C-S-c       | Edit region with multiple cursors                         |
+| C-<               | Multiple cursors up                                       |
+| C->               | Multiple cursors down                                     |
+| C-*               | Mark all like "this" with multiple cursors                |
+| C-c A             | Org mode capture (todo)                                   |
+| C-c a             | Open Org mode agenda                                      |
+| bv                | PHP: var_dump die template                                |
+| dv                | PHP: var_dump template                                    |
+| fr                | Projectile find file                                      |
+| rg                | Projectile grep                                           |
+| ok                | Projectile multiple occur                                 |
+| aw                | Projectile ack                                            |
+| vr                | Visual regexp/replace                                     |
+| C-x a s           | Toggle auto saving of buffers                             |
+*** Contributions
 
 I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains this documentation which is used to generate =README.org= by calling:
-
-#+BEGIN_SRC emacs-lisp
-  ;;Press C-c C-c inside this block to generate a new README.org
-  (org-export-to-file 'org "README.org")
-#+END_SRC
 
 You can find more information about *Literate Programming* and *org-mode* here: [[http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming]]
 

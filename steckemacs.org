@@ -7,7 +7,14 @@
 #+LaTeX_HEADER: \usepackage[scaled]{berasans}
 #+LaTeX_HEADER: \usepackage[scaled]{beramono}
 
-* Steckemacs
+* Usage
+
+#+BEGIN_SRC emacs-lisp :tangle no :results silent :exports none
+  ;;Press C-c C-c inside this block to generate a new README.org
+  (org-export-to-file 'md "README.md")
+#+END_SRC
+
+** Steckemacs
 
 An Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
 
@@ -15,7 +22,7 @@ If you want to know more about how that works, read my blog entry here:  http://
 
 *To use this setup please use Emacs 24 or later. Older versions do not work properly.*
 
-** Installation
+*** Installation
 
 Change to a directory of your choice and clone *steckemacs*:
 
@@ -33,7 +40,7 @@ And symlink =.emacs= into your home directory:
 
 That's it. Then you can run emacs and it should pick up the config, install all the packages and make you happy ;)
 
-** Keyboard shortcuts
+*** Keyboard shortcuts
 
 By using the =key-chord= mode we can avoid having to type C- or M- all the time. It allows for using keys pressed simultaneously and I'm using it quite often.
 
@@ -49,14 +56,9 @@ I only describe my custom key combinations currently. To learn the standard Emac
             keys)
 #+END_SRC
 
-** Contributions
+*** Contributions
 
 I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains this documentation which is used to generate =README.org= by calling:
-
-#+BEGIN_SRC emacs-lisp :tangle no :results silent
-  ;;Press C-c C-c inside this block to generate a new README.org
-  (org-export-to-file 'org "README.org")
-#+END_SRC
 
 You can find more information about *Literate Programming* and *org-mode* here: http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming
 
@@ -1066,6 +1068,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
 #+BEGIN_SRC emacs-lisp
   (require 'org)
   (require 'ox-org)
+  (require 'ox-md)
   (let ((todo "~/org/todo.org"))
     (when (file-readable-p todo)
       (setq org-agenda-files '("~/org/todo.org" "~/org/deft/"))
