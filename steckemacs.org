@@ -6,8 +6,6 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/site.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/steckemacs.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/bootstrap-responsive.css" />
-#+HTML_HEAD: <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-#+HTML_HEAD: <script type="text/javascript" src="/stuff/js/bootstrap.min.js"></script>
 #+INFOJS_OPT: view:showall toc:t ftoc:t mouse:#555555
 
 * Usage
@@ -1371,3 +1369,6 @@ We need to turn the mode on here so that we can map keys further below. We lower
     t " K" 'my-keys-minor-mode-map)
   (my-keys-minor-mode 1)
 #+END_SRC
+
+#+HTML: <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+#+HTML: <script type="text/javascript" src="/stuff/js/bootstrap.min.js"></script>
