@@ -130,15 +130,6 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
           (:name php-align
                  :type http
                  :url "https://raw.github.com/tetsujin/emacs-php-align/master/php-align.el")
-          (:name mysql
-                 :type http
-                 :url "http://www.emacswiki.org/emacs/download/mysql.el")
-          (:name sql-completion
-                 :type http
-                 :url "http://www.emacswiki.org/emacs/download/sql-completion.el")
-          (:name rcirc-color
-                 :type http
-                 :url "http://www.emacswiki.org/emacs/download/rcirc-color.el")
           (:name ac-php-doc
                  :type http
                  :url "https://raw.github.com/steckerhalter/ac-php-doc/master/ac-php-doc.el")
@@ -148,9 +139,6 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
           (:name magit-inotify
                  :type http
                  :url "https://raw.github.com/magit/magit/master/contrib/magit-inotify.el")
-          (:name outline-magic
-                 :type http
-                 :url "https://raw.github.com/tj64/outline-magic/master/outline-magic.el")
           (:name ob-php
                  :type http
                  :url "https://raw.github.com/steckerhalter/ob-php/master/ob-php.el"
@@ -789,15 +777,6 @@ We need to turn the mode on here so that we can map keys further below. We lower
   )
 #+END_SRC
 
-*** ecb
-
-#+BEGIN_SRC emacs-lisp
-  (setq
-   ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2)
-   ecb-tip-of-the-day nil
-   )
-#+END_SRC
-
 *** erc mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1027,15 +1006,6 @@ We need to turn the mode on here so that we can map keys further below. We lower
     )
 #+END_SRC
 
-*** mutt, load mail-mode
-
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
-  (add-hook 'mail-mode-hook (lambda ()
-                              (flyspell-mode 1)
-                              ))
-#+END_SRC
-
 *** nrepl
 
 #+BEGIN_SRC emacs-lisp
@@ -1242,18 +1212,6 @@ We need to turn the mode on here so that we can map keys further below. We lower
     )
 #+END_SRC
 
-*** rcirc
-
-#+BEGIN_SRC emacs-lisp
-  (eval-after-load 'rcirc '(require 'rcirc-color))
-  (setq rcirc-fill-column 'frame-width)
-  (add-hook 'rcirc-mode-hook
-            (lambda ()
-              (flyspell-mode 1)
-              (rcirc-omit-mode)
-              (set (make-local-variable 'scroll-conservatively) 8192)))
-#+END_SRC
-
 *** robe
 
 #+BEGIN_SRC emacs-lisp
@@ -1325,17 +1283,6 @@ We need to turn the mode on here so that we can map keys further below. We lower
     '(add-to-list 'ac-modes 'slime-repl-mode))
 #+END_SRC
 
-*** sql-completion
-
-#+BEGIN_SRC emacs-lisp
-  (when (require 'sql-completion nil t)
-    (setq sql-interactive-mode-hook
-          (lambda ()
-            (define-key sql-interactive-mode-map "\t" 'comint-dynamic-complete)
-            (sql-mysql-completion-init)))
-    )
-#+END_SRC
-
 *** term-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1370,7 +1317,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
   (setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt yas-x-prompt yas-dropdown-prompt yas-no-prompt))
 #+END_SRC
 
-*** w3m, optional
+*** w3m
 
 #+BEGIN_SRC emacs-lisp
   (when (require 'w3m nil t)
