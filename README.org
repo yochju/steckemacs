@@ -10,5 +10,6 @@ Please visit [[http://steckerhalter.co.vu/stuff/steckemacs.html]] to find:
 - a list of [[http://steckerhalter.co.vu/stuff/steckemacs.html#sec-1-2][keyboard shortcuts]]
 - source code [[http://steckerhalter.co.vu/stuff/steckemacs.html#sec-2][documentation]]
 
-Cheers, \\
+Cheers,
+
 steckerhalter
