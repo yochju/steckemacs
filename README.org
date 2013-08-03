@@ -2,7 +2,7 @@
 
 *Steckemacs* is an Emacs configuration that integrates around 60 modes (packages).
 
-It is built with [[http://orgmode.org/worg/org-contrib/babel/][Babel]] and [[http://orgmode.org/worg/org-contrib/babel/][Org mode]].
+It is built with [[http://orgmode.org/worg/org-contrib/babel/][Babel]] and [[http://orgmode.org/][Org mode]].
 
 Please visit [[http://steckerhalter.co.vu/stuff/steckemacs.html]] to find:
 
@@ -10,5 +10,5 @@ Please visit [[http://steckerhalter.co.vu/stuff/steckemacs.html]] to find:
 - a list of [[http://steckerhalter.co.vu/stuff/steckemacs.html#sec-1-2][keyboard shortcuts]]
 - source code [[http://steckerhalter.co.vu/stuff/steckemacs.html#sec-2][documentation]]
 
-Cheers,
+Cheers, \\
 steckerhalter
