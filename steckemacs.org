@@ -1050,6 +1050,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
   (setq org-startup-folded 'nofold)
   (setq org-startup-indented t)
   (setq org-startup-with-inline-images t)
+  (setq org-startup-truncated nil)
   (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
