@@ -6,7 +6,7 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/site.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/steckemacs.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/bootstrap-responsive.css" />
-#+INFOJS_OPT: view:showall toc:t ftoc:t mouse:#555555
+#+INFOJS_OPT: view:showall toc:t ftoc:t mouse:#555555 path:/stuff/js/org-info.js
 
 * Usage
 
@@ -47,7 +47,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
 #+NAME: keys-doc
 #+BEGIN_SRC emacs-lisp :var keys=keys :tangle no :results output raw :exports results
   (mapcar (lambda (l) (if (listp l)
-                          (princ (format "| %s | %s |\n"(car l) (nth 1 l)))
+                          (princ (format "| =%s= | %s |\n"(car l) (nth 1 l)))
                         (princ "|-\n")))
             keys)
 #+END_SRC
