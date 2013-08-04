@@ -12,7 +12,7 @@ deploy:
 		echo Deploying to $(steckemacs_remote) ... ; \
 		scp $(dir)steckemacs.html $(steckemacs_remote); \
 	else \
-		echo STECKEMACS_REMOTE not set!
+		echo STECKEMACS_REMOTE not set!; \
 		exit 1; \
 	fi
 
