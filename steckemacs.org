@@ -754,6 +754,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
 
 #+BEGIN_SRC emacs-lisp
   (toggle-diredp-find-file-reuse-dir 1)
+  (setq dired-hide-details-mode nil)
 #+END_SRC
 
 *** eval-sexp-fu
@@ -834,12 +835,6 @@ We need to turn the mode on here so that we can map keys further below. We lower
 
 #+BEGIN_SRC emacs-lisp
   (setq indicate-buffer-boundaries 'left)
-#+END_SRC
-
-*** git-gutter-fringe+
-
-#+BEGIN_SRC emacs-lisp
-  (global-git-gutter+-mode)
 #+END_SRC
 
 *** google-this
