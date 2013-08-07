@@ -2,7 +2,7 @@
 #+Author: steckerhalter
 
 * Options                                                  :noexport:ARCHIVE:
-#+OPTIONS: todo:nil html-style:nil
+#+OPTIONS: todo:t html-style:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/site.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/steckemacs.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/bootstrap-responsive.css" />
@@ -143,7 +143,7 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
           ))
 #+END_SRC
 
-These are simple El-Get recipes that will fetch single Elisp files.
+These are simple El-Get recipes that will either fetch single Elisp files or clone a Git repo. The =ob-php= recipe uses a neat El-Get feature that allows to do some preparation after the installation.
 
 #+BEGIN_SRC emacs-lisp -n -r
   (setq my-el-get-packages
