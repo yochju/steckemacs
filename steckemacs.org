@@ -52,11 +52,11 @@ I only describe my custom key combinations currently. To learn the standard Emac
             keys)
 #+END_SRC
 
+This table is generated with an Elisp block =keys-doc= from an Org table which is also used in the code [[*Key%20Bindings][further below]].
+
 ** Contributions
 
-I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*. =steckemacs.org= also contains the code for =README.org=
-
-To generate =README.org= and the HTML
+I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*.
 
 You can find more information about *Literate Programming* and *org-mode* here: http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming
 
@@ -106,7 +106,8 @@ Dimitri (on the image above, [[fig:dimitri]]) is the clever guy that brougth us 
 #+BEGIN_SRC emacs-lisp -n -r
   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
   (setq el-get-install-skip-emacswiki-recipes t) (ref:wiki)
-  (unless (require 'el-get nil 'noerror)
+  (if (require 'el-get nil 'noerror)
+      (el-get-self-update)
     (with-current-buffer
         (url-retrieve-synchronously
          "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
@@ -114,32 +115,32 @@ Dimitri (on the image above, [[fig:dimitri]]) is the clever guy that brougth us 
       (eval-print-last-sexp)))
 #+END_SRC
 
-This sets up the load path and fetches and evaluates the stable El-Get branch if not already loaded (as described [[https://github.com/dimitri/el-get#basic-setup][on Github]]). In line [[(wiki)]] we make sure El-Get doesn't load all the Wiki recipes as we don't use them.
+This sets up the load path and fetches and evaluates the stable El-Get branch if not already loaded (as described [[https://github.com/dimitri/el-get#basic-setup][on Github]]). If El-Get is already installed it is updated if possible. In line [[(wiki)]] we make sure El-Get doesn't load all the Wiki recipes as we don't use them.
 
 #+BEGIN_SRC emacs-lisp :results silent
   (setq el-get-sources
         '(
-          (:name php-documentor
-                 :type http
-                 :url "https://raw.github.com/wenbinye/dot-emacs/master/site-lisp/contrib/php-documentor.el")
-          (:name php-align
-                 :type http
-                 :url "https://raw.github.com/tetsujin/emacs-php-align/master/php-align.el")
           (:name ac-php-doc
-                 :type http
-                 :url "https://raw.github.com/steckerhalter/ac-php-doc/master/ac-php-doc.el")
+                 :type git
+                 :url "https://github.com/steckerhalter/ac-php-doc")
           (:name eval-sexp-fu
                  :type http
                  :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
           (:name magit-inotify
                  :type http
-                 :url "https://raw.github.com/magit/magit/master/contrib/magit-inotify.el")
+                 :url "https://github.com/magit/magit/master/contrib/magit-inotify.el")
           (:name ob-php
-                 :type http
-                 :url "https://raw.github.com/steckerhalter/ob-php/master/ob-php.el"
+                 :type git
+                 :url "https://github.com/steckerhalter/ob-php"
                  :prepare (progn
                             (add-to-list 'org-babel-load-languages '(php . t))
                             (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)))
+          (:name php-align
+                 :type git
+                 :url "https://github.com/tetsujin/emacs-php-align")
+          (:name php-documentor
+                 :type http
+                 :url "https://raw.github.com/wenbinye/dot-emacs/master/site-lisp/contrib/php-documentor.el")
           ))
 #+END_SRC
 
@@ -152,9 +153,11 @@ These are simple El-Get recipes that will fetch single Elisp files.
          (mapcar 'el-get-source-name el-get-sources)))
 
   (el-get 'sync my-el-get-packages) (ref:sync)
+
+  (el-get-update-all t)
 #+END_SRC
 
-The sync function expects the package names which are extracted from =el-get-sources=. In line [[(sync)]] El-Get does the magic and gets the files specified in =el-get-sources=.
+The sync function expects the package names which are extracted from =el-get-sources=. In line [[(sync)]] El-Get does the magic and gets the files specified in =el-get-sources=. After that we make sure all the packages up updated.
 
 ** Packages
 
@@ -302,10 +305,15 @@ We need to turn the mode on here so that we can map keys further below. We lower
   <<gen-keys()>>
 #+END_SRC
 
+The code for the keys is generated from data in an Org table named =keys= by running it through some Elisp code =gen-keys= and spit out inside a code block via [[http://orgmode.org/manual/noweb.html][Noweb syntax]]. The same data is also used in the [[*Keyboard%20shortcuts][Keyboard shortcuts]] section to generate the documentation. I'd like to be able to have only one place to change key information and have it updated wherever necessary.
+
 #+BEGIN_SRC emacs-lisp
   (define-key key-translation-map (kbd "C-t") (kbd "C-p"))
   (define-key my-keys-minor-mode-map (kbd "<C-return>") 'helm-mini)
 #+END_SRC
+
+=C-t= is translated to =C-p= (move up), this helps me with navigating using the [[http://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard][Dvorak keyboard layout]].
+=my-keys-minor-mode-map= is used set =C-return= in this case in a way so that other minor modes cannot override it.
 
 ****                                                            :noexport:
 #+TBLNAME: keys
@@ -417,7 +425,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
 | vr                | Visual regexp/replace                                     | 'vr/replace                                                                                                                                | key-chord |
 | C-x a s           | Toggle auto saving of buffers                             | 'auto-save-buffers-enhanced-toggle-activity                                                                                                | global    |
 
-** general options
+** General Options
 
 #+BEGIN_SRC emacs-lisp
   ;; load the secrets if available
@@ -495,7 +503,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
     )
 #+END_SRC
 
-** theme, faces, frame
+** Theme, Faces, Frame
 
 #+BEGIN_SRC emacs-lisp
   (load-theme 'grandshell t)
@@ -511,7 +519,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
                                       "%b"))))
 #+END_SRC
 
-** Custom functions
+** Custom Functions
 
 *** stk/dired
 
