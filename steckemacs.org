@@ -318,7 +318,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
 | C-h C-f           | Go to the definition of the function under cursor         | 'find-function-at-point                                                                                                                    | global    |
 | C-h C-v           | Go to the definition of the variable under cursor         | 'find-variable-at-point                                                                                                                    | global    |
 | C-c C-w           | Browse URL under cursor                                   | 'browse-url-at-point                                                                                                                       | global    |
-| cd                | Open dired in current file location                       | (lambda () (interactive) (dired (file-name-directory (or load-file-name buffer-file-name))))                                               | key-chord |
+| cd                | Open dired in current file location                       | 'stk/dired                                                                                                                                 | key-chord |
 | sb                | Open the speedbar                                         | 'speedbar                                                                                                                                  | key-chord |
 | cg                | Customize group                                           | 'customize-group                                                                                                                           | key-chord |
 | C-c m             | Toggle the menu bar                                       | 'menu-bar-mode                                                                                                                             | global    |
@@ -511,104 +511,136 @@ We need to turn the mode on here so that we can map keys further below. We lower
                                       "%b"))))
 #+END_SRC
 
-** custom functions
+** Custom functions
+
+*** stk/dired
 
 #+BEGIN_SRC emacs-lisp
-  ;; copy filename of current buffer to kill ring
-  (defun show-file-name ()
-    "Show the full path file name in the minibuffer."
+  (defun stk/dired ()
     (interactive)
-    (message (buffer-file-name))
-    (kill-new (file-truename buffer-file-name))
-    )
-
-  (defun my/split-window()
-    "Split the window to see the most recent buffer in the other window.
-  Call a second time to restore the original window configuration."
-    (interactive)
-    (if (eq last-command 'my/split-window)
-        (progn
-          (jump-to-register :my/split-window)
-          (setq this-command 'my/unsplit-window))
-      (window-configuration-to-register :my/split-window)
-      (switch-to-buffer-other-window nil)))
-
-  (defun toggle-window-split ()
-    (interactive)
-    (if (= (count-windows) 2)
-        (let* ((this-win-buffer (window-buffer))
-           (next-win-buffer (window-buffer (next-window)))
-           (this-win-edges (window-edges (selected-window)))
-           (next-win-edges (window-edges (next-window)))
-           (this-win-2nd (not (and (<= (car this-win-edges)
-                       (car next-win-edges))
-                       (<= (cadr this-win-edges)
-                       (cadr next-win-edges)))))
-           (splitter
-            (if (= (car this-win-edges)
-               (car (window-edges (next-window))))
-            'split-window-horizontally
-          'split-window-vertically)))
-      (delete-other-windows)
-      (let ((first-win (selected-window)))
-        (funcall splitter)
-        (if this-win-2nd (other-window 1))
-        (set-window-buffer (selected-window) this-win-buffer)
-        (set-window-buffer (next-window) next-win-buffer)
-        (select-window first-win)
-        (if this-win-2nd (other-window 1))))))
-
-  (defvar stk/terminal '("gnome-terminal" . "--working-directory=" )
-    "Terminal executable and after the dot the working directory option for the terminal"
-    )
-
-  (defun stk/open-terminal (project-root-p)
-    "Open the terminal emulator either from the project root or
-    from the location of the current file."
-    (start-process "*stk/terminal*" nil (car stk/terminal)
-     (concat (cdr stk/terminal)
-             (file-truename
-              (if project-root-p (projectile-project-root)
-                (file-name-directory (or dired-directory load-file-name buffer-file-name)))
-      ))
-     )
-    )
-
-  (when (executable-find "autojump")
-    (defun ido-autojump (&optional query)
-      "Use autojump to open a directory with dired"
-      (interactive)
-      (unless query (setq query (read-from-minibuffer "Autojump query? ")))
-      (let ((dir
-             (let ((results
-                    (split-string
-                     (replace-regexp-in-string
-                      ".*__.__" ""
-                      (replace-regexp-in-string
-                       "^'\\|'\n" ""
-                       (shell-command-to-string (concat "autojump --bash --completion " query))))
-                     "\n" t)))
-               (if (> (length results) 1)
-                   (ido-completing-read "Dired: " results nil t)
-                 (car results)))
-             ))
-        (if dir
-            (if (file-readable-p dir)
-                (dired dir)
-              (message "Directory %s doesn't exist" dir))
-          (message "No directory found")
-          )
-        ))
-
-    (defun autojump-add-directory ()
-      "Adds the directory of the current buffer/file to the autojump database"
-      (start-process "*autojump*" nil "autojump" "--add" (file-name-directory (buffer-file-name)))
-      )
-    (add-hook 'find-file-hook 'autojump-add-directory)
-    )
+    (let ((file (or load-file-name
+                   buffer-file-name)))
+      (dired (if file (file-name-directory file)
+               (getenv "HOME")))))
 #+END_SRC
 
-** advices
+Try to open dired in the directory of the current file, otherwise in the home dir.
+
+*** show-file-name
+
+#+BEGIN_SRC emacs-lisp
+(defun show-file-name ()
+  "Show the full path file name in the minibuffer."
+  (interactive)
+  (message (buffer-file-name))
+  (kill-new (file-truename buffer-file-name))
+  )
+#+END_SRC
+
+Display, the copy the filename of current buffer to kill ring.
+
+*** my/split-window
+
+#+BEGIN_SRC emacs-lisp
+    (defun my/split-window()
+      "Split the window to see the most recent buffer in the other window.
+    Call a second time to restore the original window configuration."
+      (interactive)
+      (if (eq last-command 'my/split-window)
+          (progn
+            (jump-to-register :my/split-window)
+            (setq this-command 'my/unsplit-window))
+        (window-configuration-to-register :my/split-window)
+        (switch-to-buffer-other-window nil)))
+#+END_SRC
+
+*** toggle-window-split
+
+#+BEGIN_SRC emacs-lisp
+    (defun toggle-window-split ()
+      (interactive)
+      (if (= (count-windows) 2)
+          (let* ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                         (car next-win-edges))
+                         (<= (cadr this-win-edges)
+                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                 (car (window-edges (next-window))))
+              'split-window-horizontally
+            'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
+#+END_SRC
+
+*** stk/open-terminal
+
+#+BEGIN_SRC emacs-lisp
+    (defvar stk/terminal '("gnome-terminal" . "--working-directory=" )
+      "Terminal executable and after the dot the working directory option for the terminal"
+      )
+
+    (defun stk/open-terminal (project-root-p)
+      "Open the terminal emulator either from the project root or
+      from the location of the current file."
+      (start-process "*stk/terminal*" nil (car stk/terminal)
+       (concat (cdr stk/terminal)
+               (file-truename
+                (if project-root-p (projectile-project-root)
+                  (file-name-directory (or dired-directory load-file-name buffer-file-name)))
+        ))
+       )
+      )
+#+END_SRC
+
+*** ido-autojump
+
+#+BEGIN_SRC emacs-lisp
+    (when (executable-find "autojump")
+      (defun ido-autojump (&optional query)
+        "Use autojump to open a directory with dired"
+        (interactive)
+        (unless query (setq query (read-from-minibuffer "Autojump query? ")))
+        (let ((dir
+               (let ((results
+                      (split-string
+                       (replace-regexp-in-string
+                        ".*__.__" ""
+                        (replace-regexp-in-string
+                         "^'\\|'\n" ""
+                         (shell-command-to-string (concat "autojump --bash --completion " query))))
+                       "\n" t)))
+                 (if (> (length results) 1)
+                     (ido-completing-read "Dired: " results nil t)
+                   (car results)))
+               ))
+          (if dir
+              (if (file-readable-p dir)
+                  (dired dir)
+                (message "Directory %s doesn't exist" dir))
+            (message "No directory found")
+            )
+          ))
+
+      (defun autojump-add-directory ()
+        "Adds the directory of the current buffer/file to the autojump database"
+        (start-process "*autojump*" nil "autojump" "--add" (file-name-directory (buffer-file-name)))
+        )
+      (add-hook 'find-file-hook 'autojump-add-directory)
+      )
+#+END_SRC
+
+** Advices
 
 #+BEGIN_SRC emacs-lisp
   ;; slick-copy: make copy-past a bit more intelligent
@@ -754,8 +786,11 @@ We need to turn the mode on here so that we can map keys further below. We lower
 
 #+BEGIN_SRC emacs-lisp
   (toggle-diredp-find-file-reuse-dir 1)
-  (setq dired-hide-details-mode nil)
+  (setq diredp-hide-details-initially-flag nil)
+  (setq diredp-hide-details-propagate-flag nil)
 #+END_SRC
+
+It seems that both flags are necessary to make dired+ not hide the details.
 
 *** eval-sexp-fu
 
@@ -1219,19 +1254,9 @@ We need to turn the mode on here so that we can map keys further below. We lower
   (setq-default save-place t)
 #+END_SRC
 
-*** slime-js
+*** smart-mode-line
 
 #+BEGIN_SRC emacs-lisp
-  (dolist (hook '(css-mode-hook
-                  html-mode-hook
-                  js-mode-hook))
-    (add-hook hook (lambda ()
-                     (when (fboundp 'slime-js-minor-mode)
-                       (add-hook 'after-save-hook 'slime-js-reload nil 'make-it-local))
-                     )
-              ))
-
-  ;; smart-mode-line
   (setq sml/show-encoding t)
   (setq sml/vc-mode-show-backend t)
   (setq sml/override-theme nil)
