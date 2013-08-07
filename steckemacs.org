@@ -85,7 +85,24 @@ The variable =load-path= lists all the directories where Emacs should look for E
            load-path)))
 #+END_SRC
 
-Here we create the directory =~/.emacs.d/elisp/= if it does'nt exist, add it to the =load-path= and also add all subdirectories. Doing that any =.el= or =.elc= files in these directories will be available to *emacs*.
+Here we create the directory =~/.emacs.d/elisp/= if it does not exist, add it to the =load-path= and also add all subdirectories. Doing that any =.el= or =.elc= files in these directories will be available to *emacs*.
+
+** Online Check
+
+#+BEGIN_SRC emacs-lisp
+  (setq stk/onlinep nil)
+  (unless
+      (condition-case nil
+          (delete-process
+           (make-network-process
+            :name "stk/check-internet"
+            :host "elpa.gnu.org"
+            :service 80))
+        (error t))
+    (setq stk/onlinep t))
+#+END_SRC
+
+Try to open a connection to =elpa.gnu.org= and if it succeeds set the =stk/onlinep= to true. We use this flag later for network related operations.
 
 ** El-Get
 
@@ -107,11 +124,14 @@ Dimitri (on the image above, [[fig:dimitri]]) is the clever guy that brougth us 
   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
   (setq el-get-install-skip-emacswiki-recipes t) (ref:wiki)
   (unless (require 'el-get nil 'noerror)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
+    (if stk/onlinep
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+        (goto-char (point-max))
+        (eval-print-last-sexp))
+      (error "El-Get is not installed and we are unable to download it without an internet connection: cannot continue")
+      ))
 #+END_SRC
 
 This sets up the load path and fetches and evaluates the stable El-Get branch if not already loaded (as described [[https://github.com/dimitri/el-get#basic-setup][on Github]]). If El-Get is already installed it is updated if possible. In line [[(wiki)]] we make sure El-Get doesn't load all the Wiki recipes as we don't use them.
@@ -151,16 +171,12 @@ These are simple El-Get recipes that will either fetch single Elisp files or clo
          '()
          (mapcar 'el-get-source-name el-get-sources)))
 
-  (el-get 'sync my-el-get-packages) (ref:sync)
-
-  ;(el-get-update-all t)
+  (when stk/onlinep
+    (el-get 'sync my-el-get-packages) (ref:sync)
+    (add-to-list 'after-init-hook (lambda () (el-get-update-all t))))
 #+END_SRC
 
-The sync function expects the package names which are extracted from =el-get-sources=. In line [[(sync)]] El-Get does the magic and gets the files specified in =el-get-sources=. After that we make sure all the packages up updated.
-
-*** TODO el-get-update-all blocks Emacs init
-
-will have to see if it can be fixed, commented for now
+The sync function expects the package names which are extracted from =el-get-sources=. In line [[(sync)]] El-Get does the magic and gets the packages specified in =el-get-sources=. After that we instruct the =after-init-hook= to update all El-Get packages. Hooks are variables containing a list of functions that are executed when the specific hook is run, in this case after the init file has finished loading.
 
 ** Packages
 
@@ -252,13 +268,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
 Quite a big list of packages. When Emacs starts up the first time it takes quite a while to install all of them.
 
 #+BEGIN_SRC emacs-lisp
-  (unless (condition-case nil
-              (delete-process
-               (make-network-process
-                :name "stk/check-internet"
-                :host "elpa.gnu.org"
-                :service 80))
-            (error t))
+  (when stk/onlinep
     (package-refresh-contents)
     (mapcar 'package-install
             (loop for p in my-packages
@@ -1128,6 +1138,7 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (add-hook 'org-mode-hook
             (lambda ()
               (add-hook 'after-save-hook '(lambda () (org-agenda-to-appt 'refresh)) nil 'make-it-local)
+              (yas-minor-mode -1)
               (local-set-key "\C-cd" 'org-toodledo-mark-task-deleted)
               (local-set-key "\C-cs" 'org-toodledo-sync)
               ))
