@@ -102,7 +102,7 @@ Here we create the directory =~/.emacs.d/elisp/= if it does not exist, add it to
     (setq stk/onlinep t))
 #+END_SRC
 
-Try to open a connection to =elpa.gnu.org= and if it succeeds set the =stk/onlinep= to true. We use this flag later for network related operations.
+Try to open a connection to =elpa.gnu.org= and if it succeeds set =stk/onlinep= to true. We use this flag later for network related operations.
 
 ** El-Get
 
@@ -176,7 +176,7 @@ These are simple El-Get recipes that will either fetch single Elisp files or clo
     (add-to-list 'after-init-hook (lambda () (el-get-update-all t))))
 #+END_SRC
 
-The sync function expects the package names which are extracted from =el-get-sources=. In line [[(sync)]] El-Get does the magic and gets the packages specified in =el-get-sources=. After that we instruct the =after-init-hook= to update all El-Get packages. Hooks are variables containing a list of functions that are executed when the specific hook is run, in this case after the init file has finished loading.
+The sync function expects the package names which are extracted from =el-get-sources=. In line [[(sync)]] El-Get does the magic and gets the packages specified in =el-get-sources=. After that we instruct the =after-init-hook= to update all El-Get packages. Hooks are variables containing a list of functions that are executed when the specific hook is run, in this case after the init file has finished loading. El-Get would stall the init when I tried updating the packages at this point so I had to defer that.
 
 ** Packages
 
@@ -318,7 +318,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
   <<gen-keys()>>
 #+END_SRC
 
-The code for the keys is generated from data in an Org table named =keys= by running it through some Elisp code =gen-keys= and spit out inside a code block via [[http://orgmode.org/manual/noweb.html][Noweb syntax]]. The same data is also used in the [[*Keyboard%20shortcuts][Keyboard shortcuts]] section to generate the documentation. I'd like to be able to have only one place to change key information and have it updated wherever necessary.
+The code for the keys is generated from data in an Org table named =keys= using a bit of Elisp code =gen-keys= and is spit out inside a code block via [[http://orgmode.org/manual/noweb.html][Noweb syntax]]. The same data is also used in the [[*Keyboard%20shortcuts][Keyboard shortcuts]] section to generate the documentation. I'd like to be able to have only one place to change key information and have it updated wherever necessary.
 
 #+BEGIN_SRC emacs-lisp
   (define-key key-translation-map (kbd "C-t") (kbd "C-p"))
@@ -520,7 +520,15 @@ The code for the keys is generated from data in an Org table named =keys= by run
 
 #+BEGIN_SRC emacs-lisp
   (load-theme 'grandshell t)
+#+END_SRC
 
+Loading my very own [[https://github.com/steckerhalter/grandshell-theme][Grand Shell Theme]] here. It can be installed via [[http://melpa.milkbox.net/#grandshell-theme][MELPA]]. It looks like this:
+
+#+CAPTION: Grand Shell Theme
+#+NAME: grand-shell-theme
+[[https://raw.github.com/steckerhalter/grandshell-theme/master/grandshell-theme.png]]
+
+#+BEGIN_SRC emacs-lisp
   (custom-set-faces
    '(default ((t (:background "black" :foreground "#babdb6" :family "Bitstream Vera Sans Mono" :height 89)))))
 
