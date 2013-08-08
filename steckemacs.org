@@ -476,6 +476,8 @@ Load personal settings if the file is available.
    recentf-max-saved-items 5000
    eval-expression-print-length nil
    eval-expression-print-level nil
+   send-mail-function 'sendmail-send-it
+   ansi-color-names-vector [("black" . "#8a8888") ("#EF3460" . "#F25A7D") ("#BDEF34" . "#DCF692") ("#EFC334" . "#F6DF92") ("#34BDEF" . "#92AAF6") ("#B300FF" . "#DF92F6") ("#3DD8FF" . "#5AF2CE") ("#FFFFFF" . "#FFFFFF")]
    )
 #+END_SRC
 
@@ -519,21 +521,7 @@ In [[(y-or-n)][line (y-or-n)]] all "yes" or "no" questions are aliased to "y" or
 
 Also Emacs should be able to kill processes without asking ([[(process-query)][line (process-query)]]). Got that snippet from: http://www.masteringemacs.org/articles/2010/11/14/disabling-prompts-emacs/
 
-
-#+BEGIN_SRC emacs-lisp
-  (put 'dired-find-alternate-file 'disabled nil) ;don't always open new buffers in dired
-
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(ansi-color-names-vector [("black" . "#8a8888") ("#EF3460" . "#F25A7D") ("#BDEF34" . "#DCF692") ("#EFC334" . "#F6DF92") ("#34BDEF" . "#92AAF6") ("#B300FF" . "#DF92F6") ("#3DD8FF" . "#5AF2CE") ("#FFFFFF" . "#FFFFFF")])
-   '(send-mail-function (quote sendmail-send-it)))
-   ;; '(session-use-package t nil (session)))
-#+END_SRC
-
-*** System Specific
+*** System Specific Settings
 
 #+BEGIN_SRC emacs-lisp
   (when (eq system-type 'gnu/linux)
