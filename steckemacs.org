@@ -630,7 +630,7 @@ Display, the copy the filename of current buffer to kill ring.
 *** stk/open-terminal
 
 #+BEGIN_SRC emacs-lisp
-    (defvar stk/terminal '("gnome-terminal" . "--working-directory=" )
+    (defvar stk/terminal '("terminator" . "--working-directory=")
       "Terminal executable and after the dot the working directory option for the terminal"
       )
 
