@@ -510,9 +510,9 @@ These have to be set as defaults.
 *** Prompt Behavior
 
 #+BEGIN_SRC emacs-lisp -n -r
-  (defalias 'yes-or-no-p 'y-or-n-p) (y-or-n)
+  (defalias 'yes-or-no-p 'y-or-n-p) (ref:y-or-n)
 
-  (setq kill-buffer-query-functions () (process-query)
+  (setq kill-buffer-query-functions (ref:process-query)
     (remq 'process-kill-buffer-query-function
            kill-buffer-query-functions))
 #+END_SRC
