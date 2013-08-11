@@ -23,8 +23,8 @@ The source code is hosted on Github: [[https://github.com/steckerhalter/steckema
 Change to a directory of your choice and clone *steckemacs*:
 
 #+BEGIN_SRC shell-script
-    cd <my directory>
-    git clone https://github.com/steckerhalter/steckemacs.git
+  cd <my directory>
+  git clone https://github.com/steckerhalter/steckemacs.git
 #+END_SRC
 
 And symlink =.emacs= into your home directory:
@@ -134,7 +134,7 @@ Dimitri (on the image above, [[fig:dimitri]]) is the clever guy that brougth us 
       ))
 #+END_SRC
 
-This sets up the load path and fetches and evaluates the stable El-Get branch if not already loaded (as described [[https://github.com/dimitri/el-get#basic-setup][on Github]]). If El-Get is already installed it is updated if possible. In line [[(wiki)]] we make sure El-Get doesn't load all the Wiki recipes as we don't use them.
+This sets up the load path and fetches and evaluates the stable El-Get branch if not already loaded (as described [[https://github.com/dimitri/el-get#basic-setup][on Github]]). In line [[(wiki)]] we make sure El-Get doesn't load all the Wiki recipes as we don't use them.
 
 #+BEGIN_SRC emacs-lisp :results silent
   (setq el-get-sources
@@ -145,9 +145,6 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
           (:name eval-sexp-fu
                  :type http
                  :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
-          (:name magit-filenotify
-                 :type git
-                 :url "https://github.com/magit/magit-filenotify")
           (:name ob-php
                  :type git
                  :url "https://github.com/steckerhalter/ob-php"
@@ -183,6 +180,7 @@ The sync function expects the package names which are extracted from =el-get-sou
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 #+END_SRC
 
 This adds two remote package repositories. The repo from the FSF is already included in Emacs 24 (see http://elpa.gnu.org/).
@@ -244,8 +242,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           nav
           nrepl
           nrepl-eval-sexp-fu
-          org
-          org-reveal
+          org-plus-contrib
           paredit
           php-eldoc
           php-mode
@@ -254,9 +251,11 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           rainbow-mode
           robe
           restclient
-          slime-js
+          skewer-mode
           smart-mode-line
           smartparens
+          tern
+          tern-auto-complete
           visual-regexp
           volatile-highlights
           yaml-mode
@@ -318,7 +317,7 @@ We need to turn the mode on here so that we can map keys further below. We lower
   <<gen-keys()>>
 #+END_SRC
 
-The code for the keys is generated from data in an Org table named =keys= using a bit of Elisp code =gen-keys= and is spit out inside a code block via [[http://orgmode.org/manual/noweb.html][Noweb syntax]]. The same data is also used in the [[*Keyboard%20shortcuts][Keyboard shortcuts]] section to generate the documentation. I'd like to be able to have only one place to change key information and have it updated wherever necessary.
+The code for the keys is generated from data in an Org table named =keys= using a bit of Elisp code =gen-keys= and is spit out inside a code block via [[http://orgmode.org/manual/noweb.html][Noweb syntax]]. The same data is also used in the [[Keyboard%20shortcuts][Keyboard shortcuts]] section to generate the documentation. I'd like to be able to have only one place to change key information and have it updated wherever necessary.
 
 #+BEGIN_SRC emacs-lisp
   (define-key key-translation-map (kbd "C-t") (kbd "C-p"))
@@ -420,8 +419,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c g             | Magit status - manual: http://magit.github.io/magit/      | 'magit-status                                                                                                                              | global    |
 | C-c l             | Magit log                                                 | 'magit-log                                                                                                                                 | global    |
 | bm                | Magit blame mode                                          | 'magit-blame-mode                                                                                                                          | key-chord |
-| <C-f10>           | Move line or region up                                    | 'move-text-up                                                                                                                              | global    |
-| <C-f9>            | Move line or region down                                  | 'move-text-down                                                                                                                            | global    |
+| <M-f10>           | Move line or region up                                    | 'move-text-up                                                                                                                              | global    |
+| <M-f9>            | Move line or region down                                  | 'move-text-down                                                                                                                            | global    |
 | nm                | Open mu4e                                                 | 'mu4e                                                                                                                                      | key-chord |
 | C-S-c C-S-c       | Edit region with multiple cursors                         | 'mc/edit-lines                                                                                                                             | global    |
 | C-<               | Multiple cursors up                                       | 'mc/mark-previous-like-this                                                                                                                | global    |
@@ -471,6 +470,7 @@ Load personal settings if the file is available.
    mouse-yank-at-point t              ;middle click with the mouse yanks at point
    history-length 250                 ;default is 30
    locale-coding-system 'utf-8        ;utf-8 is default
+   tab-always-indent 'complete
    confirm-nonexistent-file-or-buffer nil
    vc-follow-symlinks t
    recentf-max-saved-items 5000
@@ -760,6 +760,16 @@ Display, the copy the filename of current buffer to kill ring.
 
 *** auto-complete
 
+#+BEGIN_QUOTE
+Auto-Complete is an intelligent auto-completion extension for Emacs. It extends the standard Emacs completion interface and provides an environment that allows users to concentrate more on their own work.
+#+END_QUOTE
+
+#+CAPTION: Auto-Complete
+#+NAME: fig:ac
+[[https://raw.github.com/auto-complete/auto-complete/master/doc/ac.png]]
+
+It is written by Tomohiro Matsuyama (aka m2ym). He moved the project from [[http://cx4a.org/][his personal site]] to [[https://github.com/auto-complete/auto-complete][Github]] a while ago which helped quite a lot with further development.
+
 #+BEGIN_SRC emacs-lisp
   (require 'auto-complete-config)
   (ac-config-default)
@@ -769,9 +779,32 @@ Display, the copy the filename of current buffer to kill ring.
   (setq ac-use-fuzzy t)
   (setq ac-disable-faces nil)
   (setq ac-quick-help-prefer-x nil)
+  (setq ac-dwim nil)
+#+END_SRC
 
+Initial setup:
+
+- load the default configuration
+- lower the menu delay
+- show quick help after 1s
+- use fuzzy matching
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'completion-styles 'initials t)
+  (add-to-list 'completion-at-point-functions
+               (lambda ()
+                 (unless (minibufferp)
+                   (auto-complete))))
+#+END_SRC
+
+#+BEGIN_QUOTE
+Use Emacs' built-in TAB completion hooks to trigger AC (Emacs >= 23.2)
+#+END_QUOTE
+
+Got that idea from [[https://github.com/purcell/emacs.d/blob/master/init-auto-complete.el][Steve Purcell]].
+
+#+BEGIN_SRC emacs-lisp
   (require 'pos-tip)
-  ;; from http://emacswiki.org/emacs/AutoComplete
   (defun stk/ac-show-help ()
     "show docs for symbol at point or at beginning of list if not on a symbol"
     (interactive)
@@ -787,9 +820,10 @@ Display, the copy the filename of current buffer to kill ring.
               (popup-tip doc-string :point (point)))
           (message "No documentation for %s" s)
           ))))
-  (define-key lisp-mode-shared-map (kbd "<f1>") 'stk/ac-show-help)
-  (define-key lisp-mode-shared-map (kbd "C-c C-h") 'stk/ac-show-help)
+  (define-key lisp-mode-shared-map (kbd "C-c C-d") 'stk/ac-show-help)
 #+END_SRC
+
+I wanted to be able to get a documentation popup without having to trigger auto-complete. It's mostly stolen from [[http://jaderholm.com/][Scott Jaderholm]]. His code is on [[http://www.emacswiki.org/emacs/AutoComplete][Emacswiki]].
 
 *** auto-save-buffers-enhanced
 
@@ -978,6 +1012,22 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (setq iedit-unmatched-lines-invisible-default t)
 #+END_SRC
 
+*** ielm
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'ac-modes 'inferior-emacs-lisp-mode)
+  (add-hook 'inferior-emacs-lisp-mode-hook
+            (lambda () (setq ac-sources
+                             '(ac-source-features
+                               ac-source-functions
+                               ac-source-yasnippet
+                               ac-source-variables
+                               ac-source-symbols
+                               ac-source-abbrev
+                               ac-source-dictionary
+                               ac-source-words-in-same-mode-buffers))))
+#+END_SRC
+
 *** isearch+
 
 #+BEGIN_SRC emacs-lisp
@@ -995,15 +1045,27 @@ It seems that both flags are necessary to make dired+ not hide the details.
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-  (add-hook 'js2-mode-hook
-            (lambda ()
-              (when (fboundp 'slime-js-minor-mode) (slime-js-minor-mode 1))
-              (local-set-key (kbd "C-c C-v") 'slime-eval-region)
-              (local-set-key (kbd "C-c b") 'slime-eval-buffer)
-              (local-set-key (kbd "C-x C-e") (lambda () (interactive) (slime-eval-region (line-beginning-position) (line-end-position))))
-              (local-set-key (kbd "C-c h") (lambda () (interactive) (mark-paragraph) (slime-eval-region (region-beginning) (region-end))))
-              ))
+
+  (setq js2-allow-rhino-new-expr-initializer nil)
+  (setq js2-auto-indent-p nil)
+  (setq js2-enter-indents-newline nil)
+  (setq js2-global-externs '("module" "require" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON"))
+  (setq js2-idle-timer-delay 0.1)
+  (setq js2-indent-on-enter-key nil)
+  (setq js2-mirror-mode nil)
+  (setq js2-strict-inconsistent-return-warning nil)
+  (setq js2-auto-indent-p t)
+  (setq js2-include-rhino-externs nil)
+  (setq js2-include-gears-externs nil)
+  (setq js2-concat-multiline-strings 'eol)
+  (setq js2-rebind-eol-bol-keys nil)
+  (setq js2-mode-show-parse-errors nil)
+  (setq js2-mode-show-strict-warnings nil)
+
+  (add-hook 'js2-mode-hook (lambda () (flycheck-mode 1)))
 #+END_SRC
+
+Got most of that from [[https://github.com/magnars/.emacs.d/blob/master/setup-js2-mode.el][Magnars' .emacs.d]].
 
 *** json-mode
 
@@ -1011,12 +1073,36 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 #+END_SRC
 
+=json-mode= adds a bit better syntax highlighting for =.json= files.
+
 *** magit
 
 #+BEGIN_SRC emacs-lisp
   (setq magit-commit-all-when-nothing-staged t)
   (add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
 #+END_SRC
+
+Magit is the king of Git interaction for Emacs.
+
+There's a short [[http://www.emacswiki.org/emacs/Magit#toc1][Crash Course on Emacswiki]]:
+
+#+BEGIN_SRC org
+- M-x magit-status to see git status, and in the status buffer:
+- s to stage files
+- c to commit (type in your commit message then C-c C-c to save the message and commit)
+- b b to switch to a branch
+
+Other handy keys:
+
+- P P to do a git push
+- F F to do a git pull
+
+try to press TAB
+#+END_SRC
+
+I have bound =magit-status= to =C-c g= and =magit-log= to =C-c l=.
+
+See the [[http://magit.github.io/magit/magit.html][Magit manual]] for more information.
 
 *** markdown
 
@@ -1030,6 +1116,8 @@ It seems that both flags are necessary to make dired+ not hide the details.
 #+BEGIN_SRC emacs-lisp
   (require 'melpa-upstream-visit)
 #+END_SRC
+
+Adds a button to the package info page to visit the repository homepage.
 
 *** move-text
 
@@ -1183,13 +1271,6 @@ It seems that both flags are necessary to make dired+ not hide the details.
            )))
 #+END_SRC
 
-*** org-reveal
-
-#+BEGIN_SRC emacs-lisp
-  (load "org-reveal")
-  (define-key org-mode-map (kbd "C-c C-v") 'org-reveal-export-to-html)
-#+END_SRC
-
 *** php-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1299,6 +1380,29 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (setq-default save-place t)
 #+END_SRC
 
+*** skewer
+
+#+BEGIN_SRC emacs-lisp
+(skewer-setup)
+#+END_SRC
+
+#+BEGIN_QUOTE
+Provides live interaction with JavaScript, CSS, and HTML in a web browser. Expressions are sent on-the-fly from an editing buffer to be evaluated in the browser, just like Emacs does with an inferior Lisp process in Lisp modes.
+#+END_QUOTE
+
+The following bookmarklet will load skewer on demand on any website:
+
+#+BEGIN_SRC js
+  javascript:(function) {
+      var d=document;
+      var s=d.createElement('script');
+      s.src='http://localhost:8080/skewer';
+      d.body.appendChild(s);
+  })()
+#+END_SRC
+
+Instructions and the source code can be found [[https://github.com/skeeto/skewer-mode][on Github]].
+
 *** smart-mode-line
 
 #+BEGIN_SRC emacs-lisp
@@ -1350,6 +1454,30 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (add-hook 'term-mode-hook (lambda()
                   (yas-minor-mode -1)))
 #+END_SRC
+
+*** tern
+
+#+BEGIN_SRC emacs-lisp
+  (when (executable-find "tern")
+        (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+        (eval-after-load 'auto-complete
+          '(eval-after-load 'tern
+             '(progn
+                (require 'tern-auto-complete)
+                (tern-ac-setup)))))
+#+END_SRC
+
+#+BEGIN_QUOTE
+Tern is a stand-alone, editor-independent JavaScript analyzer that can be used to improve the JavaScript integration of existing editors.
+#+END_QUOTE
+
+Needs the =tern= binary to be present, which can be installed with =npm=:
+
+#+BEGIN_SRC shell-script
+  sudo npm install -g tern
+#+END_SRC
+
+See the [[http://ternjs.net/][project homepage]] for more info.
 
 *** tempo
 

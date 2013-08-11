@@ -39,9 +39,24 @@
 (setq steckemacs-directory (file-name-directory (file-truename load-file-name)))
 (setq org-confirm-babel-evaluate nil)
 
+;; get the org-version but avoid calling org functions to prevent autoloading
+(let ((org-version
+       (with-temp-buffer
+         (require 'find-func)
+         (insert-file-contents (find-library-name "org-version"))
+         (re-search-forward "(org-release \"\\(.*?\\)\")")
+         (match-string 1))))
+
+  ;; fetch a new org if below 8.0
+  (when (version< org-version "8.0")
+    (package-initialize)
+    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+    (package-refresh-contents)
+    (package-install 'org-plus-contrib)))
+
 (add-hook 'after-init-hook
- (lambda ()
-   (org-babel-load-file
-    (expand-file-name "steckemacs.org" steckemacs-directory))))
+          (lambda ()
+            (org-babel-load-file
+             (expand-file-name "steckemacs.org" steckemacs-directory))))
 
 ;;; .emacs.el ends here
