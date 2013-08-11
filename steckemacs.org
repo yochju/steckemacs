@@ -146,6 +146,9 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
           (:name eval-sexp-fu
                  :type http
                  :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
+          (:name magit-filenotify
+                 :type git
+                 :url "https://github.com/magit/magit-filenotify")
           (:name ob-php
                  :type git
                  :url "https://github.com/steckerhalter/ob-php"
@@ -205,6 +208,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           clojure-mode
           csv-mode
           dired+
+          deft
           erc-hl-nicks
           expand-region
           fic-ext-mode
@@ -1079,11 +1083,6 @@ Got most of that from [[https://github.com/magnars/.emacs.d/blob/master/setup-js
 
 *** magit
 
-#+BEGIN_SRC emacs-lisp
-  (setq magit-commit-all-when-nothing-staged t)
-  (add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
-#+END_SRC
-
 Magit is the king of Git interaction for Emacs.
 
 There's a short [[http://www.emacswiki.org/emacs/Magit#toc1][Crash Course on Emacswiki]]:
@@ -1105,6 +1104,22 @@ try to press TAB
 I have bound =magit-status= to =C-c g= and =magit-log= to =C-c l=.
 
 See the [[http://magit.github.io/magit/magit.html][Magit manual]] for more information.
+
+#+BEGIN_SRC emacs-lisp
+  (setq magit-commit-all-when-nothing-staged t)
+  (when (fboundp 'file-notify-add-watch)
+    (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
+#+END_SRC
+
+Committing should act like =git commit -a= by default.
+
+When Emacs has been compiled with inotiy support...
+
+#+BEGIN_SRC shell-script
+./configure --with-file-notification=inotify
+#+END_SRC
+
+...the function =file-notify-add-watch= is bound and we add =magit-filenotify-mode= to the hook so that file updates get reflected automatically in magit status.
 
 *** markdown
 
@@ -1211,6 +1226,7 @@ Adds a button to the package info page to visit the repository homepage.
                                     ))
       ))
   (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+  (add-to-list 'ac-modes 'org-mode)
   (setq org-startup-folded 'nofold)
   (setq org-startup-indented t)
   (setq org-startup-with-inline-images t)
@@ -1252,9 +1268,11 @@ Adds a button to the package info page to visit the repository homepage.
             (lambda ()
               (add-hook 'after-save-hook '(lambda () (org-agenda-to-appt 'refresh)) nil 'make-it-local)
               (yas-minor-mode -1)
+              (set (make-local-variable 'ac-auto-start) nil)
               (local-set-key "\C-cd" 'org-toodledo-mark-task-deleted)
               (local-set-key "\C-cs" 'org-toodledo-sync)
               ))
+
   (setq appt-disp-window-function '(lambda (min-to-app new-time msg) (interactive)
                                      (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
         )
