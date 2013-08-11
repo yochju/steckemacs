@@ -10,13 +10,14 @@
 
 * Usage
 
-*Warning - currently the setup might be unstable. I'm working on integrating the configuration with Org mode*
-
 *steckemacs* is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
 
 The source code is hosted on Github: [[https://github.com/steckerhalter/steckemacs]]
 
-*To use this setup please use Emacs 24 or later. Older versions do not work properly.*
+#+BEGIN_EXAMPLE
+To use this setup please use Emacs 24.3 or later. Older versions might not work properly.
+I had to tweak it quite a bit to load everything on the first startup, which is a bit problematic because I need the latest Org mode and the installed version easily conflicts with new version etc.
+#+END_EXAMPLE
 
 ** Installation
 
@@ -56,7 +57,7 @@ This table is generated with an Elisp block =keys-doc= from an Org table which i
 
 ** Contributions
 
-I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize *emacs*.
+I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize Emacs.
 
 You can find more information about *Literate Programming* and *org-mode* here: http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming
 
