@@ -225,6 +225,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           helm-git
           helm-projectile
           highlight-symbol
+          htmlize
           iedit
           isearch+
           jinja2-mode
