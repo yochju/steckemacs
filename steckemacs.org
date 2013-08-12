@@ -158,6 +158,9 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
           (:name php-align
                  :type git
                  :url "https://github.com/tetsujin/emacs-php-align")
+          (:name php-boris-minor-mode
+                 :type git
+                 :url "https://github.com/steckerhalter/php-boris-minor-mode")
           (:name php-documentor
                  :type http
                  :url "https://raw.github.com/wenbinye/dot-emacs/master/site-lisp/contrib/php-documentor.el")
@@ -249,7 +252,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           nrepl
           nrepl-eval-sexp-fu
           org-plus-contrib
-          paredit
+          php-boris
           php-eldoc
           php-mode
           popup
