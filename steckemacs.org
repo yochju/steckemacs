@@ -814,22 +814,27 @@ Got that idea from [[https://github.com/purcell/emacs.d/blob/master/init-auto-co
 
 #+BEGIN_SRC emacs-lisp
   (require 'pos-tip)
-  (defun stk/ac-show-help ()
-    "show docs for symbol at point or at beginning of list if not on a symbol"
+  (defun stk/ac-show-help (ac-doc-function)
+    "Show docs for symbol at point or at beginning of list if not on a symbol.
+  Pass symbol-name to the function AC-DOC-FUNCTION."
     (interactive)
-    (let ((s (save-excursion
-               (or (symbol-at-point)
-                   (progn (backward-up-list)
-                          (forward-char)
-                          (symbol-at-point))))))
-      (let ((doc-string (ac-symbol-documentation s)))
+    (let ((s (symbol-name
+              (save-excursion
+                (or (symbol-at-point)
+                    (progn (backward-up-list)
+                           (forward-char)
+                           (symbol-at-point)))))))
+      (let ((doc-string (funcall ac-doc-function s)))
         (if doc-string
             (if ac-quick-help-prefer-x
                 (pos-tip-show doc-string 'popup-tip-face (point) nil -1)
               (popup-tip doc-string :point (point)))
           (message "No documentation for %s" s)
           ))))
-  (define-key lisp-mode-shared-map (kbd "C-c C-d") 'stk/ac-show-help)
+  (define-key lisp-mode-shared-map (kbd "C-c C-d")
+    (lambda ()
+      (interactive)
+      (stk/ac-show-help #'ac-symbol-documentation)))
 #+END_SRC
 
 I wanted to be able to get a documentation popup without having to trigger auto-complete. It's mostly stolen from [[http://jaderholm.com/][Scott Jaderholm]]. His code is on [[http://www.emacswiki.org/emacs/AutoComplete][Emacswiki]].
@@ -1309,6 +1314,10 @@ Adds a button to the package info page to visit the repository homepage.
   (defun setup-php-mode ()
     (require 'php-documentor nil t)
     (local-set-key (kbd "C-c p") 'php-documentor-dwim)
+    (local-set-key (kbd "C-c d")
+                   (lambda ()
+                     (interactive)
+                     (stk/ac-show-help #'ac-php-doc-documentation)))
     (require 'php-align nil t)
     (php-align-setup)
     (php-eldoc-enable)
