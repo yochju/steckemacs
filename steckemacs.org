@@ -443,13 +443,13 @@ The code for the keys is generated from data in an Org table named =keys= using 
 
 ** Settings
 
-*** Secrets
+*** User Settings
 
 #+BEGIN_SRC emacs-lisp
-  (when (file-readable-p "~/.secrets.el") (load "~/.secrets.el"))
+  (when (file-readable-p "~/.user.el") (load "~/.user.el"))
 #+END_SRC
 
-Load personal settings if the file is available.
+Load user settings if the file is available. Put all your personal modifications or sensitive information into this file.
 
 *** Encoding
 
@@ -547,16 +547,25 @@ Loading my very own [[https://github.com/steckerhalter/grandshell-theme][Grand S
 [[https://raw.github.com/steckerhalter/grandshell-theme/master/grandshell-theme.png]]
 
 #+BEGIN_SRC emacs-lisp
-  (custom-set-faces
-   '(default ((t (:background "black" :foreground "#babdb6" :family "Bitstream Vera Sans Mono" :height 89)))))
+  (set-face-attribute 'default nil :background "black" :foreground "#babdb6")
+#+END_SRC
 
-  ;; more useful frame title, that show either a file or a
-  ;; buffer name (if the buffer isn't visiting a file)
+Use a black background and gray text. To set the default font you can use something like this:
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  (set-face-attribute 'default nil :family "Bitstream Vera Sans Mono" :height 89)
+#+END_SRC
+
+Put that line into =~/.user.el= which is loaded [[*User%20Settings][in this init file too.]]
+
+#+BEGIN_SRC emacs-lisp
   (setq frame-title-format
         '("" invocation-name " "(:eval (if (buffer-file-name)
-                                        (abbreviate-file-name (buffer-file-name))
-                                      "%b"))))
+                                           (abbreviate-file-name (buffer-file-name))
+                                         "%b"))))
 #+END_SRC
+
+For the frame title either show a file or a buffer name (if the buffer isn't visiting a file).
 
 ** Custom Functions
 
