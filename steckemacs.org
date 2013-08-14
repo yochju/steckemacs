@@ -410,7 +410,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-5               | Helm show all mark rings                                  | 'helm-all-mark-rings                                                                                                                       | global    |
 | M-9               | Helm search for occurences in open buffers                | 'helm-occur                                                                                                                                | global    |
 | M--               | Helm resume                                               | 'helm-resume                                                                                                                               | global    |
-| C-S-h             | Helm describe key Bindings                                | 'helm-descbinds                                                                                                                            | global    |
 | C-c h             | Helm navigate project files                               | 'helm-projectile                                                                                                                           | global    |
 | fw                | Helm find files                                           | 'helm-find-files                                                                                                                           | key-chord |
 | hg                | Helm grep                                                 | (lambda () (interactive) (let ((current-prefix-arg t)) (helm-do-grep)))                                                                    | key-chord |
@@ -509,7 +508,6 @@ These have to be set as defaults.
   (tool-bar-mode -1)                   ;disable the awful toolbar
   (menu-bar-mode -1)                   ;no menu
   (scroll-bar-mode -1)
-  (savehist-mode 1)                    ;save minibuffer history
 #+END_SRC
 
 *** Prompt Behavior
@@ -823,7 +821,7 @@ Got that idea from [[https://github.com/purcell/emacs.d/blob/master/init-auto-co
       (let ((doc-string (funcall ac-doc-function s)))
         (if doc-string
             (if ac-quick-help-prefer-x
-                (pos-tip-show doc-string 'popup-tip-face (point) nil -1)
+                (pos-tip-show doc-string 'popup-tip-face (point) nil -1 60)
               (popup-tip doc-string :point (point)))
           (message "No documentation for %s" s)
           ))))
@@ -833,7 +831,7 @@ Got that idea from [[https://github.com/purcell/emacs.d/blob/master/init-auto-co
       (stk/ac-show-help #'ac-symbol-documentation)))
 #+END_SRC
 
-I wanted to be able to get a documentation popup without having to trigger auto-complete. It's mostly stolen from [[http://jaderholm.com/][Scott Jaderholm]]. His code is on [[http://www.emacswiki.org/emacs/AutoComplete][Emacswiki]].
+I wanted to be able to get a documentation popup without having to trigger auto-complete. It's mostly stolen from [[http://jaderholm.com/][Scott Jaderholm]] (the code is on [[http://www.emacswiki.org/emacs/AutoComplete][Emacswiki]]), but has been made more general to also work with other completion functions.
 
 *** auto-save-buffers-enhanced
 
@@ -977,6 +975,16 @@ It seems that both flags are necessary to make dired+ not hide the details.
 
 *** helm
 
+#+BEGIN_QUOTE
+Helm is incremental completion and selection narrowing framework for Emacs. It will help steer you in the right direction when you're looking for stuff in Emacs (like buffers, files, etc).
+
+Helm is a fork of anything.el originaly written by Tamas Patrovic and can be considered to be its successor. Helm sets out to clean up the legacy code in anything.el and provide a cleaner, leaner and more modular tool, that's not tied in the trap of backward compatibility.
+#+END_QUOTE
+
+The Helm source code can be found [[https://github.com/emacs-helm/helm][at Github]].
+
+You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm Wiki]] for detailed instructions on how Helm works.
+
 #+BEGIN_SRC emacs-lisp
   (require 'helm-config)
   (setq enable-recursive-minibuffers t)
@@ -985,8 +993,13 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (setq helm-idle-delay 0.1)
   (setq helm-input-idle-delay 0.1)
   (setq helm-buffer-max-length 50)
+  (setq helm-M-x-always-save-history t)
   (require 'helm-git)
 #+END_SRC
+
+I'm not using [[https://github.com/emacs-helm/helm/wiki#6-helm-find-files][Helm Find Files]] to browse files anymore. I tried using it but gave up after a while. I found it to be more cumbersome than [[*ido-mode][ido-mode]]. But in general I really like to have Helm around to get to see all available completions.
+
+I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also the separate [[https://github.com/emacs-helm/helm-descbinds][Helm Descbinds]] (=C-h b=) to get a quick key bindings overview.
 
 *** highlight-symbol
 
@@ -1011,6 +1024,7 @@ It seems that both flags are necessary to make dired+ not hide the details.
         ido-everywhere t
         ido-default-buffer-method 'selected-window
         ido-max-prospects 32
+        ido-use-filename-at-point t
         )
   (ido-mode 1)
 #+END_SRC
@@ -1403,10 +1417,30 @@ Adds a button to the package info page to visit the repository homepage.
 
 *** saveplace
 
+#+BEGIN_QUOTE
+Automatically save place in each file. This means when you visit a file, point goes to the last place
+where it was when you previously visited the same file.
+#+END_QUOTE
+
 #+BEGIN_SRC emacs-lisp
   (require 'saveplace)
   (setq-default save-place t)
 #+END_SRC
+
+I find this quite practical...
+
+*** savehist
+
+#+BEGIN_QUOTE
+Many editors (e.g. Vim) have the feature of saving minibuffer history to an external file after exit.  This package provides the same feature in Emacs. When set up, it saves recorded minibuffer histories to a file.
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (setq savehist-additional-variables '(search ring regexp-search-ring extended-command-history))
+  (savehist-mode 1)
+#+END_SRC
+
+I'm adding a few variables like the =extended-command-history= that I would like to persist too.
 
 *** skewer
 
