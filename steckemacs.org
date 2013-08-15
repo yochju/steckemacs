@@ -999,6 +999,7 @@ You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm W
   (setq enable-recursive-minibuffers t)
   (helm-mode 1)
   (helm-gtags-mode 1)
+  (helm-descbinds-mode)
   (setq helm-idle-delay 0.1)
   (setq helm-input-idle-delay 0.1)
   (setq helm-buffer-max-length 50)
