@@ -8,6 +8,11 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/bootstrap-responsive.css" />
 #+INFOJS_OPT: view:showall toc:t ftoc:t mouse:#555555 path:/stuff/js/org-info.js
 
+#+BEGIN_SRC emacs-lisp :tangle no :results silent
+(org-babel-tangle-file "steckemacs.org" "steckemacs.el" "emacs-lisp")
+#+END_SRC
+
+
 * Usage
 
 *steckemacs* is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
@@ -447,6 +452,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | aw                | Projectile ack                                            | 'projectile-ack                                                                                                                            | key-chord |
 | vr                | Visual regexp/replace                                     | 'vr/replace                                                                                                                                | key-chord |
 | C-x a s           | Toggle auto saving of buffers                             | 'auto-save-buffers-enhanced-toggle-activity                                                                                                | global    |
+| C-x C-u           | Prompt for URL and insert contents at point               | 'stk/url-insert-file-contents                                                                                                              | global    |
 
 ** Settings
 
@@ -588,6 +594,17 @@ For the frame title either show a file or a buffer name (if the buffer isn't vis
 #+END_SRC
 
 Try to open dired in the directory of the current file, otherwise in the home dir.
+
+*** stk/url-insert-file-contents
+
+#+BEGIN_SRC emacs-lisp
+  (defun stk/url-insert-file-contents (url)
+    "Prompt for URL and insert file contents at point."
+    (interactive "sURL: ")
+    (url-insert-file-contents url)
+    )
+#+END_SRC
+
 
 *** show-file-name
 
@@ -1041,7 +1058,7 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
         ido-everywhere t
         ido-default-buffer-method 'selected-window
         ido-max-prospects 32
-        ido-use-filename-at-point t
+        ido-use-filename-at-point 'guess
         )
   (ido-mode 1)
 #+END_SRC
@@ -1194,6 +1211,7 @@ Adds a button to the package info page to visit the repository homepage.
     (setq mu4e-auto-retrieve-keys t)
     (setq mu4e-headers-leave-behavior 'apply)
     (setq mu4e-headers-visible-lines 20)
+    (setq mu4e-hide-index-messages t)
 
     (add-hook 'mu4e-headers-mode-hook (lambda () (local-set-key (kbd "X") (lambda () (interactive) (mu4e-mark-execute-all t)))))
     (add-hook 'mu4e-view-mode-hook (lambda () (local-set-key (kbd "X") (lambda () (interactive) (mu4e-mark-execute-all t)))))
@@ -1317,13 +1335,21 @@ Adds a button to the package info page to visit the repository homepage.
   (setq org-todo-keywords
         '((sequence
            "TODO(t)"
-           "REMINDER(r)"
-           "WAITING(w!)"
-           "DELEGATED(g!)"
+           "IN PROGRESS(p!)"
+           "HOLD(h!)"
+           "WAITING(w)"
            "SOMEDAY(s)"
            "|"
            "DONE(d!)"
+           "CANCELLED(c)"
            )))
+  (setq org-todo-keyword-faces
+        '(
+          ("IN PROGRESS" . 'warning)
+          ("HOLD" . 'font-lock-keyword-face)
+          ("WAITING" . 'font-lock-builtin-face)
+          ("SOMEDAY" . 'font-lock-doc-face)
+          ))
 #+END_SRC
 
 *** php-mode
