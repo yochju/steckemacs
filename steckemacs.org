@@ -48,7 +48,7 @@ By using the =key-chord= mode we can avoid having to type C- or M- all the time.
 
 When I write =fg= as a key combo it means you would have to press =f= and =g= at the same time.
 
-I only describe my custom key combinations currently. To learn the standard Emacs commands, go through the Tutorial =C-h t=, use =C-S-h= or =M-x= to see/filter the available commands/shortcuts.
+I only describe my custom key combinations currently. To learn the standard Emacs commands, go through the Tutorial =C-h t=, use =C-h b= or =M-x= to see/filter the available commands/shortcuts.
 
 #+NAME: keys-doc
 #+BEGIN_SRC emacs-lisp :var keys=keys :tangle no :results output raw :exports results
@@ -56,6 +56,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
          (keys (delq header keys))
          (category))
     (pop keys)
+    (princ "#+ATTR_HTML: :rules all :cellpadding 3\n")
     (mapcar (lambda (l) (if (listp l)
                             (progn
                               (unless (string= (nth 1 l) category)
@@ -67,6 +68,7 @@ I only describe my custom key combinations currently. To learn the standard Emac
                               (princ (format "| =%s= | %s |\n" (car l) (nth 2 l))))
                           (princ "|-\n")))
             keys))
+  (princ "\n")
 #+END_SRC
 
 This table is generated with an Elisp block =keys-doc= from an Org table which is also used in the code [[*Key%20Bindings][further below]].
