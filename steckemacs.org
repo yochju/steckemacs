@@ -50,22 +50,18 @@ When I write =fg= as a key combo it means you would have to press =f= and =g= at
 
 I only describe my custom key combinations currently. To learn the standard Emacs commands, go through the Tutorial =C-h t=, use =C-S-h= or =M-x= to see/filter the available commands/shortcuts.
 
-#+LaTeX: \pagebreak
-
 #+NAME: keys-doc
 #+BEGIN_SRC emacs-lisp :var keys=keys :tangle no :results output raw :exports results
   (let* ((header (car keys))
          (keys (delq header keys))
          (category))
     (pop keys)
-    (princ "#+ATTR_HTML: :rules all :cellpadding 3\n")
-    (princ "#+ATTR_LaTeX: :environment longtable\n")
-    (princ "| *Category/Key* | *Description* |\n|-\n")
     (mapcar (lambda (l) (if (listp l)
                             (progn
                               (unless (string= (nth 1 l) category)
                                 (setq category (nth 1 l))
-                                (princ (format "|*%s*| |\n" category (car header) (nth 2 header)))
+                                (princ (format "*** %s\n" category))
+                                (princ (format "| *%s* | *%s* |\n" (car header) (nth 2 header)))
                                 (princ "|-\n")
                                 )
                               (princ (format "| =%s= | %s |\n" (car l) (nth 2 l))))
