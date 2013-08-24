@@ -1114,6 +1114,8 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
 
 *** ielm
 
+IELM is short for *I*nferior *E*macs *L*isp *M*ode. It is a REPL for Emacs Lisp that is sometimes useful if you want to get immediate feedback and a prompt to work with. I tend to use the =*scratch*= buffer for explorations like that usually but would be probably better off to use IELM more often :)
+
 #+BEGIN_SRC emacs-lisp
   (eval-after-load 'ielm
     '(progn
@@ -1128,6 +1130,8 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
                       ac-source-features
                       ac-source-symbols))))))
 #+END_SRC
+
+We need to tweak IELM a bit so we get completion and eldoc hints.
 
 *** jinja2-mode for twig
 
