@@ -253,7 +253,6 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           htmlize
           ido-at-point
           iedit
-          isearch+
           jinja2-mode
           js2-mode
           json-mode
@@ -716,7 +715,7 @@ Display, the copy the filename of current buffer to kill ring.
                         ".*__.__" ""
                         (replace-regexp-in-string
                          "^'\\|'\n" ""
-                         (shell-command-to-string (concat "autojump --bash --completion " query))))
+                         (shell-command-to-string (concat "autojump --bash --complete " query))))
                        "\n" t)))
                  (if (> (length results) 1)
                      (ido-completing-read "Dired: " results nil t)
@@ -820,7 +819,7 @@ Auto-Complete is an intelligent auto-completion extension for Emacs. It extends 
 
 #+CAPTION: Auto-Complete
 #+NAME: fig:ac
-[[https://raw.github.com/auto-complete/auto-complete/master/doc/ac.png]]
+[[http://steckerhalter.co.vu/stuff/img/ac.png]]
 
 It is written by Tomohiro Matsuyama (aka m2ym). He moved the project from [[http://cx4a.org/][his personal site]] to [[https://github.com/auto-complete/auto-complete][Github]] a while ago which helped quite a lot with further development.
 
@@ -990,7 +989,7 @@ It seems that both flags are necessary to make dired+ not hide the details.
 
 #+BEGIN_SRC emacs-lisp
   (setq flex-isearch-auto 'on-failed)
-  (flex-isearch-mode 1)
+  (global-flex-isearch-mode 1)
 #+END_SRC
 
 *** flycheck-mode
@@ -1127,13 +1126,6 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
                                ac-source-words-in-same-mode-buffers))))
 #+END_SRC
 
-*** isearch+
-
-#+BEGIN_SRC emacs-lisp
-  (eval-after-load "isearch" '(require 'isearch+))
-  (setq isearchp-drop-mismatch 'replace-last)
-#+END_SRC
-
 *** jinja2-mode for twig
 
 #+BEGIN_SRC emacs-lisp
@@ -1200,7 +1192,6 @@ I have bound =magit-status= to =C-c g= and =magit-log= to =C-c l=.
 See the [[http://magit.github.io/magit/magit.html][Magit manual]] for more information.
 
 #+BEGIN_SRC emacs-lisp
-  (setq magit-commit-all-when-nothing-staged t)
   (when (fboundp 'file-notify-add-watch)
     (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
 #+END_SRC
