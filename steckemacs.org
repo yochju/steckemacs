@@ -362,7 +362,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h h             | General   | Helm M-x (execute command)                                | 'helm-M-x                                                                                                                                  |
 | C-h C-p           | General   | Helm navigate project files                               | 'helm-projectile                                                                                                                           |
 | <C-S-iso-lefttab> | General   | Helm for files                                            | 'helm-for-files                                                                                                                            |
-| C-h C-h           | General   | Open file                                                 | 'find-file                                                                                                                                   |
+| C-h C-h           | General   | Open file                                                 | 'find-file                                                                                                                                 |
 | cg                | General   | Customize group                                           | 'customize-group                                                                                                                           |
 | C-c m             | Interface | Toggle the menu bar                                       | 'menu-bar-mode                                                                                                                             |
 | C--               | Interface | Decrease the font size                                    | 'text-scale-decrease                                                                                                                       |
@@ -382,6 +382,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-<               | Editing   | Multiple cursors up                                       | 'mc/mark-previous-like-this                                                                                                                |
 | C->               | Editing   | Multiple cursors down                                     | 'mc/mark-next-like-this                                                                                                                    |
 | C-*               | Editing   | Mark all like "this" with multiple cursors                | 'mc/mark-all-like-this                                                                                                                     |
+| C-h r             | Editing   | Query and replace text                                    | 'query-replace                                                                                                                               |
 | vr                | Editing   | Visual regexp/replace                                     | 'vr/replace                                                                                                                                |
 | i9                | Editing   | Toggle electric indent mode                               | 'electric-indent-mode                                                                                                                      |
 | C-c i             | Editing   | indent the whole the buffer                               | (lambda () (interactive) (indent-region (point-min) (point-max)))                                                                          |
@@ -1114,17 +1115,18 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
 *** ielm
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'ac-modes 'inferior-emacs-lisp-mode)
-  (add-hook 'inferior-emacs-lisp-mode-hook
-            (lambda () (setq ac-sources
-                             '(ac-source-features
-                               ac-source-functions
-                               ac-source-yasnippet
-                               ac-source-variables
-                               ac-source-symbols
-                               ac-source-abbrev
-                               ac-source-dictionary
-                               ac-source-words-in-same-mode-buffers))))
+  (eval-after-load 'ielm
+    '(progn
+       (add-hook 'inferior-emacs-lisp-mode-hook
+                 (lambda ()
+                   (auto-complete-mode 1)
+                   (turn-on-eldoc-mode)
+                   (mapc
+                    (lambda (src) (add-to-list 'ac-sources src))
+                    '(ac-source-functions
+                      ac-source-variables
+                      ac-source-features
+                      ac-source-symbols))))))
 #+END_SRC
 
 *** jinja2-mode for twig
