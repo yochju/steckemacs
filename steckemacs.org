@@ -394,7 +394,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-v           | Editing   | Toggle visual line mode                                   | 'visual-line-mode                                                                                                                          |
 | C-?               | Source    | Go to definition of function or variable at point         | 'stk/find-function-or-variable-at-point                                                                                                    |
 | C-h C-f           | Source    | Go to the definition of the function under cursor         | 'find-function-at-point                                                                                                                    |
-| C-h C-v           | Source    | Go to the definition of the variable under cursor         | 'find-variable-at-point                                                                                                                    |
 | M-5               | Source    | Helm select etags                                         | 'helm-etags-select                                                                                                                         |
 | M-6               | Source    | Find tag in a new window                                  | 'find-tag-other-window                                                                                                                     |
 | C-c C-/           | Source    | Edebug defun at point                                     | 'edebug-defun                                                                                                                              |
@@ -517,13 +516,13 @@ These have to be set as defaults.
 *** Global Modes
 
 #+BEGIN_SRC emacs-lisp
-  (global-auto-revert-mode 1)          ;auto revert buffers when changed on disk
-  (show-paren-mode t)                  ;visualize()
-  (iswitchb-mode t)                    ;use advanced tab switching
-  (blink-cursor-mode -1)
-  (tool-bar-mode -1)                   ;disable the awful toolbar
-  (menu-bar-mode -1)                   ;no menu
-  (scroll-bar-mode -1)
+  (global-auto-revert-mode 1)          ; auto revert buffers when changed on disk
+  (show-paren-mode t)                  ; visualize()
+  (iswitchb-mode t)                    ; use advanced tab switching
+  (blink-cursor-mode -1)               ; no cursor blinking
+  (tool-bar-mode -1)                   ; disable the awful toolbar
+  (menu-bar-mode -1)                   ; no menu, you can toggle it with C-c m
+  (scroll-bar-mode -1)                 ; disable the sroll bar
 #+END_SRC
 
 *** Prompt Behavior
