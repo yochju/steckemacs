@@ -162,13 +162,6 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
           (:name eval-sexp-fu
                  :type http
                  :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
-          (:name ido-at-point
-                 :type git
-                 :url "https://github.com/katspaugh/ido-at-point"
-                 :after (progn
-                          (autoload 'ido-at-point-setup "ido-at-point")
-                          (ido-at-point-setup))
-                 )
           (:name magit-filenotify
                  :type git
                  :url "https://github.com/magit/magit-filenotify")
@@ -257,6 +250,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           helm-projectile
           highlight-symbol
           htmlize
+          ido-at-point
           iedit
           isearch+
           jinja2-mode
@@ -271,7 +265,6 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           move-text
           multi-web-mode
           multiple-cursors
-          nav
           nrepl
           nrepl-eval-sexp-fu
           org-plus-contrib
@@ -366,7 +359,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c d             | General   | Change dictionary                                         | 'ispell-change-dictionary                                                                                                                  |
 | C-c f             | General   | Toggle flyspell mode (spellchecking)                      | 'flyspell-mode                                                                                                                             |
 | M-x               | General   | Helm M-x (execute command)                                | 'helm-M-x                                                                                                                                  |
-| C-h C-c           | General   | Helm M-x (execute command)                                | 'helm-M-x                                                                                                                                  |
+| C-h h             | General   | Helm M-x (execute command)                                | 'helm-M-x                                                                                                                                  |
 | C-c h             | General   | Helm navigate project files                               | 'helm-projectile                                                                                                                           |
 | <C-S-iso-lefttab> | General   | Helm for files                                            | 'helm-for-files                                                                                                                            |
 | cg                | General   | Customize group                                           | 'customize-group                                                                                                                           |
@@ -378,6 +371,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c C-w           | Internet  | Browse URL under cursor                                   | 'browse-url-at-point                                                                                                                       |
 | gt                | Internet  | Google "this"                                             | 'google-this                                                                                                                               |
 | gs                | Internet  | Google search                                             | 'google-search                                                                                                                             |
+| C-h C-r           | Editing   | Kill region or current line                               | 'kill-region                                                                                                                               |
+| C-h C-c           | Editing   | Copy region or current line                               | 'kill-ring-save                                                                                                                            |
 | C-h C-n           | Editing   | Newline and indent (also on C-j)                          | 'newline-and-indent                                                                                                                        |
 | C-z               | Editing   | Undo - but do not trigger redo                            | 'undo-only                                                                                                                                 |
 | <M-f10>           | Editing   | Move line or region up                                    | 'move-text-up                                                                                                                              |
@@ -394,8 +389,9 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | M-8               | Editing   | Contract the current selection                            | 'er/contract-region                                                                                                                        |
 | M-W               | Editing   | Delete region (but don't put it into kill ring)           | 'delete-region                                                                                                                             |
 | fc                | Editing   | Toggle flycheck mode                                      | 'flycheck-mode                                                                                                                             |
-| C-c q             | Editing   | toggles word wrap                                         | 'auto-fill-mode                                                                                                                            |
-| C-c w             | Editing   | cleanup whitespaces                                       | 'whitespace-cleanup                                                                                                                        |
+| C-c q             | Editing   | Toggle word wrap                                          | 'auto-fill-mode                                                                                                                            |
+| C-c w             | Editing   | Cleanup whitespaces                                       | 'whitespace-cleanup                                                                                                                        |
+| C-h C-v           | Editing   | Toggle visual line mode                                   | 'visual-line-mode                                                                                                                          |
 | C-?               | Source    | Go to definition of function or variable at point         | 'stk/find-function-or-variable-at-point                                                                                                    |
 | C-h C-f           | Source    | Go to the definition of the function under cursor         | 'find-function-at-point                                                                                                                    |
 | C-h C-v           | Source    | Go to the definition of the variable under cursor         | 'find-variable-at-point                                                                                                                    |
@@ -408,6 +404,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c t             | Directory | Open terminal in current project root                     | (lambda () (interactive) (stk/open-terminal t))                                                                                            |
 | C-6               | Directory | Use autojump to navigate to a directory (with IDO)        | 'ido-autojump                                                                                                                              |
 | eb                | Buffers   | Evaluate the current buffer                               | 'eval-buffer                                                                                                                               |
+| C-h C-s           | Buffers   | Save the current buffer                                   | 'save-buffer                                                                                                                               |
 | C-c r             | Buffers   | Revert a buffer to the saved state                        | 'revert-buffer                                                                                                                             |
 | C-x C-b           | Buffers   | use ido to switch buffers                                 | 'ido-switch-buffer                                                                                                                         |
 | <f6>              | Buffers   | Kill current buffer                                       | (lambda () (interactive) (kill-buffer (buffer-name)))                                                                                      |
@@ -441,11 +438,11 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | vg                | Find/Grep | VC git grep                                               | 'vc-git-grep                                                                                                                               |
 | C-h C-f           | Find/Grep | Grep find                                                 | 'grep-find                                                                                                                                 |
 | C-c o             | Find/Grep | list matching regexp                                      | 'occur                                                                                                                                     |
-| C-h C-g           | Find/Grep | Use the ag cli tool to grep project                       | 'ag-project                                                                                                                                |
-| C-h C-l           | Find/Grep | Helm locate                                               | 'helm-locate                                                                                                                               |
-| C-h C-s           | Find/Grep | Projectile find file                                      | 'projectile-find-file                                                                                                                      |
-| C-h C-r           | Find/Grep | Projectile grep                                           | 'projectile-grep                                                                                                                           |
-| aw                | Find/Grep | Projectile ack                                            | 'projectile-ack                                                                                                                            |
+| C-h g             | Find/Grep | Use the ag cli tool to grep project                       | 'ag-project                                                                                                                                |
+| C-h l             | Find/Grep | Helm locate                                               | 'helm-locate                                                                                                                               |
+| C-h s             | Find/Grep | Projectile find file                                      | 'projectile-find-file                                                                                                                      |
+| C-h z             | Find/Grep | Projectile grep                                           | 'projectile-grep                                                                                                                           |
+| C-h t             | Find/Grep | Projectile ack                                            | 'projectile-ack                                                                                                                            |
 | M-0               | Find/Grep | Helm find files with Git                                  | 'helm-git-find-files                                                                                                                       |
 | C-c g             | VCS       | Magit status - manual: http://magit.github.io/magit/      | 'magit-status                                                                                                                              |
 | C-c l             | VCS       | Magit log                                                 | 'magit-log                                                                                                                                 |
@@ -1017,6 +1014,22 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (google-this-mode 1)
 #+END_SRC
 
+*** grizzl
+
+#+BEGIN_QUOTE
+Grizzl is a small utility library to be used in other Elisp code needing fuzzy search behaviour. It is optimized for large data sets, using a special type of lookup table and supporting incremental searches (searches where the result can be narrowed-down by only searching what is already matched).
+#+END_QUOTE
+
+The source code for Grizzl can be found on [[https://github.com/d11wtq/grizzl][Github]]. It is written by Chris Corbyn who also wrote the PHP REPL =Boris=.
+
+Currently it is used by [[https://github.com/bbatsov/projectile][Projectile]] in my config. I quite like Grizzl. It offers some benefits for when entries are longer. For most cases =IDO= is better suited though.
+
+#+BEGIN_SRC emacs-lisp
+(setq *grizzl-read-max-results* 30)
+#+END_SRC
+
+I would like to see more than just the default results of 10.
+
 *** haskell-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1069,6 +1082,13 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
   (add-to-list 'ac-modes 'html-mode)
 #+END_SRC
 
+*** ido-at-point
+
+#+BEGIN_SRC emacs-lisp
+(autoload 'ido-at-point-mode "ido-at-point")
+(ido-at-point-mode)
+#+END_SRC
+
 *** ido-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1110,6 +1130,7 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
 
 #+BEGIN_SRC emacs-lisp
   (eval-after-load "isearch" '(require 'isearch+))
+  (setq isearchp-drop-mismatch 'replace-last)
 #+END_SRC
 
 *** jinja2-mode for twig
