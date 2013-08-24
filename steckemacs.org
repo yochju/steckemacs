@@ -362,6 +362,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h h             | General   | Helm M-x (execute command)                                | 'helm-M-x                                                                                                                                  |
 | C-h C-p           | General   | Helm navigate project files                               | 'helm-projectile                                                                                                                           |
 | <C-S-iso-lefttab> | General   | Helm for files                                            | 'helm-for-files                                                                                                                            |
+| C-h C-h           | General   | Open file                                                 | 'find-file                                                                                                                                   |
 | cg                | General   | Customize group                                           | 'customize-group                                                                                                                           |
 | C-c m             | Interface | Toggle the menu bar                                       | 'menu-bar-mode                                                                                                                             |
 | C--               | Interface | Decrease the font size                                    | 'text-scale-decrease                                                                                                                       |
@@ -968,7 +969,7 @@ It seems that both flags are necessary to make dired+ not hide the details.
                                   "324" "329" "332" "333" "353" "477"))
   (setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK"))
 
-  ;; ------ template for .secrets.el
+  ;; ------ template for .user.el
   ;; (setq erc-prompt-for-nickserv-password nil)
   ;; (setq erc-server "hostname"
   ;;       erc-port 7000
