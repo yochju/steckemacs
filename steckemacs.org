@@ -359,10 +359,10 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c d             | General   | Change dictionary                                         | 'ispell-change-dictionary                                                                                                                  |
 | C-c f             | General   | Toggle flyspell mode (spellchecking)                      | 'flyspell-mode                                                                                                                             |
 | M-x               | General   | Helm M-x (execute command)                                | 'helm-M-x                                                                                                                                  |
-| C-h h             | General   | Helm M-x (execute command)                                | 'helm-M-x                                                                                                                                  |
-| C-h C-p           | General   | Helm navigate project files                               | 'helm-projectile                                                                                                                           |
+| C-h C-h           | General   | Helm M-x (execute command)                                | 'helm-M-x                                                                                                                                  |
+| C-h h             | General   | Helm navigate project files                               | 'helm-projectile                                                                                                                           |
 | <C-S-iso-lefttab> | General   | Helm for files                                            | 'helm-for-files                                                                                                                            |
-| C-h C-h           | General   | Open file                                                 | 'find-file                                                                                                                                 |
+| C-h C-p           | General   | Open file                                                 | 'find-file                                                                                                                                 |
 | cg                | General   | Customize group                                           | 'customize-group                                                                                                                           |
 | C-c m             | Interface | Toggle the menu bar                                       | 'menu-bar-mode                                                                                                                             |
 | C--               | Interface | Decrease the font size                                    | 'text-scale-decrease                                                                                                                       |
@@ -416,8 +416,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | sv                | Buffers   | Save the current buffer                                   | 'save-buffer                                                                                                                               |
 | sc                | Buffers   | Switch to scratch buffer                                  | (lambda () (interactive)(switch-to-buffer "*scratch*"))                                                                                    |
 | <f9>              | Buffers   | Split window and show/hide last buffer                    | 'my/split-window                                                                                                                           |
-| M-7               | History   | Helm show the kill ring                                   | 'helm-show-kill-ring                                                                                                                       |
-| C-5               | History   | Helm show all mark rings                                  | 'helm-all-mark-rings                                                                                                                       |
+| C-h c             | History   | Helm show the kill ring                                   | 'helm-show-kill-ring                                                                                                                       |
+| C-h m             | History   | Helm show all mark rings                                  | 'helm-all-mark-rings                                                                                                                       |
 | C-3               | History   | Go backward in movement history                           | 'back-button-local-backward                                                                                                                |
 | C-4               | History   | Go forward in movement history                            | 'back-button-local-forward                                                                                                                 |
 | M-2               | Occur     | Show all symbols like the one cursor is located at        | 'highlight-symbol-occur                                                                                                                    |
@@ -498,6 +498,8 @@ Load user settings if the file is available. Put all your personal modifications
    eval-expression-print-length nil
    eval-expression-print-level nil
    send-mail-function 'sendmail-send-it
+   kill-ring-max 5000
+   mark-ring-max 5000
    ansi-color-names-vector [("black" . "#8a8888") ("#EF3460" . "#F25A7D") ("#BDEF34" . "#DCF692") ("#EFC334" . "#F6DF92") ("#34BDEF" . "#92AAF6") ("#B300FF" . "#DF92F6") ("#3DD8FF" . "#5AF2CE") ("#FFFFFF" . "#FFFFFF")]
    )
 #+END_SRC
@@ -509,7 +511,7 @@ Load user settings if the file is available. Put all your personal modifications
    tab-width 4
    indent-tabs-mode nil                ;use spaces instead of tabs
    c-basic-offset 4
-   c-auto-hungry-state 1
+   c-hungry-delete-key t
    )
 #+END_SRC
 
@@ -792,7 +794,7 @@ Display, the copy the filename of current buffer to kill ring.
         ad-do-it)))
 #+END_SRC
 
-** modes
+** Modes
 
 *** auctex-mode
 
@@ -1001,7 +1003,7 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (add-hook 'sh-mode-hook 'flycheck-mode)
   (add-hook 'json-mode-hook 'flycheck-mode)
   (add-hook 'nxml-mode-hook 'flycheck-mode)
-
+  (setq flycheck-indication-mode 'right-fringe)
 #+END_SRC
 
 *** fringe
@@ -1520,7 +1522,7 @@ Many editors (e.g. Vim) have the feature of saving minibuffer history to an exte
 #+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
-  (setq savehist-additional-variables '(search ring regexp-search-ring extended-command-history))
+  (setq savehist-additional-variables '(kill-ring mark-ring search-ring regexp-search-ring extended-command-history))
   (savehist-mode 1)
 #+END_SRC
 
