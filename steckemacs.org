@@ -163,6 +163,9 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
           (:name eval-sexp-fu
                  :type http
                  :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
+          (:name fasd
+                 :type git
+                 :url "https://github.com/steckerhalter/emacs-fasd")
           (:name magit-filenotify
                  :type git
                  :url "https://github.com/magit/magit-filenotify")
@@ -229,14 +232,13 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           csv-mode
           dired+
           deft
+          diff-hl
           erc-hl-nicks
           expand-region
           fic-ext-mode
-          flex-isearch
           flycheck
           geben
           gist
-          git-gutter-fringe+
           google-this
           grandshell-theme
           grizzl
@@ -268,6 +270,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           nrepl
           nrepl-eval-sexp-fu
           org-plus-contrib
+          php-auto-yasnippets
           php-boris
           php-eldoc
           php-mode
@@ -405,7 +408,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | sb                | Directory | Open the speedbar                                         | 'speedbar                                                                                                                                  |
 | C-c T             | Directory | Open terminal in current directory                        | (lambda () (interactive) (stk/open-terminal nil))                                                                                          |
 | C-c t             | Directory | Open terminal in current project root                     | (lambda () (interactive) (stk/open-terminal t))                                                                                            |
-| C-6               | Directory | Use autojump to navigate to a directory (with IDO)        | 'ido-autojump                                                                                                                              |
+| C-h C-/           | Directory | Use fasd to navigate to a file or directory               | 'fasd-find-file                                                                                                                            |
 | C-h C-s           | Buffers   | Save the current buffer                                   | 'save-buffer                                                                                                                               |
 | C-c r             | Buffers   | Revert a buffer to the saved state                        | 'revert-buffer                                                                                                                             |
 | C-x C-b           | Buffers   | use ido to switch buffers                                 | 'ido-switch-buffer                                                                                                                         |
@@ -440,11 +443,11 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | vg                | Find/Grep | VC git grep                                               | 'vc-git-grep                                                                                                                               |
 | C-h C-f           | Find/Grep | Grep find                                                 | 'grep-find                                                                                                                                 |
 | C-c o             | Find/Grep | list matching regexp                                      | 'occur                                                                                                                                     |
-| C-h g             | Find/Grep | Use the ag cli tool to grep project                       | 'ag-project                                                                                                                                |
-| C-h l             | Find/Grep | Helm locate                                               | 'helm-locate                                                                                                                               |
-| C-h s             | Find/Grep | Projectile find file                                      | 'projectile-find-file                                                                                                                      |
-| C-h z             | Find/Grep | Projectile grep                                           | 'projectile-grep                                                                                                                           |
-| C-h t             | Find/Grep | Projectile ack                                            | 'projectile-ack                                                                                                                            |
+| C-h C-g           | Find/Grep | Use the ag cli tool to grep project                       | 'ag-project                                                                                                                                |
+| C-h C-l           | Find/Grep | Helm locate                                               | 'helm-locate                                                                                                                               |
+| C-h C-z           | Find/Grep | Projectile find file                                      | 'projectile-find-file                                                                                                                      |
+| C-h g             | Find/Grep | Projectile grep                                           | 'projectile-grep                                                                                                                           |
+| C-h z             | Find/Grep | Projectile ack                                            | 'projectile-ack                                                                                                                            |
 | M-0               | Find/Grep | Helm find files with Git                                  | 'helm-git-find-files                                                                                                                       |
 | C-c g             | VCS       | Magit status - manual: http://magit.github.io/magit/      | 'magit-status                                                                                                                              |
 | C-c l             | VCS       | Magit log                                                 | 'magit-log                                                                                                                                 |
@@ -452,8 +455,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c c             | Open      | Open deft (quick notes tool)                              | 'deft                                                                                                                                      |
 | C-c s             | Open      | Open emacs shell                                          | 'shell                                                                                                                                     |
 | nm                | Open      | Open mu4e                                                 | 'mu4e                                                                                                                                      |
-| C-c A             | Open      | Org mode capture (todo)                                   | 'org-capture                                                                                                                               |
-| C-c a             | Open      | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))                                                                                             |
+| C-h t             | Open      | Org mode capture (todo)                                   | 'org-capture                                                                                                                               |
+| C-h n             | Open      | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))                                                                                             |
 | C-c e             | Open      | Open/connect with  ERC                                    | (lambda () (interactive) (erc-tls :server erc-server :port erc-port :nick erc-nick :full-name erc-user-full-name :password erc-password )) |
 | bv                | PHP       | var dump die template                                     | 'var_dump-die                                                                                                                              |
 | dv                | PHP       | var dump template                                         | 'var_dump                                                                                                                                  |
@@ -704,43 +707,6 @@ Display, the copy the filename of current buffer to kill ring.
       )
 #+END_SRC
 
-*** ido-autojump
-
-#+BEGIN_SRC emacs-lisp
-    (when (executable-find "autojump")
-      (defun ido-autojump (&optional query)
-        "Use autojump to open a directory with dired"
-        (interactive)
-        (unless query (setq query (read-from-minibuffer "Autojump query? ")))
-        (let ((dir
-               (let ((results
-                      (split-string
-                       (replace-regexp-in-string
-                        ".*__.__" ""
-                        (replace-regexp-in-string
-                         "^'\\|'\n" ""
-                         (shell-command-to-string (concat "autojump --bash --complete " query))))
-                       "\n" t)))
-                 (if (> (length results) 1)
-                     (ido-completing-read "Dired: " results nil t)
-                   (car results)))
-               ))
-          (if dir
-              (if (file-readable-p dir)
-                  (dired dir)
-                (message "Directory %s doesn't exist" dir))
-            (message "No directory found")
-            )
-          ))
-
-      (defun autojump-add-directory ()
-        "Adds the directory of the current buffer/file to the autojump database"
-        (start-process "*autojump*" nil "autojump" "--add" (file-name-directory (buffer-file-name)))
-        )
-      (add-hook 'find-file-hook 'autojump-add-directory)
-      )
-#+END_SRC
-
 ** Advices
 
 #+BEGIN_SRC emacs-lisp
@@ -762,29 +728,6 @@ Display, the copy the filename of current buffer to kill ring.
       (if mark-active (list (region-beginning) (region-end))
         (list (line-beginning-position)
           (line-beginning-position 2)))))
-
-  ;; auto-close shell completion buffer from http://snarfed.org/automatically_close_completions_in_emacs_shell_comint_mode
-  (defun comint-close-completions ()
-    "Close the comint completions buffer.
-  Used in advice to various comint functions to automatically close
-  the completions buffer as soon as I'm done with it. Based on
-  Dmitriy Igrishin's patched version of comint.el."
-    (if comint-dynamic-list-completions-config
-        (progn
-          (set-window-configuration comint-dynamic-list-completions-config)
-          (setq comint-dynamic-list-completions-config nil))))
-  (defadvice comint-send-input (after close-completions activate)
-    (comint-close-completions))
-  (defadvice comint-dynamic-complete-as-filename (after close-completions activate)
-    (if ad-return-value (comint-close-completions)))
-  (defadvice comint-dynamic-simple-complete (after close-completions activate)
-    (if (member ad-return-value '('sole 'shortest 'partial))
-        (comint-close-completions)))
-  (defadvice comint-dynamic-list-completions (after close-completions activate)
-      (comint-close-completions)
-      (if (not unread-command-events)
-          ;; comint's "Type space to flush" swallows space. put it back in.
-          (setq unread-command-events (listify-key-sequence " "))))
 
   ;; bury *scratch* buffer instead of kill it
   (defadvice kill-buffer (around kill-buffer-around-advice activate)
@@ -922,6 +865,12 @@ I wanted to be able to get a documentation popup without having to trigger auto-
    )
 #+END_SRC
 
+*** diff-hl
+
+#+BEGIN_SRC emacs-lisp
+  (global-diff-hl-mode 1)
+#+END_SRC
+
 *** dired+
 
 #+BEGIN_SRC emacs-lisp
@@ -987,13 +936,6 @@ It seems that both flags are necessary to make dired+ not hide the details.
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'fic-ext-mode) ;; highlight TODO/FIXME/...
-#+END_SRC
-
-*** flex-isearch
-
-#+BEGIN_SRC emacs-lisp
-  (setq flex-isearch-auto 'on-failed)
-  (global-flex-isearch-mode 1)
 #+END_SRC
 
 *** flycheck-mode
@@ -1410,6 +1352,7 @@ Adds a button to the package info page to visit the repository homepage.
   (defun setup-php-mode ()
     (require 'php-documentor nil t)
     (local-set-key (kbd "C-c p") 'php-documentor-dwim)
+    (local-set-key (kbd "C-c C-g") 'yas/create-php-snippet)
     (local-set-key (kbd "C-c d")
                    (lambda ()
                      (interactive)
@@ -1522,7 +1465,7 @@ Many editors (e.g. Vim) have the feature of saving minibuffer history to an exte
 #+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
-  (setq savehist-additional-variables '(kill-ring mark-ring search-ring regexp-search-ring extended-command-history))
+  (setq savehist-additional-variables '(kill-ring mark-ring global-mark-ring search-ring regexp-search-ring extended-command-history))
   (savehist-mode 1)
 #+END_SRC
 
