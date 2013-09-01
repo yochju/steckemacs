@@ -163,9 +163,6 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
           (:name eval-sexp-fu
                  :type http
                  :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
-          (:name fasd
-                 :type git
-                 :url "https://github.com/steckerhalter/emacs-fasd")
           (:name magit-filenotify
                  :type git
                  :url "https://github.com/magit/magit-filenotify")
@@ -235,6 +232,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           diff-hl
           erc-hl-nicks
           expand-region
+          fasd
           fic-ext-mode
           flycheck
           geben
@@ -503,7 +501,6 @@ Load user settings if the file is available. Put all your personal modifications
    send-mail-function 'sendmail-send-it
    kill-ring-max 5000
    mark-ring-max 5000
-   ansi-color-names-vector [("black" . "#8a8888") ("#EF3460" . "#F25A7D") ("#BDEF34" . "#DCF692") ("#EFC334" . "#F6DF92") ("#34BDEF" . "#92AAF6") ("#B300FF" . "#DF92F6") ("#3DD8FF" . "#5AF2CE") ("#FFFFFF" . "#FFFFFF")]
    )
 #+END_SRC
 
@@ -588,6 +585,21 @@ Put that line into =~/.user.el= which is loaded [[*User%20Settings][in this init
 #+END_SRC
 
 For the frame title either show a file or a buffer name (if the buffer isn't visiting a file).
+
+#+BEGIN_SRC emacs-lisp
+  (custom-set-variables
+   '(ansi-color-names-vector
+     [("black" . "#8a8888") 
+      ("#EF3460" . "#F25A7D")
+      ("#BDEF34" . "#DCF692")
+      ("#EFC334" . "#F6DF92")
+      ("#34BDEF" . "#92AAF6")
+      ("#B300FF" . "#DF92F6")
+      ("#3DD8FF" . "#5AF2CE")
+      ("#FFFFFF" . "#FFFFFF")]))
+#+END_SRC
+
+For some reason this didn't work with =setq= soo I had to use =custom-set-variables=. 
 
 ** Custom Functions
 
@@ -930,6 +942,12 @@ It seems that both flags are necessary to make dired+ not hide the details.
   ;;       erc-email-userid "user"
   ;;       erc-password "user:pw"
   ;;       )
+#+END_SRC
+
+*** fasd
+
+#+BEGIN_SRC emacs-lisp
+  (global-fasd-mode 1)
 #+END_SRC
 
 *** fic-ext-mode
