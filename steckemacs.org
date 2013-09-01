@@ -267,6 +267,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           multiple-cursors
           nrepl
           nrepl-eval-sexp-fu
+          on-screen
           org-plus-contrib
           php-auto-yasnippets
           php-boris
@@ -589,7 +590,7 @@ For the frame title either show a file or a buffer name (if the buffer isn't vis
 #+BEGIN_SRC emacs-lisp
   (custom-set-variables
    '(ansi-color-names-vector
-     [("black" . "#8a8888") 
+     [("black" . "#8a8888")
       ("#EF3460" . "#F25A7D")
       ("#BDEF34" . "#DCF692")
       ("#EFC334" . "#F6DF92")
@@ -599,7 +600,7 @@ For the frame title either show a file or a buffer name (if the buffer isn't vis
       ("#FFFFFF" . "#FFFFFF")]))
 #+END_SRC
 
-For some reason this didn't work with =setq= soo I had to use =custom-set-variables=. 
+For some reason this didn't work with =setq= so I had to use =custom-set-variables=. It changes ansi colors for comint mode, e.g. shell-mode
 
 ** Custom Functions
 
@@ -1264,6 +1265,23 @@ Adds a button to the package info page to visit the repository homepage.
   (require 'nrepl-eval-sexp-fu)
   (setq nrepl-eval-sexp-fu-flash-duration 0.4)
 #+END_SRC
+
+*** on-screen
+
+#+BEGIN_QUOTE
+Scrolling can be distracting because your eyes may lose orientation.  This library implements a minor mode that highlights the previously visible buffer part after each scroll.
+#+END_QUOTE
+
+=on-sceen= greatly helps to track the current cursor position when scrolling. The source code is available on [[https://github.com/michael-heerdegen/on-screen.el/][Github]].
+
+#+BEGIN_SRC emacs-lisp
+  (on-screen-global-mode 1)
+  (setq on-screen-highlight-method 'narrow-line)
+  (set-face-underline 'on-screen-narrow-line '(:color "#444" :style wave))
+#+END_SRC
+
+First we use a *Narrow horizontal line* instead of the fringe (because that one is already used a lot and it's hard to see the markers) and set the color and style of the line.
+The aliases make =on-screen= a bit more responsive, see [[https://github.com/michael-heerdegen/on-screen.el/issues/1][on-screen Github issue]] for details.
 
 *** org-mode
 
