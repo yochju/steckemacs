@@ -400,7 +400,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-f           | Source    | Go to the definition of the function under cursor         | 'find-function-at-point                                                                                                                    |
 | M-5               | Source    | Helm select etags                                         | 'helm-etags-select                                                                                                                         |
 | M-6               | Source    | Find tag in a new window                                  | 'find-tag-other-window                                                                                                                     |
-| C-c C-/           | Source    | Edebug defun at point                                     | 'edebug-defun                                                                                                                              |
+| C-h C-0           | Source    | Edebug defun at point                                     | 'edebug-defun                                                                                                                              |
 | C-h C-b           | Source    | Evaluate the current buffer                               | 'eval-buffer                                                                                                                               |
 | C-h C-e           | Source    | Toggle debug on error                                     | 'toggle-debug-on-error                                                                                                                     |
 | C-h C-d           | Directory | Open dired in current file location                       | 'dired-jump                                                                                                                                |
@@ -489,7 +489,6 @@ Load user settings if the file is available. Put all your personal modifications
    require-final-newline t          ;auto add newline at the end of file
    column-number-mode t             ;show the column number
    default-major-mode 'text-mode    ;use text mode per default
-   truncate-partial-width-windows nil ;make side by side buffers break the lines
    mouse-yank-at-point t     ;middle click with the mouse yanks at point
    history-length 250        ;default is 30
    locale-coding-system 'utf-8          ;utf-8 is default
@@ -883,6 +882,8 @@ I wanted to be able to get a documentation popup without having to trigger auto-
 
 #+BEGIN_SRC emacs-lisp
   (global-diff-hl-mode 1)
+  (add-hook 'magit-refresh-file-buffer-hook
+            (lambda () (with-current-buffer (current-buffer) (diff-hl-update))))
 #+END_SRC
 
 *** dired+
