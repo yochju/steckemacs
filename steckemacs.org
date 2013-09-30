@@ -267,7 +267,6 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           multiple-cursors
           nrepl
           nrepl-eval-sexp-fu
-          on-screen
           org-plus-contrib
           php-auto-yasnippets
           php-boris
@@ -457,8 +456,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h t             | Open      | Org mode capture (todo)                                   | 'org-capture                                                                                                                               |
 | C-h n             | Open      | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))                                                                                             |
 | C-c e             | Open      | Open/connect with  ERC                                    | (lambda () (interactive) (erc-tls :server erc-server :port erc-port :nick erc-nick :full-name erc-user-full-name :password erc-password )) |
-| bv                | PHP       | var dump die template                                     | 'var_dump-die                                                                                                                              |
-| dv                | PHP       | var dump template                                         | 'var_dump                                                                                                                                  |
+| C-c v             | PHP       | var dump die template                                     | 'var_dump-die                                                                                                                              |
+| C-c V             | PHP       | var dump template                                         | 'var_dump                                                                                                                                  |
 
 ** Settings
 
@@ -1166,6 +1165,7 @@ See the [[http://magit.github.io/magit/magit.html][Magit manual]] for more infor
 #+BEGIN_SRC emacs-lisp
   (when (fboundp 'file-notify-add-watch)
     (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
+  (setq magit-save-some-buffers nil)
 #+END_SRC
 
 Committing should act like =git commit -a= by default.
@@ -1267,23 +1267,6 @@ Adds a button to the package info page to visit the repository homepage.
   (require 'nrepl-eval-sexp-fu)
   (setq nrepl-eval-sexp-fu-flash-duration 0.4)
 #+END_SRC
-
-*** on-screen
-
-#+BEGIN_QUOTE
-Scrolling can be distracting because your eyes may lose orientation.  This library implements a minor mode that highlights the previously visible buffer part after each scroll.
-#+END_QUOTE
-
-=on-sceen= greatly helps to track the current cursor position when scrolling. The source code is available on [[https://github.com/michael-heerdegen/on-screen.el/][Github]].
-
-#+BEGIN_SRC emacs-lisp
-  (on-screen-global-mode 1)
-  (setq on-screen-highlight-method 'narrow-line)
-  (set-face-underline 'on-screen-narrow-line '(:color "#444" :style wave))
-#+END_SRC
-
-First we use a *Narrow horizontal line* instead of the fringe (because that one is already used a lot and it's hard to see the markers) and set the color and style of the line.
-The aliases make =on-screen= a bit more responsive, see [[https://github.com/michael-heerdegen/on-screen.el/issues/1][on-screen Github issue]] for details.
 
 *** org-mode
 
