@@ -192,12 +192,10 @@ These are simple El-Get recipes that will either fetch single Elisp files or clo
          '()
          (mapcar 'el-get-source-name el-get-sources)))
 
-  (when stk/onlinep
-    (el-get 'sync my-el-get-packages) (ref:sync)
-    (add-to-list 'after-init-hook (lambda () (el-get-update-all t))))
+  (el-get 'sync my-el-get-packages)
 #+END_SRC
 
-The sync function expects the package names which are extracted from =el-get-sources=. In line [[(sync)]] El-Get does the magic and gets the packages specified in =el-get-sources=. After that we instruct the =after-init-hook= to update all El-Get packages. Hooks are variables containing a list of functions that are executed when the specific hook is run, in this case after the init file has finished loading. El-Get would stall the init when I tried updating the packages at this point so I had to defer that.
+The sync function expects the package names which are extracted from =el-get-sources=. El-Get does the magic and gets the packages specified in =el-get-sources=.
 
 ** Packages
 
@@ -278,7 +276,6 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           robe
           restclient
           skewer-mode
-          smart-mode-line
           smartparens
           tern
           tern-auto-complete
@@ -1439,7 +1436,7 @@ Adds a button to the package info page to visit the repository homepage.
 
 #+BEGIN_SRC emacs-lisp
   (require 'projectile nil t)
-  (setq projectile-completion-system 'grizzl)
+  (setq projectile-completion-system 'ido)
 #+END_SRC
 
 *** rainbow-mode
@@ -1514,19 +1511,6 @@ The following bookmarklet will load skewer on demand on any website:
 #+END_SRC
 
 Instructions and the source code can be found [[https://github.com/skeeto/skewer-mode][on Github]].
-
-*** smart-mode-line
-
-#+BEGIN_SRC emacs-lisp
-  (setq sml/show-encoding t)
-  (setq sml/vc-mode-show-backend t)
-  (setq sml/override-theme nil)
-  (sml/setup)
-  (set-face-attribute 'sml/prefix nil :foreground "#dcf692")
-  (set-face-attribute 'sml/folder nil :foreground "#f09fff")
-  (set-face-attribute 'sml/filename nil :foreground "#f6df92")
-  (set-face-attribute 'sml/vc-edited nil :foreground "#ff5f87")
-#+END_SRC
 
 *** smartparens
 
@@ -1604,6 +1588,8 @@ See the [[http://ternjs.net/][project homepage]] for more info.
   (setq uniquify-buffer-name-style 'forward)
   (setq uniquify-min-dir-content 2)
 #+END_SRC
+
+"Unique buffer names dependent on file name"
 
 *** yaml-mode
 
