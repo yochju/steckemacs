@@ -1024,6 +1024,7 @@ You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm W
   (setq helm-input-idle-delay 0.1)
   (setq helm-buffer-max-length 50)
   (setq helm-M-x-always-save-history t)
+  (setq helm-buffer-details-flag nil)
   (require 'helm-git)
 #+END_SRC
 
