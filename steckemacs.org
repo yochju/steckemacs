@@ -249,7 +249,6 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           helm-projectile
           highlight-symbol
           htmlize
-          ido-at-point
           iedit
           jinja2-mode
           js2-mode
@@ -259,7 +258,6 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           markdown-mode+
           melpa-upstream-visit
           mmm-mode
-          mo-git-blame
           move-text
           multi-web-mode
           multiple-cursors
@@ -509,6 +507,7 @@ Load user settings if the file is available. Put all your personal modifications
    indent-tabs-mode nil                   ;use spaces instead of tabs
    c-basic-offset 4                       ;"tab" with in c-related modes
    c-hungry-delete-key t                  ;delete more than one space
+   truncate-lines t                       ;truncate lines by default
    )
 #+END_SRC
 
@@ -962,6 +961,7 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (add-hook 'sh-mode-hook 'flycheck-mode)
   (add-hook 'json-mode-hook 'flycheck-mode)
   (add-hook 'nxml-mode-hook 'flycheck-mode)
+  (add-hook 'python-mode-hook 'flycheck-mode)
   (setq flycheck-indication-mode 'right-fringe)
 #+END_SRC
 
@@ -1044,13 +1044,6 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'ac-modes 'html-mode)
-#+END_SRC
-
-*** ido-at-point
-
-#+BEGIN_SRC emacs-lisp
-(autoload 'ido-at-point-mode "ido-at-point")
-(ido-at-point-mode)
 #+END_SRC
 
 *** ido-mode
