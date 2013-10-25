@@ -259,6 +259,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           melpa-upstream-visit
           mmm-mode
           move-text
+          multi-term
           multi-web-mode
           multiple-cursors
           nrepl
@@ -1232,7 +1233,6 @@ Adds a button to the package info page to visit the repository homepage.
 *** nrepl
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
   (setq nrepl-popup-stacktraces nil)
   (setq nrepl-popup-stacktraces-in-repl nil)
   (setq nrepl-hide-special-buffers t)
@@ -1249,7 +1249,6 @@ Adds a button to the package info page to visit the repository homepage.
   (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
   (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
   (add-to-list 'ac-modes 'nrepl-mode)
-  (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 #+END_SRC
 
 *** nrepl-eval-sexp-fu
