@@ -275,6 +275,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           robe
           restclient
           skewer-mode
+          smart-mode-line
           smartparens
           tern
           tern-auto-complete
@@ -1504,6 +1505,19 @@ The following bookmarklet will load skewer on demand on any website:
 #+END_SRC
 
 Instructions and the source code can be found [[https://github.com/skeeto/skewer-mode][on Github]].
+
+*** smart-mode-line
+
+#+BEGIN_SRC emacs-lisp
+  (setq sml/show-encoding t)
+  (setq sml/vc-mode-show-backend t)
+  (setq sml/override-theme nil)
+  (sml/setup)
+  (set-face-attribute 'sml/prefix nil :foreground "#dcf692")
+  (set-face-attribute 'sml/folder nil :foreground "#f09fff")
+  (set-face-attribute 'sml/filename nil :foreground "#f6df92")
+  (set-face-attribute 'sml/vc-edited nil :foreground "#ff5f87")
+#+END_SRC
 
 *** smartparens
 
