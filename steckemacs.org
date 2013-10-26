@@ -965,12 +965,6 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (setq indicate-buffer-boundaries 'left)
 #+END_SRC
 
-*** git-gutter+
-
-#+BEGIN_SRC emacs-lisp
-  (global-git-gutter+-mode)
-#+END_SRC
-
 *** google-this
 
 #+BEGIN_SRC emacs-lisp
