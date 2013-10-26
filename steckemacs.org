@@ -448,7 +448,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | bm                | VCS       | Magit blame mode                                          | 'magit-blame-mode                                                                                                                          |
 | C-c c             | Open      | Open deft (quick notes tool)                              | 'deft                                                                                                                                      |
 | C-c s             | Open      | Open emacs shell                                          | 'shell                                                                                                                                     |
-| C-h C-c           | Open      | Open ansi-term                                            | (lambda () (interactive) (term (getenv "SHELL")))                                                                                          |
+| C-h C-c           | Open      | Open/hide dedicated term                                  | 'multi-term-dedicated-toggle                                                                                                                                           |
 | nm                | Open      | Open mu4e                                                 | 'mu4e                                                                                                                                      |
 | C-h t             | Open      | Org mode capture (todo)                                   | 'org-capture                                                                                                                               |
 | C-h n             | Open      | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))                                                                                             |
@@ -878,9 +878,23 @@ I wanted to be able to get a documentation popup without having to trigger auto-
 *** diff-hl
 
 #+BEGIN_SRC emacs-lisp
-  (global-diff-hl-mode 1)
-  (add-hook 'magit-refresh-file-buffer-hook
-            (lambda () (with-current-buffer (current-buffer) (diff-hl-update))))
+  (add-hook 'find-file-hook
+            (lambda ()
+              (when (vc-backend buffer-file-name)
+                (diff-hl-mode 1)
+                (diff-hl-update)
+                )))
+
+  (defun stk/diff-hl-update-each-buffer ()
+    (interactive)
+    (mapc (lambda (buffer)
+            (condition-case nil
+                (with-current-buffer buffer
+                  (diff-hl-update))
+              (buffer-read-only nil)))
+          (buffer-list)))
+  (defadvice magit-update-vc-modeline (after my-magit-update-vc-modeline activate)
+    (progn (stk/diff-hl-update-each-buffer)))
 #+END_SRC
 
 *** dired+
@@ -1158,7 +1172,7 @@ See the [[http://magit.github.io/magit/magit.html][Magit manual]] for more infor
 #+BEGIN_SRC emacs-lisp
   (when (fboundp 'file-notify-add-watch)
     (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
-  (setq magit-save-some-buffers nil)
+  (setq magit-save-some-buffers nil) ;don't ask to save buffers
 #+END_SRC
 
 Committing should act like =git commit -a= by default.
@@ -1229,6 +1243,18 @@ Adds a button to the package info page to visit the repository homepage.
     (setq message-kill-buffer-on-exit t)
 
     )
+#+END_SRC
+
+*** multi-term
+
+#+BEGIN_QUOTE
+A package for creating and managing multiple terminal buffers in Emacs
+#+END_QUOTE
+
+The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki]]
+
+#+BEGIN_SRC emacs-lisp
+(setq multi-term-dedicated-select-after-open-p t) ;select the buffer!
 #+END_SRC
 
 *** nrepl
