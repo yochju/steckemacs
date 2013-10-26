@@ -920,6 +920,7 @@ It seems that both flags are necessary to make dired+ not hide the details.
                              (erc-truncate-mode t)
                              (erc-fill-disable)
                              (set (make-local-variable 'scroll-conservatively) 1000)
+                             (visual-line-mode)
                              )
             )
   (setq erc-timestamp-format "%H:%M "
