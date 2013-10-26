@@ -875,28 +875,6 @@ I wanted to be able to get a documentation popup without having to trigger auto-
    )
 #+END_SRC
 
-*** diff-hl
-
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'find-file-hook
-            (lambda ()
-              (when (vc-backend buffer-file-name)
-                (diff-hl-mode 1)
-                (diff-hl-update)
-                )))
-
-  (defun stk/diff-hl-update-each-buffer ()
-    (interactive)
-    (mapc (lambda (buffer)
-            (condition-case nil
-                (with-current-buffer buffer
-                  (diff-hl-update))
-              (buffer-read-only nil)))
-          (buffer-list)))
-  (defadvice magit-update-vc-modeline (after my-magit-update-vc-modeline activate)
-    (progn (stk/diff-hl-update-each-buffer)))
-#+END_SRC
-
 *** dired+
 
 #+BEGIN_SRC emacs-lisp
@@ -985,6 +963,12 @@ It seems that both flags are necessary to make dired+ not hide the details.
 
 #+BEGIN_SRC emacs-lisp
   (setq indicate-buffer-boundaries 'left)
+#+END_SRC
+
+*** git-gutter+
+
+#+BEGIN_SRC emacs-lisp
+  (global-git-gutter+-mode)
 #+END_SRC
 
 *** google-this
