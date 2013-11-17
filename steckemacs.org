@@ -806,20 +806,6 @@ Initial setup:
 - use fuzzy matching
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'completion-styles 'initials t)
-  (add-to-list 'completion-at-point-functions
-               (lambda ()
-                 (unless (minibufferp)
-                   (auto-complete))))
-#+END_SRC
-
-#+BEGIN_QUOTE
-Use Emacs' built-in TAB completion hooks to trigger AC (Emacs >= 23.2)
-#+END_QUOTE
-
-Got that idea from [[https://github.com/purcell/emacs.d/blob/master/init-auto-complete.el][Steve Purcell]].
-
-#+BEGIN_SRC emacs-lisp
   (require 'pos-tip)
   (defun stk/ac-show-help (ac-doc-function)
     "Show docs for symbol at point or at beginning of list if not on a symbol.
@@ -1449,7 +1435,7 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 
 #+BEGIN_SRC emacs-lisp
   (require 'projectile nil t)
-  (setq projectile-completion-system 'ido)
+  (setq projectile-completion-system 'grizzl)
 #+END_SRC
 
 *** rainbow-mode
@@ -1530,8 +1516,8 @@ Instructions and the source code can be found [[https://github.com/skeeto/skewer
 #+BEGIN_SRC emacs-lisp
   (setq sml/show-encoding t)
   (setq sml/vc-mode-show-backend t)
-  (setq sml/override-theme nil)
   (sml/setup)
+  (sml/apply-theme 'respectful)
   (set-face-attribute 'sml/prefix nil :foreground "#dcf692")
   (set-face-attribute 'sml/folder nil :foreground "#f09fff")
   (set-face-attribute 'sml/filename nil :foreground "#f6df92")
