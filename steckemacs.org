@@ -172,9 +172,6 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
                  :prepare (progn
                             (add-to-list 'org-babel-load-languages '(php . t))
                             (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)))
-          (:name org-mobile-sync
-                 :type git
-                 :url "https://github.com/steckerhalter/org-mobile-sync")
           (:name php-align
                  :type git
                  :url "https://github.com/tetsujin/emacs-php-align")
@@ -271,6 +268,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           nrepl
           nrepl-eval-sexp-fu
           org-plus-contrib
+          org-mobile-sync
           php-auto-yasnippets
           php-boris
           php-eldoc
@@ -458,7 +456,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c s             | Open      | Open emacs shell                                          | 'shell                                                                                                                                     |
 | C-h C-c           | Open      | Open/hide dedicated term                                  | 'multi-term-dedicated-toggle                                                                                                               |
 | nm                | Open      | Open mu4e                                                 | 'mu4e                                                                                                                                      |
-| C-h t             | Open      | Org mode capture (todo)                                   | (lambda () (interactive) (org-capture nil "s"))                                                                                            |
+| C-h t             | Open      | Org mode capture with simple task (todo)                  | (lambda () (interactive) (org-capture nil "s"))                                                                                            |
+| C-h T             | Open      | Org mode capture selection (todo)                         | 'org-capture                                                                                                                               |
 | C-h n             | Open      | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))                                                                                             |
 | C-c e             | Open      | Open/connect with  ERC                                    | (lambda () (interactive) (erc-tls :server erc-server :port erc-port :nick erc-nick :full-name erc-user-full-name :password erc-password )) |
 | C-c v             | PHP       | var dump die template                                     | 'var_dump-die                                                                                                                              |
@@ -1284,6 +1283,7 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
       ))
   (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
   (add-to-list 'ac-modes 'org-mode)
+  (add-to-list 'org-modules 'org-habit)
   (setq org-startup-folded 'nofold)
   (setq org-startup-indented t)
   (setq org-startup-with-inline-images t)
