@@ -1360,9 +1360,6 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 
 #+END_SRC
 
-#+RESULTS:
-: t
-
 *** php-mode
 
 #+BEGIN_SRC emacs-lisp
