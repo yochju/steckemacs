@@ -225,6 +225,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           auto-save-buffers-enhanced
           back-button
           buffer-move
+          cider
           creole-mode
           clojure-mode
           csv-mode
@@ -265,7 +266,6 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           multi-term
           multi-web-mode
           multiple-cursors
-          nrepl
           nrepl-eval-sexp-fu
           org-plus-contrib
           org-mobile-sync
@@ -851,6 +851,27 @@ I wanted to be able to get a documentation popup without having to trigger auto-
   (back-button-mode 1)
 #+END_SRC
 
+*** cider
+
+#+BEGIN_SRC emacs-lisp
+  (setq nrepl-popup-stacktraces nil)
+  (setq nrepl-popup-stacktraces-in-repl nil)
+  (setq nrepl-hide-special-buffers t)
+
+  ;; font-locking for the nrepl
+  ;; https://github.com/kylefeng/.emacs.d/commit/45f2bece4652f4345ec08e68e8ef0608b81c5db7
+  (add-hook 'nrepl-mode-hook
+            (lambda ()
+              (font-lock-mode nil)
+              (clojure-mode-font-lock-setup)
+              (font-lock-mode t)))
+
+  (require 'ac-nrepl)
+  (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+  (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+  (add-to-list 'ac-modes 'nrepl-mode)
+#+END_SRC
+
 *** conf-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1020,6 +1041,7 @@ You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm W
   (setq helm-buffer-max-length 50)
   (setq helm-M-x-always-save-history t)
   (setq helm-buffer-details-flag nil)
+  (add-to-list 'helm-completing-read-handlers-alist '(org-refile)) ; helm-mode does not do org-refile well
   (require 'helm-git)
 #+END_SRC
 
@@ -1238,27 +1260,6 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 (setq multi-term-dedicated-select-after-open-p t) ;select the buffer!
 #+END_SRC
 
-*** nrepl
-
-#+BEGIN_SRC emacs-lisp
-  (setq nrepl-popup-stacktraces nil)
-  (setq nrepl-popup-stacktraces-in-repl nil)
-  (setq nrepl-hide-special-buffers t)
-
-  ;; font-locking for the nrepl
-  ;; https://github.com/kylefeng/.emacs.d/commit/45f2bece4652f4345ec08e68e8ef0608b81c5db7
-  (add-hook 'nrepl-mode-hook
-            (lambda ()
-              (font-lock-mode nil)
-              (clojure-mode-font-lock-setup)
-              (font-lock-mode t)))
-
-  (require 'ac-nrepl)
-  (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-  (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-  (add-to-list 'ac-modes 'nrepl-mode)
-#+END_SRC
-
 *** nrepl-eval-sexp-fu
 
 #+BEGIN_SRC emacs-lisp
@@ -1289,6 +1290,7 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
   (setq org-startup-with-inline-images t)
   (setq org-startup-truncated t)
   (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+  (setq org-refile-use-outline-path 'file)
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
   (setq org-confirm-babel-evaluate nil)
@@ -1357,6 +1359,9 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
   (org-mobile-sync-mode 1)
 
 #+END_SRC
+
+#+RESULTS:
+: t
 
 *** php-mode
 
