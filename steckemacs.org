@@ -232,11 +232,13 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           dired+
           deft
           diff-hl
+          elpy
           erc-hl-nicks
           expand-region
           fasd
           fic-ext-mode
           flycheck
+          flx-ido
           geben
           gist
           google-this
@@ -278,6 +280,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           rainbow-mode
           robe
           restclient
+          sequential-command
           skewer-mode
           smart-mode-line
           smartparens
@@ -906,6 +909,12 @@ I wanted to be able to get a documentation popup without having to trigger auto-
 
 It seems that both flags are necessary to make dired+ not hide the details.
 
+*** elpy
+#+BEGIN_SRC emacs-lisp
+  (elpy-enable)
+  (delq 'flymake-mode elpy-default-minor-modes)
+  (define-key ac-completing-map (kbd "<return>") 'ac-complete)
+#+END_SRC
 *** eval-sexp-fu
 
 #+BEGIN_SRC emacs-lisp
@@ -1075,6 +1084,8 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
         ido-use-filename-at-point 'guess
         )
   (ido-mode 1)
+  (flx-ido-mode 1)
+  (setq ido-use-faces nil)
 #+END_SRC
 
 *** iedit
@@ -1494,6 +1505,16 @@ Many editors (e.g. Vim) have the feature of saving minibuffer history to an exte
 #+END_SRC
 
 I'm adding a few variables like the =extended-command-history= that I would like to persist too.
+
+*** seqential-command
+
+#+BEGIN_SRC emacs-lisp
+  (require 'sequential-command)
+  (define-sequential-command stk/beg back-to-indentation beginning-of-line)
+  (global-set-key "\C-a" 'stk/beg)
+  (define-sequential-command stk/end end-of-line forward-to-indentation)
+  (global-set-key "\C-e" 'stk/end)
+#+END_SRC
 
 *** skewer
 
