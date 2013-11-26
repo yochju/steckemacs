@@ -389,7 +389,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h r             | Editing   | Query and replace text                                    | 'query-replace                                                                                                                             |
 | vr                | Editing   | Visual regexp/replace                                     | 'vr/replace                                                                                                                                |
 | i9                | Editing   | Toggle electric indent mode                               | 'electric-indent-mode                                                                                                                      |
-| C-c i             | Editing   | indent the whole the buffer                               | (lambda () (interactive) (indent-region (point-min) (point-max)))                                                                          |
 | ac                | Editing   | Align nearby elements                                     | 'align-current                                                                                                                             |
 | C-8               | Editing   | Select symbol under cursor, repeat to expand              | 'er/expand-region                                                                                                                          |
 | M-8               | Editing   | Contract the current selection                            | 'er/contract-region                                                                                                                        |
@@ -459,10 +458,14 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c s             | Open      | Open emacs shell                                          | 'shell                                                                                                                                     |
 | C-h C-c           | Open      | Open/hide dedicated term                                  | 'multi-term-dedicated-toggle                                                                                                               |
 | nm                | Open      | Open mu4e                                                 | 'mu4e                                                                                                                                      |
-| C-h t             | Open      | Org mode capture with simple task (todo)                  | (lambda () (interactive) (org-capture nil "s"))                                                                                            |
-| C-h T             | Open      | Org mode capture selection (todo)                         | 'org-capture                                                                                                                               |
-| C-h n             | Open      | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))                                                                                             |
 | C-c e             | Open      | Open/connect with  ERC                                    | (lambda () (interactive) (erc-tls :server erc-server :port erc-port :nick erc-nick :full-name erc-user-full-name :password erc-password )) |
+| C-h n             | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))                                                                                             |
+| C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))                                                                                            |
+| C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                                                                                               |
+| C-c i             | Org       | Start the clock on the current item                       | 'org-clock-in                                                                                                                              |
+| C-c I             | Org       | Stop the clock on the current item                        | 'org-clock-out                                                                                                                             |
+| C-c C-9           | Org       | Insert a new subheading and demote it                     | 'org-insert-subheading                                                                                                                     |
+| C-c C-0           | Org       | Insert a new TODO subheading                              | 'org-insert-todo-subheading                                                                                                                |
 | C-c v             | PHP       | var dump die template                                     | 'var_dump-die                                                                                                                              |
 | C-c V             | PHP       | var dump template                                         | 'var_dump                                                                                                                                  |
 
@@ -728,6 +731,33 @@ Display, the copy the filename of current buffer to kill ring.
       )
 #+END_SRC
 
+*** stk/tks
+#+BEGIN_SRC emacs-lisp
+(defun stk/tks (ipos tables params)
+  "Formatting function for org `clocktable' that generats TKS compatible output.
+Usage example:
+#+BEGIN: clocktable :scope agenda :block today :formatter stk/taxi
+#+END: clocktable
+"
+  (let (tbl entry entries time)
+    (while (setq tbl (pop tables))
+	  (setq entries (nth 2 tbl))
+	  (while (setq entry (pop entries))
+        (let* ((level (car entry))
+               (headline (replace-regexp-in-string "^\\(DONE \\)\\|\\(IN PROGRESS \\)" "" (nth 1 entry)))
+               (rest (mod (nth 3 entry) 60))
+               (hours (/ (nth 3 entry) 60))
+               (mins (cond
+                      ((<= rest 15) 0.25)
+                      ((<= rest 30) 0.5)
+                      ((<= rest 45) 0.75)
+                      (t 1))
+                     ))
+          (insert-before-markers
+           (format "? %s %s\n" (+ hours mins) headline))
+          )))))
+#+END_SRC
+
 ** Advices
 
 #+BEGIN_SRC emacs-lisp
@@ -890,6 +920,7 @@ I wanted to be able to get a documentation popup without having to trigger auto-
    deft-directory "~/org/deft"
    deft-text-mode 'org-mode
    deft-use-filename-as-title t
+   deft-auto-save-interval 0
    )
 #+END_SRC
 
@@ -1301,12 +1332,19 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
   (setq org-startup-indented t)
   (setq org-startup-with-inline-images t)
   (setq org-startup-truncated t)
+  (setq org-agenda-start-with-log-mode t)
   (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (setq org-refile-use-outline-path 'file)
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
   (setq org-confirm-babel-evaluate nil)
   (setq org-use-speed-commands t)
+  (setq org-clock-idle-time 15)
+  (setq org-clock-in-resume t)
+  (setq org-clock-persist t)
+  (setq org-clock-out-remove-zero-time-clocks t)
+  (setq org-clock-sound t)
+  (setq org-clock-in-switch-to-state "IN PROGRESS")
   (setq org-default-notes-file (concat org-directory "/todo.org"))
 
   (setq org-capture-templates
