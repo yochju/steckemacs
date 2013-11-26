@@ -733,29 +733,30 @@ Display, the copy the filename of current buffer to kill ring.
 
 *** stk/tks
 #+BEGIN_SRC emacs-lisp
-(defun stk/tks (ipos tables params)
-  "Formatting function for org `clocktable' that generats TKS compatible output.
-Usage example:
-#+BEGIN: clocktable :scope agenda :block today :formatter stk/taxi
-#+END: clocktable
-"
-  (let (tbl entry entries time)
-    (while (setq tbl (pop tables))
-	  (setq entries (nth 2 tbl))
-	  (while (setq entry (pop entries))
-        (let* ((level (car entry))
-               (headline (replace-regexp-in-string "^\\(DONE \\)\\|\\(IN PROGRESS \\)" "" (nth 1 entry)))
-               (rest (mod (nth 3 entry) 60))
-               (hours (/ (nth 3 entry) 60))
-               (mins (cond
-                      ((<= rest 15) 0.25)
-                      ((<= rest 30) 0.5)
-                      ((<= rest 45) 0.75)
-                      (t 1))
-                     ))
-          (insert-before-markers
-           (format "? %s %s\n" (+ hours mins) headline))
-          )))))
+  (defun stk/tks (ipos tables params)
+    "Formatting function for org `clocktable' that generates TKS compatible output.
+  Usage example:
+  #+BEGIN: clocktable :scope agenda :block today :formatter stk/tks :properties (\"project\")
+  #+END: clocktable
+  "
+    (let (tbl entry entries time)
+      (while (setq tbl (pop tables))
+        (setq entries (nth 2 tbl))
+        (while (setq entry (pop entries))
+          (let* ((level (car entry))
+                 (headline (replace-regexp-in-string "^\\(DONE \\)\\|\\(IN PROGRESS \\)" "" (nth 1 entry)))
+                 (rest (mod (nth 3 entry) 60))
+                 (hours (/ (nth 3 entry) 60))
+                 (mins (cond
+                        ((<= rest 15) 0.25)
+                        ((<= rest 30) 0.5)
+                        ((<= rest 45) 0.75)
+                        (t 1)))
+                 (project (cdr (assoc "project" (nth 4 entry))))
+                 )
+            (insert-before-markers
+             (format "%s %s %s\n" (if project project "?") (+ hours mins) headline ))
+            )))))
 #+END_SRC
 
 ** Advices
