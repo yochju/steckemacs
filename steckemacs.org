@@ -1431,7 +1431,7 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
       (org-clock-out)))
 
   (add-hook 'org-after-todo-state-change-hook
-            'stk/rg-clock-out-if-waiting)
+            'stk/org-clock-out-if-waiting)
 
   ;; enable sync mode if org-mobile-directory is set
   (when org-mobile-directory
