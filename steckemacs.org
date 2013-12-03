@@ -744,7 +744,7 @@ Display, the copy the filename of current buffer to kill ring.
         (setq entries (nth 2 tbl))
         (while (setq entry (pop entries))
           (let* ((level (car entry))
-                 (headline (replace-regexp-in-string "^\\(DONE \\)\\|\\(IN PROGRESS \\)" "" (nth 1 entry)))
+                 (headline (replace-regexp-in-string (concat org-todo-regexp "\\( +\\|[ \t]*$\\)") "" (nth 1 entry)))
                  (rest (mod (nth 3 entry) 60))
                  (hours (/ (nth 3 entry) 60))
                  (mins (cond
@@ -1345,13 +1345,12 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
   (setq org-clock-persist t)
   (setq org-clock-out-remove-zero-time-clocks t)
   (setq org-clock-sound t)
-  (setq org-clock-in-switch-to-state "IN PROGRESS")
   (setq org-default-notes-file (concat org-directory "/todo.org"))
 
   (setq org-capture-templates
         '(
-          ("t" "Task" entry (file "") "* TODO %?\n  %u\n  %a")
-          ("s" "Simple Task" entry (file "") "* TODO %?\n  %U\n")
+          ("t" "Task" entry (file "") "* TODO %?\n %a")
+          ("s" "Simple Task" entry (file "") "* TODO %?\n")
           ))
 
   (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC\n"))
@@ -1391,12 +1390,12 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
   (setq org-todo-keywords
         '((sequence
            "TODO(t)"
-           "IN PROGRESS(p!)"
-           "HOLD(h!)"
+           "IN PROGRESS(p)"
+           "HOLD(h)"
            "WAITING(w)"
            "SOMEDAY(s)"
            "|"
-           "DONE(d!)"
+           "DONE(d)"
            "CANCELLED(c)"
            )))
   (setq org-todo-keyword-faces
@@ -1407,7 +1406,36 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
           ("SOMEDAY" . 'font-lock-doc-face)
           ))
 
-  (org-mobile-sync-mode 1)
+  ;; helpers to make TODO state changes clock the time
+  (defun stk/org-clock-in-if-in-progress ()
+    "Clock in when the task is marked IN PROGRESS."
+    (when (and (string= org-state "IN PROGRESS")
+               (not (string= org-last-state org-state)))
+      (org-clock-in)))
+
+  (add-hook 'org-after-todo-state-change-hook
+            'stk/org-clock-in-if-in-progress)
+
+  (defadvice org-clock-in (after stk activate)
+    "Set this task's status to IN PROGRESS."
+    (org-todo "IN PROGRESS"))
+
+  (defun stk/org-clock-out-if-waiting ()
+    "Clock out when the task is marked WAITING."
+    (when (and (string= org-state "WAITING")
+               (equal (marker-buffer org-clock-marker) (current-buffer))
+               (< (point) org-clock-marker)
+               (> (save-excursion (outline-next-heading) (point))
+                  org-clock-marker)
+               (not (string= org-last-state org-state)))
+      (org-clock-out)))
+
+  (add-hook 'org-after-todo-state-change-hook
+            'stk/rg-clock-out-if-waiting)
+
+  ;; enable sync mode if org-mobile-directory is set
+  (when org-mobile-directory
+    (org-mobile-sync-mode 1))
 
 #+END_SRC
 
