@@ -238,7 +238,6 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           flx-ido
           geben
           gist
-          google-this
           grandshell-theme
           grizzl
           haskell-mode
@@ -372,8 +371,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | ln                | Interface | Show/hide the line numbers                                | 'linum-mode                                                                                                                                |
 | C-x C-u           | Internet  | Prompt for URL and insert contents at point               | 'stk/url-insert-file-contents                                                                                                              |
 | C-c C-w           | Internet  | Browse URL under cursor                                   | 'browse-url-at-point                                                                                                                       |
-| gt                | Internet  | Google "this"                                             | 'google-this                                                                                                                               |
-| gs                | Internet  | Google search                                             | 'google-search                                                                                                                             |
 | C-h C-r           | Editing   | Kill region or current line                               | 'kill-region                                                                                                                               |
 | C-h C-n           | Editing   | Newline and indent (also on C-j)                          | 'newline-and-indent                                                                                                                        |
 | C-z               | Editing   | Undo - but do not trigger redo                            | 'undo-only                                                                                                                                 |
@@ -508,7 +505,8 @@ Load user settings if the file is available. Put all your personal modifications
    kill-ring-max 5000                     ;truncate kill ring after 5000 entries
    mark-ring-max 5000                     ;truncate mark ring after 5000 entries
    mouse-autoselect-window -.1            ;window focus follows the mouse pointer
-   mouse-wheel-scroll-amount '(1 ((shift) . 1))
+   mouse-wheel-scroll-amount '(1 ((shift) . 1)) ;make mouse scrolling smooth
+   indicate-buffer-boundaries 'left             ;fringe markers
    )
 #+END_SRC
 
@@ -877,12 +875,33 @@ I wanted to be able to get a documentation popup without having to trigger auto-
 
 *** back-button
 
+#+BEGIN_QUOTE
+Back-button provides an alternative method for navigation by analogy with the "back" button in a web browser.
+
+Every Emacs command which pushes the mark leaves behind an invisible record of the location of the point at that moment. Back-button moves the point back and forth over all the positions where some command pushed the mark.
+Visual navigation through mark rings in Emacs.
+#+END_QUOTE
+
+#+CAPTION: back-button
+#+NAME: fig:bb
+https://raw.github.com/rolandwalker/back-button/master/back_button_example.png
+
+=back-button= is written by Roland Walker. For more information see the [[https://github.com/rolandwalker/back-button][Github page]].
+
 #+BEGIN_SRC emacs-lisp
   (require 'back-button)
   (back-button-mode 1)
 #+END_SRC
 
 *** cider
+
+#+BEGIN_QUOTE
+CIDER is Clojure IDE and REPL for Emacs, built on top of nREPL, the Clojure networked REPL server. It's a great alternative to the now deprecated combination of SLIME + swank-clojure.
+#+END_QUOTE
+
+It was formerly called =nrepl.el= and is written by Bozhidar Batsov.
+
+Github: https://github.com/clojure-emacs/cider
 
 #+BEGIN_SRC emacs-lisp
   (setq nrepl-popup-stacktraces nil)
@@ -910,6 +929,8 @@ I wanted to be able to get a documentation popup without having to trigger auto-
   (add-to-list 'ac-modes 'conf-mode)
 #+END_SRC
 
+Turn on autocompletion for =conf-mode= by adding it to =ac-modes=.
+
 *** deft
 
 #+BEGIN_SRC emacs-lisp
@@ -924,8 +945,15 @@ I wanted to be able to get a documentation popup without having to trigger auto-
 
 *** diff-hl
 
+#+BEGIN_QUOTE
+diff-hl-mode highlights uncommitted changes on the left side of the window, allows you to jump between and revert them selectively.
+#+END_QUOTE
+
+Github: https://github.com/dgutov/diff-hl
+
 #+BEGIN_SRC emacs-lisp
   (global-diff-hl-mode)
+  (diff-hl-margin-mode)
 #+END_SRC
 
 *** dired+
@@ -939,28 +967,40 @@ I wanted to be able to get a documentation popup without having to trigger auto-
 It seems that both flags are necessary to make dired+ not hide the details.
 
 *** elpy
+
+Elpy makes setting up a great Python IDE a breeze. It's written by [[http://www.jorgenschaefer.de/][Jorgen Schäfer]] also known as =forcer=.
+
+Github: https://github.com/jorgenschaefer/elpy
+
 #+BEGIN_SRC emacs-lisp
   (elpy-enable)
   (delq 'flymake-mode elpy-default-minor-modes)
   (define-key ac-completing-map (kbd "<return>") 'ac-complete)
 #+END_SRC
+
+I'm using =flycheck= so please don't use =flymake= (which is old and bugly). Also RET should trigger completion for me and not a newline.
+
 *** eval-sexp-fu
 
+Flash some lights when evaluating expressions.
+
 #+BEGIN_SRC emacs-lisp
-  (when (and (>= emacs-major-version 24) (>= emacs-minor-version 3))
-    (require 'eval-sexp-fu)
-    (setq eval-sexp-fu-flash-duration 0.4)
-    (turn-on-eval-sexp-fu-flash-mode)
-    (key-chord-define lisp-interaction-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
-    (key-chord-define emacs-lisp-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
-    (define-key lisp-interaction-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
-    (define-key lisp-interaction-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
-    (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
-    (define-key emacs-lisp-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
-  )
+  (require 'eval-sexp-fu)
+  (setq eval-sexp-fu-flash-duration 0.4)
+  (turn-on-eval-sexp-fu-flash-mode)
+  (key-chord-define lisp-interaction-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
+  (key-chord-define emacs-lisp-mode-map "90" 'eval-sexp-fu-eval-sexp-inner-list)
+  (define-key lisp-interaction-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
+  (define-key lisp-interaction-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
+  (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
+  (define-key emacs-lisp-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
 #+END_SRC
 
 *** erc mode
+
+#+BEGIN_QUOTE
+ERC is a powerful, modular, and extensible IRC client for Emacs.
+#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'erc-mode-hook (lambda ()
@@ -998,17 +1038,40 @@ It seems that both flags are necessary to make dired+ not hide the details.
 
 *** fasd
 
+#+BEGIN_QUOTE
+Fasd (pronounced similar to "fast") is a command-line productivity booster.
+Fasd offers quick access to files and directories for POSIX shells. It is
+inspired by tools like autojump
+#+END_QUOTE
+
+The command-line tool is available an Github: https://github.com/clvv/fasd
+
+The =global-fasd-mode= was written by myself. It's purpose is to make the quick access DB from =fasd= available in Emacs and also to add visited files and directories from Emacs to the =fasd= DB.
+
+Github: https://github.com/steckerhalter/emacs-fasd
+
 #+BEGIN_SRC emacs-lisp
   (global-fasd-mode 1)
 #+END_SRC
 
 *** fic-ext-mode
 
+Mode to color TODO/FIXME black on red.
+
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'fic-ext-mode) ;; highlight TODO/FIXME/...
+  (add-hook 'prog-mode-hook 'fic-ext-mode)
 #+END_SRC
 
 *** flycheck-mode
+
+- Automatic on-the-fly syntax checking while editing
+- Fully automatic selection of the best syntax checker
+
+Supports many languages:  AsciiDoc, C/C++, CFEngine, Chef cookbooks, CoffeeScript, CSS, D, Elixir, Emacs Lisp, Erlang, Go, Haml, Handlebars, Haskell, HTML, Javascript, JSON, LESS, Lua, Perl, PHP, Puppet, Python, Ruby, Rust, RST (ReStructuredText), Sass, Scala, SCSS, Slim, Shell scripts (POSIX Shell, Bash and Zsh), TeX/LaTeX, XML, YAML
+
+Flycheck is written by [[http://lunaryorn.com/][Sebastian Wiesner]] a.ka =lunaryorn=.
+
+Github: https://github.com/flycheck/flycheck
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'php-mode-hook 'flycheck-mode)
@@ -1016,20 +1079,10 @@ It seems that both flags are necessary to make dired+ not hide the details.
   (add-hook 'json-mode-hook 'flycheck-mode)
   (add-hook 'nxml-mode-hook 'flycheck-mode)
   (add-hook 'python-mode-hook 'flycheck-mode)
-  (setq flycheck-indication-mode 'right-fringe)
+  (setq flycheck-indication-mode 'left-fringe)
 #+END_SRC
 
-*** fringe
-
-#+BEGIN_SRC emacs-lisp
-  (setq indicate-buffer-boundaries 'left)
-#+END_SRC
-
-*** google-this
-
-#+BEGIN_SRC emacs-lisp
-  (google-this-mode 1)
-#+END_SRC
+The modes where flycheck should be enabled.
 
 *** grizzl
 
@@ -1089,6 +1142,12 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
 
 *** highlight-symbol
 
+#+BEGIN_QUOTE
+Automatic and manual symbol highlighting for Emacs
+#+END_QUOTE
+
+Highlights the word/symbol at point and any other occurrences in view. Also allows to jump to the next or previous occurrence.
+
 #+BEGIN_SRC emacs-lisp
   (setq highlight-symbol-on-navigation-p t)
   (setq highlight-symbol-idle-delay 0.2)
@@ -1101,7 +1160,15 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
   (add-to-list 'ac-modes 'html-mode)
 #+END_SRC
 
+Enable autocompletion for html-mode.
+
 *** ido-mode
+
+#+BEGIN_EXAMPLE
+Interactively do things with buffers and files
+#+END_EXAMPLE
+
+Great mode to quickly select buffers/files etc. Is built into Emacs since v22.
 
 #+BEGIN_SRC emacs-lisp
   (setq ido-enable-flex-matching t
@@ -1116,6 +1183,10 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
   (flx-ido-mode 1)
   (setq ido-use-faces nil)
 #+END_SRC
+
+I added flx-ido quite recently which does indeed improve the flex matching. A shout out to Le Wang who coded it.
+
+Github: https://github.com/lewang/flx
 
 *** iedit
 
@@ -1146,6 +1217,8 @@ IELM is short for *I*nferior *E*macs *L*isp *M*ode. It is a REPL for Emacs Lisp 
 We need to tweak IELM a bit so we get completion and eldoc hints.
 
 *** jinja2-mode for twig
+
+Syntax highlighting for twig-templates
 
 #+BEGIN_SRC emacs-lisp
   (require 'jinja2-mode)
@@ -1236,21 +1309,30 @@ When Emacs has been compiled with inotiy support...
   (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 #+END_SRC
 
+Enable markdown-mode when the file suffixes match.
+
 *** melpa-upstream-visit
+
+Adds a button to the package info page to visit the repository homepage.
 
 #+BEGIN_SRC emacs-lisp
   (require 'melpa-upstream-visit)
 #+END_SRC
 
-Adds a button to the package info page to visit the repository homepage.
 
 *** move-text
+
+Allows to move the current line or region up/down
 
 #+BEGIN_SRC emacs-lisp
   (require 'move-text)
 #+END_SRC
 
 *** mu4e
+
+Mail client for Emacs by Dirk-Jan Binnema a.k.a =djcb=
+
+Github: https://github.com/djcb/mu
 
 #+BEGIN_SRC emacs-lisp
   (when (file-exists-p "/usr/local/share/emacs/site-lisp/mu4e")
@@ -1303,12 +1385,22 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 
 *** nrepl-eval-sexp-fu
 
+Flashes the evaluated expression (visual feedback)
+
 #+BEGIN_SRC emacs-lisp
   (require 'nrepl-eval-sexp-fu)
   (setq nrepl-eval-sexp-fu-flash-duration 0.4)
 #+END_SRC
 
 *** org-mode
+
+#+BEGIN_QUOTE
+Org mode is for keeping notes, maintaining TODO lists, planning projects, and authoring documents with a fast and effective plain-text system.
+#+END_QUOTE
+
+Org mode is the most amazing tool for Emacs. Even this Emacs configuration is written and annotated with it.
+
+Homepage: http://orgmode.org/
 
 #+BEGIN_SRC emacs-lisp
   (require 'org)
@@ -1438,6 +1530,10 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 
 *** php-mode
 
+The well maintained version of PHP mode by Eric James Michael Ritz or =ejmr=
+
+Github: https://github.com/ejmr/php-mode
+
 #+BEGIN_SRC emacs-lisp
   (require 'php-mode)
   (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
@@ -1463,8 +1559,11 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
     )
 
   (add-hook 'php-mode-hook 'setup-php-mode)
+#+END_SRC
 
-  ;; die me some var_dump quickly
+Adding some goodies like =php-documentor= to add docstrings and =php-align= to align on =\==.
+
+#+BEGIN_SRC emacs-lisp
   (defun var_dump-die ()
     (interactive)
     (let ((expression (if (region-active-p)
@@ -1507,13 +1606,25 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
       ))
 #+END_SRC
 
+Two functions to insert =var_dump...= quickly.
+
 *** prog-mode
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1))) ; show whitespace errors
+  (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
 #+END_SRC
 
+Show whitespace errors in all programming modes by turning on =show-trailing-whitespace= in these modes.
+
 *** projectile
+
+#+BEGIN_QUOTE
+Projectile is a project interaction library for Emacs. Its goal is to provide a nice set of features operating on a project level without introducing external dependencies(when feasible). For instance - finding project files has a portable implementation written in pure Emacs Lisp without the use of GNU find(but for performance sake an indexing mechanism backed by external commands exists as well).
+#+END_QUOTE
+
+Projectile is written by Bozhidar Batsov.
+
+Github: https://github.com/bbatsov/projectile
 
 #+BEGIN_SRC emacs-lisp
   (require 'projectile nil t)
@@ -1521,6 +1632,12 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 #+END_SRC
 
 *** rainbow-mode
+
+#+BEGIN_QUOTE
+rainbow-mode is a minor mode for Emacs which displays strings representing colors with the color they represent as background.
+#+END_QUOTE
+
+Homepage: http://julien.danjou.info/projects/emacs-packages#rainbow-mode
 
 #+BEGIN_SRC emacs-lisp
   (dolist (hook '(css-mode-hook
@@ -1535,6 +1652,8 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 #+END_SRC
 
 *** robe
+
+Advanced autocompletion for Ruby
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'ruby-mode-hook
@@ -1572,6 +1691,8 @@ I'm adding a few variables like the =extended-command-history= that I would like
 
 *** seqential-command
 
+Do different things on repeated keypresses.
+
 #+BEGIN_SRC emacs-lisp
   (require 'sequential-command)
   (define-sequential-command stk/beg back-to-indentation beginning-of-line)
@@ -1580,11 +1701,10 @@ I'm adding a few variables like the =extended-command-history= that I would like
   (global-set-key "\C-e" 'stk/end)
 #+END_SRC
 
-*** skewer
+Pressing =C-a= once goes back to the indentation, pressing it twice goes the beginning of the line.
+Pressing =C-e= once goes back to the end of the line, pressing it twice advances to the next line's indentation.
 
-#+BEGIN_SRC emacs-lisp
-(skewer-setup)
-#+END_SRC
+*** skewer
 
 #+BEGIN_QUOTE
 Provides live interaction with JavaScript, CSS, and HTML in a web browser. Expressions are sent on-the-fly from an editing buffer to be evaluated in the browser, just like Emacs does with an inferior Lisp process in Lisp modes.
@@ -1603,7 +1723,17 @@ The following bookmarklet will load skewer on demand on any website:
 
 Instructions and the source code can be found [[https://github.com/skeeto/skewer-mode][on Github]].
 
+#+BEGIN_SRC emacs-lisp
+(skewer-setup)
+#+END_SRC
+
 *** smart-mode-line
+
+#+BEGIN_QUOTE
+Smart Mode Line is a sexy mode-line for Emacs, that aims to be easy to read from small to large monitors by using a prefix feature and smart truncation.
+#+END_QUOTE
+
+It is written by Artur Bruce-Connor. The default Emacs mode-line has some shortcomings and =sml= does a good job at improving it.
 
 #+BEGIN_SRC emacs-lisp
   (setq sml/show-encoding t)
@@ -1616,7 +1746,17 @@ Instructions and the source code can be found [[https://github.com/skeeto/skewer
   (set-face-attribute 'sml/vc-edited nil :foreground "#ff5f87")
 #+END_SRC
 
+Show the encoding and add VC information to the mode-line. Respect the theme-colors and customize some of the =sml= colors.
+
 *** smartparens
+
+#+BEGIN_QUOTE
+Smartparens is minor mode for Emacs that deals with parens pairs and tries to be smart about it. It started as a unification effort to combine functionality of several existing packages in a single, compatible and extensible way to deal with parentheses, delimiters, tags and the like.
+#+END_QUOTE
+
+Written by Fuco and not used as it probably could be by myself. I really should spend some time to learn more about it :)
+
+Github: https://github.com/Fuco1/smartparens
 
 #+BEGIN_SRC emacs-lisp
   (require 'smartparens-config)
@@ -1636,7 +1776,13 @@ Instructions and the source code can be found [[https://github.com/skeeto/skewer
   (add-hook 'sgml-mode-hook 'sgml-electric-tag-pair-mode)
 #+END_SRC
 
+Use 4 spaces for identation and enable =sgml-electric-tag-pair-mode= so that  editing an opening markup tag automatically updates the closing tag.
+
 *** slime
+
+#+BEGIN_QUOTE
+SLIME, the Superior Lisp Interaction Mode for Emacs, is an Emacs mode for developing Common Lisp applications.
+#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
   (when (file-exists-p "~/quicklisp/slime-helper.el") (load "~/quicklisp/slime-helper.el"))
@@ -1653,17 +1799,9 @@ Instructions and the source code can be found [[https://github.com/skeeto/skewer
                   (yas-minor-mode -1)))
 #+END_SRC
 
-*** tern
+Disable yasnippets for term-mode
 
-#+BEGIN_SRC emacs-lisp
-  (when (executable-find "tern")
-        (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-        (eval-after-load 'auto-complete
-          '(eval-after-load 'tern
-             '(progn
-                (require 'tern-auto-complete)
-                (tern-ac-setup)))))
-#+END_SRC
+*** tern
 
 #+BEGIN_QUOTE
 Tern is a stand-alone, editor-independent JavaScript analyzer that can be used to improve the JavaScript integration of existing editors.
@@ -1677,13 +1815,23 @@ Needs the =tern= binary to be present, which can be installed with =npm=:
 
 See the [[http://ternjs.net/][project homepage]] for more info.
 
-*** tempo
-
 #+BEGIN_SRC emacs-lisp
-  (require 'tempo nil t)
+  (when (executable-find "tern")
+        (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+        (eval-after-load 'auto-complete
+          '(eval-after-load 'tern
+             '(progn
+                (require 'tern-auto-complete)
+                (tern-ac-setup)))))
 #+END_SRC
 
+Use tern autocompletion if the executable is found.
+
 *** uniqify
+
+#+BEGIN_QUOTE
+Unique buffer names dependent on file name
+#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
   (require 'uniquify)
@@ -1691,15 +1839,15 @@ See the [[http://ternjs.net/][project homepage]] for more info.
   (setq uniquify-min-dir-content 2)
 #+END_SRC
 
-"Unique buffer names dependent on file name"
+*** yasnippet
 
-*** yaml-mode
+#+BEGIN_QUOTE
+YASnippet is a template system for Emacs. It allows you to type an abbreviation and automatically expand it into function templates. Bundled language templates include: C, C++, C#, Perl, Python, Ruby, SQL, LaTeX, HTML, CSS and more. The snippet syntax is inspired from TextMate's syntax, you can even import most TextMate templates to YASnippet. Watch a demo on YouTube or download a higher resolution version.
+#+END_QUOTE
 
-#+BEGIN_SRC emacs-lisp
-  (setq yaml-indent-offset 4)
-#+END_SRC
+Written by João Távora or =capitaomorte=.
 
-*** yasnippets
+Github: https://github.com/capitaomorte/yasnippet
 
 #+BEGIN_SRC emacs-lisp
   (yas-global-mode 1)
@@ -1707,6 +1855,8 @@ See the [[http://ternjs.net/][project homepage]] for more info.
 #+END_SRC
 
 *** w3m
+
+An Emacs client for the command line web-browser =w3m=
 
 #+BEGIN_SRC emacs-lisp
   (when (require 'w3m nil t)
@@ -1745,12 +1895,6 @@ See the [[http://ternjs.net/][project homepage]] for more info.
                           (define-key w3m-mode-map "O" 'w3m-goto-new-session-url)
                           )))
     )
-#+END_SRC
-
-*** yaml-mode
-
-#+BEGIN_SRC emacs-lisp
-  (setq yaml-indent-offset 4)
 #+END_SRC
 
 ** end
