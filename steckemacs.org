@@ -19,10 +19,7 @@
 
 The source code is hosted on Github: [[https://github.com/steckerhalter/steckemacs]]
 
-#+BEGIN_EXAMPLE
-To use this setup please use Emacs 24.3 or later. Older versions might not work properly.
-I had to tweak it quite a bit to load everything on the first startup, which is a bit problematic because I need the latest Org mode and the installed version easily conflicts with new version etc.
-#+END_EXAMPLE
+*To use this setup please use Emacs 24.3.50 or later (currently that's the development snapshot). Older versions don't work because I use some of the new features of what is to become Emacs 24.4*
 
 ** Installation
 
@@ -269,7 +266,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           multi-web-mode
           multiple-cursors
           nrepl-eval-sexp-fu
-          org-plus-contrib
+          org
           org-mobile-sync
           php-auto-yasnippets
           php-boris
@@ -1434,7 +1431,7 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
             'stk/org-clock-out-if-waiting)
 
   ;; enable sync mode if org-mobile-directory is set
-  (when org-mobile-directory
+  (when (boundp 'org-mobile-directory)
     (org-mobile-sync-mode 1))
 
 #+END_SRC
