@@ -954,7 +954,20 @@ Github: https://github.com/dgutov/diff-hl
 #+BEGIN_SRC emacs-lisp
   (global-diff-hl-mode)
   (diff-hl-margin-mode)
+
+  (defun stk/diff-hl-update-each-buffer ()
+    (interactive)
+    (mapc (lambda (buffer)
+            (condition-case nil
+                (with-current-buffer buffer
+                  (diff-hl-update))
+              (buffer-read-only nil)))
+          (buffer-list)))
+
+  (add-hook 'git-commit-commit-hook 'stk/diff-hl-update-each-buffer)
 #+END_SRC
+
+Turn on the global mode and use the margin (not the fringe) to show the diff. Update each buffer after having commited something with Magit.
 
 *** dired+
 
