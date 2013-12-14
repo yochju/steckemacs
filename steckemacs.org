@@ -39,6 +39,14 @@ And symlink =.emacs= into your home directory:
 
 That's it. Then you can run emacs and it should pick up the config, install all the packages and make you happy ;)
 
+** How does it work?
+
+I'm using *org-mode* to manage *steckemacs*. =.emacs= (sometimes called *init* file) loads =steckemacs.org=, exports all the code blocks (this process is called "tangling") to =steckemacs.el=. If a block is marked with =:tangle no= it will be skipped. When the tangling is finished =steckemacs.el= is loaded to initialize Emacs.
+
+You can find more information about *Literate Programming* and *org-mode* here: http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming
+
+The cool thing about this setup is that you can export the same file as documentation to HTML quite easily. Take a look at the [[https://github.com/steckerhalter/steckemacs/blob/master/Makefile][Makefile]] to see how this done with a script. To do it from Org mode directly press =C-c C-e=, choose =h= and then one of the options to produce HTML output.
+
 ** Keyboard shortcuts
 
 By using the =key-chord= mode we can avoid having to type C- or M- all the time. It allows for using keys pressed simultaneously and I'm using it quite often.
@@ -68,16 +76,6 @@ I only describe my custom key combinations currently. To learn the standard Emac
 #+END_SRC
 
 This table is generated with an Elisp block =keys-doc= from an Org table which is also used in the code [[*Key%20Bindings][further below]].
-
-** Contributions
-
-I'm using *org-mode* to manage *steckemacs*. =.emacs= loads =steckemacs.org=, exports all the code blocks to =steckemacs.el= and loads that file to initialize Emacs.
-
-You can find more information about *Literate Programming* and *org-mode* here: http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming
-
-If you want to help me out improving the config, fork the repo, create a new branch and open up a Pull Request so we can discuss the merge.
-
-Of course you can also just [[https://github.com/steckerhalter/steckemacs/issues][report issues]] :)
 
 * Code
 
@@ -610,19 +608,6 @@ For some reason this didn't work with =setq= so I had to use =custom-set-variabl
 
 ** Custom Functions
 
-*** stk/dired
-
-#+BEGIN_SRC emacs-lisp
-  (defun stk/dired ()
-    (interactive)
-    (let ((file (or load-file-name
-                   buffer-file-name)))
-      (dired (if file (file-name-directory file)
-               (getenv "HOME")))))
-#+END_SRC
-
-Try to open dired in the directory of the current file, otherwise in the home dir.
-
 *** stk/url-insert-file-contents
 
 #+BEGIN_SRC emacs-lisp
@@ -954,24 +939,44 @@ Github: https://github.com/dgutov/diff-hl
 #+BEGIN_SRC emacs-lisp
   (global-diff-hl-mode)
   (diff-hl-margin-mode)
-  
+
   (defun stk/diff-hl-update ()
     (with-current-buffer (current-buffer) (diff-hl-update)))
-  
+
   (add-hook 'magit-refresh-file-buffer-hook 'stk/diff-hl-update)
 #+END_SRC
 
 Turn on the global mode and use the margin (not the fringe) to show the diff. Run =diff-hl-update= via =magit-refresh-file-buffer-hook= (which is run for each buffer after a commit).
 
-*** dired+
+*** dired and dired+
+
+#+BEGIN_QUOTE
+Dired makes an Emacs buffer containing a listing of a directory, and
+optionally some of its subdirectories as well.  You can use the normal
+Emacs commands to move around in this buffer, and special Dired commands
+to operate on the listed files.
+#+END_QUOTE
+
+Dired is nice way to browse the directory tree. I have added =dired+= which
+
+#+BEGIN_QUOTE
+extends functionalities provided by standard GNU Emacs libraries dired.el, dired-aux.el, and dired-x.el. The standard functions are all available, plus many more.
+#+END_QUOTE
+
+See the [[http://www.emacswiki.org/emacs/DiredPlus][EmacsWiki]] for detailed information on =dired+=.
+
+Being in a dired buffer it is possible to make the buffer writable and thus rename files and permissions by editing the buffer. Use =C-x C-q= which runs the command =dired-toggle-read-only= to make that possible.
+
+I often use =dired-jump= (mapped to =C-h C-d=) which jumps to Dired buffer corresponding to current buffer.
 
 #+BEGIN_SRC emacs-lisp
+  (setq dired-auto-revert-buffer t)
   (toggle-diredp-find-file-reuse-dir 1)
   (setq diredp-hide-details-initially-flag nil)
   (setq diredp-hide-details-propagate-flag nil)
 #+END_SRC
 
-It seems that both flags are necessary to make dired+ not hide the details.
+It seems that both flags are necessary to make dired+ not hide the details. =toggle-diredp-find-file-reuse-dir= will make sure that there is only one buffer kept around for =dired=. Normally =dired= creates a buffer for every opened directory.
 
 *** elpy
 
@@ -1176,6 +1181,12 @@ Interactively do things with buffers and files
 #+END_EXAMPLE
 
 Great mode to quickly select buffers/files etc. Is built into Emacs since v22.
+
+Select the previous match with =C-r= and next match with =C-s=.
+To open =dired= at the current location press =C-d=.
+Make a directory with =M-m=.
+
+Use =C-j= if you want to create a file with what you have entered (and not the match).
 
 #+BEGIN_SRC emacs-lisp
   (setq ido-enable-flex-matching t
