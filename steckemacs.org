@@ -5,7 +5,7 @@
 #+OPTIONS: todo:t html-style:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/style.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/steckemacs.css" />
-#+INFOJS_OPT: view:showall toc:t ftoc:t mouse:#555555 path:/stuff/js/org-info.js
+#+INFOJS_OPT: view:showall toc:t ftoc:t mouse:#555555 path:/js/org-info.js
 
 #+BEGIN_SRC emacs-lisp :tangle no :results silent
 (org-babel-tangle-file "steckemacs.org" "steckemacs.el" "emacs-lisp")
