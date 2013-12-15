@@ -1434,7 +1434,6 @@ Homepage: http://orgmode.org/
                                     ))
       ))
   (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-  (add-to-list 'ac-modes 'org-mode)
   (add-to-list 'org-modules 'org-habit)
   (setq org-startup-folded 'nofold)
   (setq org-startup-indented t)
@@ -1481,12 +1480,11 @@ Homepage: http://orgmode.org/
   (org-agenda-to-appt)           ; add appointments on startup
 
   ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (add-hook 'after-save-hook '(lambda () (org-agenda-to-appt 'refresh)) nil 'make-it-local)
-              (yas-minor-mode -1)
-              (set (make-local-variable 'ac-auto-start) nil)
-              ))
+  (defun stk/org-mode-hook ()
+    (add-hook 'after-save-hook '(lambda () (org-agenda-to-appt 'refresh)) nil 'make-it-local)
+    (yas-minor-mode -1)
+    )
+  (add-hook 'org-mode-hook 'stk/org-mode-hook)
 
   (setq appt-disp-window-function '(lambda (min-to-app new-time msg) (interactive)
                                      (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
@@ -1545,6 +1543,14 @@ Homepage: http://orgmode.org/
     (org-mobile-sync-mode 1))
 
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun stk/disable-ac-for-emacs-lisp-in-org-mode ()
+    (when (boundp 'org-mode-p) (set (make-local-variable 'ac-modes) (delq 'emacs-lisp-mode ac-modes))))
+  (add-hook 'emacs-lisp-mode-hook 'stk/disable-ac-for-emacs-lisp-in-org-mode)
+#+END_SRC
+
+Org mode makes a mess with emacs lisp blocks and auto-complete so we try to disable in the hook.
 
 *** php-mode
 
