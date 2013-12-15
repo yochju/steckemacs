@@ -3,9 +3,8 @@
 
 * Options                                                  :noexport:ARCHIVE:
 #+OPTIONS: todo:t html-style:nil
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/site.css" />
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/steckemacs.css" />
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/stuff/css/bootstrap-responsive.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/style.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/steckemacs.css" />
 #+INFOJS_OPT: view:showall toc:t ftoc:t mouse:#555555 path:/stuff/js/org-info.js
 
 #+BEGIN_SRC emacs-lisp :tangle no :results silent
