@@ -457,6 +457,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c I             | Org       | Stop the clock on the current item                        | 'org-clock-out                                                                                                                             |
 | C-c C-9           | Org       | Insert a new subheading and demote it                     | 'org-insert-subheading                                                                                                                     |
 | C-c C-0           | Org       | Insert a new TODO subheading                              | 'org-insert-todo-subheading                                                                                                                |
+| C-h C-u           | Org       | Open/switch to todo.org                                   | (lambda () (interactive) (find-file "~/org/todo.org"))                                                                                     |
 | C-c v             | PHP       | var dump die template                                     | 'var_dump-die                                                                                                                              |
 | C-c V             | PHP       | var dump template                                         | 'var_dump                                                                                                                                  |
 
