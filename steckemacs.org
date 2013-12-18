@@ -719,6 +719,7 @@ Display, the copy the filename of current buffer to kill ring.
   #+BEGIN: clocktable :scope agenda :block today :formatter stk/tks :properties (\"project\")
   #+END: clocktable
   "
+    (insert-before-markers (format-time-string "%d/%m/%Y\n\n"))
     (let (tbl entry entries time)
       (while (setq tbl (pop tables))
         (setq entries (nth 2 tbl))
@@ -910,7 +911,7 @@ Github: https://github.com/clojure-emacs/cider
 *** conf-mode
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.tks\\'" . conf-mode))
+  (add-to-list 'auto-mode-alist '("\\.tks\\'" . org-mode))
   (add-to-list 'ac-modes 'conf-mode)
 #+END_SRC
 
