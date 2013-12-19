@@ -224,7 +224,6 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           clojure-mode
           csv-mode
           dired+
-          deft
           diff-hl
           elpy
           erc-hl-nicks
@@ -445,7 +444,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c g             | VCS       | Magit status - manual: http://magit.github.io/magit/      | 'magit-status                                                                                                                              |
 | C-c l             | VCS       | Magit log                                                 | 'magit-log                                                                                                                                 |
 | bm                | VCS       | Magit blame mode                                          | 'magit-blame-mode                                                                                                                          |
-| C-c c             | Open      | Open deft (quick notes tool)                              | 'deft                                                                                                                                      |
 | C-c s             | Open      | Open emacs shell                                          | 'shell                                                                                                                                     |
 | C-h C-c           | Open      | Open/hide dedicated term                                  | 'multi-term-dedicated-toggle                                                                                                               |
 | nm                | Open      | Open mu4e                                                 | 'mu4e                                                                                                                                      |
@@ -916,18 +914,6 @@ Github: https://github.com/clojure-emacs/cider
 #+END_SRC
 
 Turn on autocompletion for =conf-mode= by adding it to =ac-modes=.
-
-*** deft
-
-#+BEGIN_SRC emacs-lisp
-  (setq
-   deft-extension "org"
-   deft-directory "~/org/deft"
-   deft-text-mode 'org-mode
-   deft-use-filename-as-title t
-   deft-auto-save-interval 0
-   )
-#+END_SRC
 
 *** diff-hl
 
@@ -1425,9 +1411,9 @@ Homepage: http://orgmode.org/
   (require 'org)
   (require 'ox-org)
   (require 'ox-md)
-  (let ((todo "~/org/todo.org"))
-    (when (file-readable-p todo)
-      (setq org-agenda-files '("~/org/todo.org" "~/org/deft/"))
+  (let ((agendas "~/.agenda_files"))
+    (when (file-readable-p agendas)
+      (setq org-agenda-files agendas)
       (setq initial-buffer-choice (lambda ()
                                     (org-agenda nil "n")
                                     (delete-other-windows)
