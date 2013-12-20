@@ -1439,7 +1439,7 @@ Homepage: http://orgmode.org/
   (setq org-clock-persist t)
   (setq org-clock-out-remove-zero-time-clocks t)
   (setq org-clock-sound t)
-  (setq org-default-notes-file (concat org-directory "/todo.org"))
+  (setq org-default-notes-file (concat org-directory "/notes.org"))
 
   (setq org-capture-templates
         '(
