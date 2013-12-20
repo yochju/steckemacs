@@ -347,118 +347,122 @@ The code for the keys is generated from data in an Org table named =keys= using 
 
 ****                                                            :noexport:
 #+TBLNAME: keys
-| Combo             | Category  | Desciption                                                | Command                                                                                                                                    |
-|-------------------+-----------+-----------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------|
-| C-h x             | General   | Kill emacs (including the daemon if it is running)        | (lambda () (interactive) (shell-command "pkill emacs"))                                                                                    |
-| C-S-l             | General   | List available packages                                   | 'package-list-packages-no-fetch                                                                                                            |
-| C-c n             | General   | Show file name + path, save to clipboard                  | 'show-file-name                                                                                                                            |
-| C-x a s           | General   | Toggle auto saving of buffers                             | 'auto-save-buffers-enhanced-toggle-activity                                                                                                |
-| C-c d             | General   | Change dictionary                                         | 'ispell-change-dictionary                                                                                                                  |
-| C-c f             | General   | Toggle flyspell mode (spellchecking)                      | 'flyspell-mode                                                                                                                             |
-| M-x               | General   | Helm M-x (execute command)                                | 'helm-M-x                                                                                                                                  |
-| C-h C-h           | General   | Helm M-x (execute command)                                | 'helm-M-x                                                                                                                                  |
-| C-h h             | General   | Helm navigate project files                               | 'helm-projectile                                                                                                                           |
-| <C-S-iso-lefttab> | General   | Helm for files                                            | 'helm-for-files                                                                                                                            |
-| C-h C-p           | General   | Open file                                                 | 'find-file                                                                                                                                 |
-| cg                | General   | Customize group                                           | 'customize-group                                                                                                                           |
-| C-c m             | Interface | Toggle the menu bar                                       | 'menu-bar-mode                                                                                                                             |
-| C--               | Interface | Decrease the font size                                    | 'text-scale-decrease                                                                                                                       |
-| C-=               | Interface | Increase the font size                                    | 'text-scale-increase                                                                                                                       |
-| ln                | Interface | Show/hide the line numbers                                | 'linum-mode                                                                                                                                |
-| C-x C-u           | Internet  | Prompt for URL and insert contents at point               | 'stk/url-insert-file-contents                                                                                                              |
-| C-c C-w           | Internet  | Browse URL under cursor                                   | 'browse-url-at-point                                                                                                                       |
-| C-h C-r           | Editing   | Kill region or current line                               | 'kill-region                                                                                                                               |
+| Combo             | Category  | Desciption                                                | Command                                                     |
+|-------------------+-----------+-----------------------------------------------------------+-------------------------------------------------------------|
+| C-h x             | General   | Kill emacs (including the daemon if it is running)        | (lambda () (interactive) (shell-command "pkill emacs"))     |
+| C-S-l             | General   | List available packages                                   | 'package-list-packages-no-fetch                             |
+| C-c n             | General   | Show file name + path, save to clipboard                  | 'show-file-name                                             |
+| C-x a s           | General   | Toggle auto saving of buffers                             | 'auto-save-buffers-enhanced-toggle-activity                 |
+| C-c d             | General   | Change dictionary                                         | 'ispell-change-dictionary                                   |
+| C-c f             | General   | Toggle flyspell mode (spellchecking)                      | 'flyspell-mode                                              |
+| M-x               | General   | Helm M-x (execute command)                                | 'helm-M-x                                                   |
+| C-h C-h           | General   | Helm M-x (execute command)                                | 'helm-M-x                                                   |
+| C-h h             | General   | Helm navigate project files                               | 'helm-projectile                                            |
+| <C-S-iso-lefttab> | General   | Helm for files                                            | 'helm-for-files                                             |
+| C-h ,             | General   | Helm: find commands, functions, variables and faces       | 'helm-apropos                                               |
+| C-h .             | General   | Helm: Emacs info manual                                   | 'helm-info-emacs                                            |
+| C-h 4             | General   | Helm: Elisp info manual                                   | 'helm-info-elisp                                            |
+| C-h 3             | General   | Helm: Locate an Elisp library                             | 'helm-locate-library                                        |
+| C-h C-p           | General   | Open file                                                 | 'find-file                                                  |
+| cg                | General   | Customize group                                           | 'customize-group                                            |
+| C-c m             | Interface | Toggle the menu bar                                       | 'menu-bar-mode                                              |
+| C--               | Interface | Decrease the font size                                    | 'text-scale-decrease                                        |
+| C-=               | Interface | Increase the font size                                    | 'text-scale-increase                                        |
+| ln                | Interface | Show/hide the line numbers                                | 'linum-mode                                                 |
+| C-x C-u           | Internet  | Prompt for URL and insert contents at point               | 'stk/url-insert-file-contents                               |
+| C-c C-w           | Internet  | Browse URL under cursor                                   | 'browse-url-at-point                                        |
+| C-h C-r           | Editing   | Kill region or current line                               | 'kill-region                                                |
 | C-h n             | Editing   | Newline and indent (also on C-j)                          | 'newline-and-indent                                                                                                                        |
-| C-z               | Editing   | Undo - but do not trigger redo                            | 'undo-only                                                                                                                                 |
-| <M-f10>           | Editing   | Move line or region up                                    | 'move-text-up                                                                                                                              |
-| <M-f9>            | Editing   | Move line or region down                                  | 'move-text-down                                                                                                                            |
-| C-S-c C-S-c       | Editing   | Edit region with multiple cursors                         | 'mc/edit-lines                                                                                                                             |
-| C-<               | Editing   | Multiple cursors up                                       | 'mc/mark-previous-like-this                                                                                                                |
-| C->               | Editing   | Multiple cursors down                                     | 'mc/mark-next-like-this                                                                                                                    |
-| C-*               | Editing   | Mark all like "this" with multiple cursors                | 'mc/mark-all-like-this                                                                                                                     |
-| C-h r             | Editing   | Query and replace text                                    | 'query-replace                                                                                                                             |
-| vr                | Editing   | Visual regexp/replace                                     | 'vr/replace                                                                                                                                |
-| i9                | Editing   | Toggle electric indent mode                               | 'electric-indent-mode                                                                                                                      |
-| ac                | Editing   | Align nearby elements                                     | 'align-current                                                                                                                             |
-| C-8               | Editing   | Select symbol under cursor, repeat to expand              | 'er/expand-region                                                                                                                          |
-| M-8               | Editing   | Contract the current selection                            | 'er/contract-region                                                                                                                        |
-| M-W               | Editing   | Delete region (but don't put it into kill ring)           | 'delete-region                                                                                                                             |
-| fc                | Editing   | Toggle flycheck mode                                      | 'flycheck-mode                                                                                                                             |
-| C-c q             | Editing   | Toggle word wrap                                          | 'auto-fill-mode                                                                                                                            |
-| C-c w             | Editing   | Cleanup whitespaces                                       | 'whitespace-cleanup                                                                                                                        |
-| C-h C-v           | Editing   | Toggle visual line mode                                   | 'visual-line-mode                                                                                                                          |
-| C-?               | Source    | Go to definition of function or variable at point         | 'stk/find-function-or-variable-at-point                                                                                                    |
-| C-h C-f           | Source    | Go to the definition of the function under cursor         | 'find-function-at-point                                                                                                                    |
-| M-5               | Source    | Helm select etags                                         | 'helm-etags-select                                                                                                                         |
-| M-6               | Source    | Find tag in a new window                                  | 'find-tag-other-window                                                                                                                     |
-| C-h C-0           | Source    | Edebug defun at point                                     | 'edebug-defun                                                                                                                              |
-| C-h C-b           | Source    | Evaluate the current buffer                               | 'eval-buffer                                                                                                                               |
-| C-h C-e           | Source    | Toggle debug on error                                     | 'toggle-debug-on-error                                                                                                                     |
-| C-h C-d           | Directory | Open dired in current file location                       | 'dired-jump                                                                                                                                |
-| sb                | Directory | Open the speedbar                                         | 'speedbar                                                                                                                                  |
-| C-c T             | Directory | Open terminal in current directory                        | (lambda () (interactive) (stk/open-terminal nil))                                                                                          |
-| C-c t             | Directory | Open terminal in current project root                     | (lambda () (interactive) (stk/open-terminal t))                                                                                            |
-| C-h C-/           | Directory | Use fasd to navigate to a file or directory               | 'fasd-find-file                                                                                                                            |
-| C-h C-s           | Buffers   | Save the current buffer                                   | 'save-buffer                                                                                                                               |
-| C-c r             | Buffers   | Revert a buffer to the saved state                        | 'revert-buffer                                                                                                                             |
-| C-x C-b           | Buffers   | use ido to switch buffers                                 | 'ido-switch-buffer                                                                                                                         |
-| <f6>              | Buffers   | Kill current buffer                                       | (lambda () (interactive) (kill-buffer (buffer-name)))                                                                                      |
-| <f8>              | Buffers   | Switch to "other" buffer                                  | (lambda () (interactive) (switch-to-buffer nil))                                                                                           |
-| jn                | Buffers   | Switch to "other" buffer                                  | (lambda () (interactive) (switch-to-buffer nil))                                                                                           |
-| fv                | Buffers   | Kill current buffer                                       | (lambda () (interactive) (kill-buffer (buffer-name)))                                                                                      |
-| sv                | Buffers   | Save the current buffer                                   | 'save-buffer                                                                                                                               |
-| sc                | Buffers   | Switch to scratch buffer                                  | (lambda () (interactive)(switch-to-buffer "*scratch*"))                                                                                    |
-| <f9>              | Buffers   | Split window and show/hide last buffer                    | 'my/split-window                                                                                                                           |
-| C-h c             | History   | Helm show the kill ring                                   | 'helm-show-kill-ring                                                                                                                       |
-| C-h m             | History   | Helm show all mark rings                                  | 'helm-all-mark-rings                                                                                                                       |
-| C-3               | History   | Go backward in movement history                           | 'back-button-local-backward                                                                                                                |
-| C-4               | History   | Go forward in movement history                            | 'back-button-local-forward                                                                                                                 |
-| M-2               | Occur     | Show all symbols like the one cursor is located at        | 'highlight-symbol-occur                                                                                                                    |
-| M-3               | Occur     | Previous symbol like the one the cursor is on             | (lambda () (interactive) (highlight-symbol-jump -1))                                                                                       |
-| M-4               | Occur     | Next symbol like the one the cursor is on                 | (lambda () (interactive) (highlight-symbol-jump 1))                                                                                        |
-| M-9               | Occur     | Helm search for occurences in open buffers                | 'helm-occur                                                                                                                                |
-| 34                | Occur     | Helm imenu                                                | 'helm-imenu                                                                                                                                |
-| M-i               | Occur     | Helm swoop                                                | 'helm-swoop                                                                                                                                |
-| M-I               | Occur     | Helm swoop back to last point                             | 'helm-swoop-back-to-last-point                                                                                                             |
-| ok                | Occur     | Projectile multiple occur                                 | 'projectile-multi-occur                                                                                                                    |
-| C-0               | Windows   | Select previous window                                    | (lambda () (interactive) (select-window (previous-window)))                                                                                |
-| C-9               | Windows   | Select next window                                        | (lambda () (interactive) (select-window (next-window)))                                                                                    |
-| <f2>              | Windows   | Split window vertically                                   | 'split-window-vertically                                                                                                                   |
-| <f3>              | Windows   | Split window horizontally                                 | 'split-window-horizontally                                                                                                                 |
-| <f4>              | Windows   | Delete current window (not the buffer)                    | 'delete-window                                                                                                                             |
-| <f5>              | Windows   | Only keep the current window and delete all others        | 'delete-other-windows                                                                                                                      |
-| <f7>              | Windows   | Toggle arrangement of two windows horizontally/vertically | 'toggle-window-split                                                                                                                       |
-| <M-up>            | Windows   | Move the current buffer window up                         | 'buf-move-up                                                                                                                               |
-| <M-down>          | Windows   | Move the current buffer window down                       | 'buf-move-down                                                                                                                             |
-| <M-left>          | Windows   | Move the current buffer window left                       | 'buf-move-left                                                                                                                             |
-| <M-right>         | Windows   | Move the current buffer window right                      | 'buf-move-right                                                                                                                            |
-| vg                | Find/Grep | VC git grep                                               | 'vc-git-grep                                                                                                                               |
-| C-h C-f           | Find/Grep | Grep find                                                 | 'grep-find                                                                                                                                 |
-| C-c o             | Find/Grep | list matching regexp                                      | 'occur                                                                                                                                     |
-| C-h C-g           | Find/Grep | Use the ag cli tool to grep project                       | 'ag-project                                                                                                                                |
-| C-h C-l           | Find/Grep | Helm locate                                               | 'helm-locate                                                                                                                               |
-| C-h C-z           | Find/Grep | Projectile find file                                      | 'projectile-find-file                                                                                                                      |
-| C-h g             | Find/Grep | Projectile grep                                           | 'projectile-grep                                                                                                                           |
-| C-h z             | Find/Grep | Projectile ack                                            | 'projectile-ack                                                                                                                            |
-| M-0               | Find/Grep | Helm find files with Git                                  | 'helm-git-find-files                                                                                                                       |
-| C-c g             | VCS       | Magit status - manual: http://magit.github.io/magit/      | 'magit-status                                                                                                                              |
-| C-c l             | VCS       | Magit log                                                 | 'magit-log                                                                                                                                 |
-| bm                | VCS       | Magit blame mode                                          | 'magit-blame-mode                                                                                                                          |
-| C-c s             | Open      | Open emacs shell                                          | 'shell                                                                                                                                     |
-| C-h C-c           | Open      | Open/hide dedicated term                                  | 'multi-term-dedicated-toggle                                                                                                               |
-| nm                | Open      | Open mu4e                                                 | 'mu4e                                                                                                                                      |
-| C-c e             | Open      | Open/connect with  ERC                                    | (lambda () (interactive) (erc-tls :server erc-server :port erc-port :nick erc-nick :full-name erc-user-full-name :password erc-password )) |
+| C-z               | Editing   | Undo - but do not trigger redo                            | 'undo-only                                                  |
+| <M-f10>           | Editing   | Move line or region up                                    | 'move-text-up                                               |
+| <M-f9>            | Editing   | Move line or region down                                  | 'move-text-down                                             |
+| C-S-c C-S-c       | Editing   | Edit region with multiple cursors                         | 'mc/edit-lines                                              |
+| C-<               | Editing   | Multiple cursors up                                       | 'mc/mark-previous-like-this                                 |
+| C->               | Editing   | Multiple cursors down                                     | 'mc/mark-next-like-this                                     |
+| C-*               | Editing   | Mark all like "this" with multiple cursors                | 'mc/mark-all-like-this                                      |
+| C-h r             | Editing   | Query and replace text                                    | 'query-replace                                              |
+| vr                | Editing   | Visual regexp/replace                                     | 'vr/replace                                                 |
+| i9                | Editing   | Toggle electric indent mode                               | 'electric-indent-mode                                       |
+| ac                | Editing   | Align nearby elements                                     | 'align-current                                              |
+| C-8               | Editing   | Select symbol under cursor, repeat to expand              | 'er/expand-region                                           |
+| M-8               | Editing   | Contract the current selection                            | 'er/contract-region                                         |
+| M-W               | Editing   | Delete region (but don't put it into kill ring)           | 'delete-region                                              |
+| fc                | Editing   | Toggle flycheck mode                                      | 'flycheck-mode                                              |
+| C-c q             | Editing   | Toggle word wrap                                          | 'auto-fill-mode                                             |
+| C-c w             | Editing   | Cleanup whitespaces                                       | 'whitespace-cleanup                                         |
+| C-h C-v           | Editing   | Toggle visual line mode                                   | 'visual-line-mode                                           |
+| C-?               | Source    | Go to definition of function or variable at point         | 'stk/find-function-or-variable-at-point                     |
+| C-h C-f           | Source    | Go to the definition of the function under cursor         | 'find-function-at-point                                     |
+| M-5               | Source    | Helm select etags                                         | 'helm-etags-select                                          |
+| M-6               | Source    | Find tag in a new window                                  | 'find-tag-other-window                                      |
+| C-h C-0           | Source    | Edebug defun at point                                     | 'edebug-defun                                               |
+| C-h C-b           | Source    | Evaluate the current buffer                               | 'eval-buffer                                                |
+| C-h C-e           | Source    | Toggle debug on error                                     | 'toggle-debug-on-error                                      |
+| C-h C-d           | Directory | Open dired in current file location                       | 'dired-jump                                                 |
+| sb                | Directory | Open the speedbar                                         | 'speedbar                                                   |
+| C-c T             | Directory | Open terminal in current directory                        | (lambda () (interactive) (stk/open-terminal nil))           |
+| C-c t             | Directory | Open terminal in current project root                     | (lambda () (interactive) (stk/open-terminal t))             |
+| C-h C-/           | Directory | Use fasd to navigate to a file or directory               | 'fasd-find-file                                             |
+| C-h C-s           | Buffers   | Save the current buffer                                   | 'save-buffer                                                |
+| C-c r             | Buffers   | Revert a buffer to the saved state                        | 'revert-buffer                                              |
+| C-x C-b           | Buffers   | use ido to switch buffers                                 | 'ido-switch-buffer                                          |
+| <f6>              | Buffers   | Kill current buffer                                       | (lambda () (interactive) (kill-buffer (buffer-name)))       |
+| <f8>              | Buffers   | Switch to "other" buffer                                  | (lambda () (interactive) (switch-to-buffer nil))            |
+| jn                | Buffers   | Switch to "other" buffer                                  | (lambda () (interactive) (switch-to-buffer nil))            |
+| fv                | Buffers   | Kill current buffer                                       | (lambda () (interactive) (kill-buffer (buffer-name)))       |
+| sv                | Buffers   | Save the current buffer                                   | 'save-buffer                                                |
+| sc                | Buffers   | Switch to scratch buffer                                  | (lambda () (interactive)(switch-to-buffer "*scratch*"))     |
+| <f9>              | Buffers   | Split window and show/hide last buffer                    | 'my/split-window                                            |
+| C-h c             | History   | Helm show the kill ring                                   | 'helm-show-kill-ring                                        |
+| C-h m             | History   | Helm show all mark rings                                  | 'helm-all-mark-rings                                        |
+| C-3               | History   | Go backward in movement history                           | 'back-button-local-backward                                 |
+| C-4               | History   | Go forward in movement history                            | 'back-button-local-forward                                  |
+| M-2               | Occur     | Show all symbols like the one cursor is located at        | 'highlight-symbol-occur                                     |
+| M-3               | Occur     | Previous symbol like the one the cursor is on             | (lambda () (interactive) (highlight-symbol-jump -1))        |
+| M-4               | Occur     | Next symbol like the one the cursor is on                 | (lambda () (interactive) (highlight-symbol-jump 1))         |
+| M-9               | Occur     | Helm search for occurences in open buffers                | 'helm-occur                                                 |
+| 34                | Occur     | Helm imenu                                                | 'helm-imenu                                                 |
+| M-i               | Occur     | Helm swoop                                                | 'helm-swoop                                                 |
+| M-I               | Occur     | Helm swoop back to last point                             | 'helm-swoop-back-to-last-point                              |
+| ok                | Occur     | Projectile multiple occur                                 | 'projectile-multi-occur                                     |
+| C-0               | Windows   | Select previous window                                    | (lambda () (interactive) (select-window (previous-window))) |
+| C-9               | Windows   | Select next window                                        | (lambda () (interactive) (select-window (next-window)))     |
+| <f2>              | Windows   | Split window vertically                                   | 'split-window-vertically                                    |
+| <f3>              | Windows   | Split window horizontally                                 | 'split-window-horizontally                                  |
+| <f4>              | Windows   | Delete current window (not the buffer)                    | 'delete-window                                              |
+| <f5>              | Windows   | Only keep the current window and delete all others        | 'delete-other-windows                                       |
+| <f7>              | Windows   | Toggle arrangement of two windows horizontally/vertically | 'toggle-window-split                                        |
+| <M-up>            | Windows   | Move the current buffer window up                         | 'buf-move-up                                                |
+| <M-down>          | Windows   | Move the current buffer window down                       | 'buf-move-down                                              |
+| <M-left>          | Windows   | Move the current buffer window left                       | 'buf-move-left                                              |
+| <M-right>         | Windows   | Move the current buffer window right                      | 'buf-move-right                                             |
+| vg                | Find/Grep | VC git grep                                               | 'vc-git-grep                                                |
+| C-h C-f           | Find/Grep | Grep find                                                 | 'grep-find                                                  |
+| C-c o             | Find/Grep | list matching regexp                                      | 'occur                                                      |
+| C-h C-g           | Find/Grep | Use the ag cli tool to grep project                       | 'ag-project                                                 |
+| C-h C-l           | Find/Grep | Helm locate                                               | 'helm-locate                                                |
+| C-h C-z           | Find/Grep | Projectile find file                                      | 'projectile-find-file                                       |
+| C-h g             | Find/Grep | Projectile grep                                           | 'projectile-grep                                            |
+| C-h z             | Find/Grep | Projectile ack                                            | 'projectile-ack                                             |
+| M-0               | Find/Grep | Helm find files with Git                                  | 'helm-git-find-files                                        |
+| C-c g             | VCS       | Magit status - manual: http://magit.github.io/magit/      | 'magit-status                                               |
+| C-c l             | VCS       | Magit log                                                 | 'magit-log                                                  |
+| bm                | VCS       | Magit blame mode                                          | 'magit-blame-mode                                           |
+| C-c s             | Open      | Open emacs shell                                          | 'shell                                                      |
+| C-h C-c           | Open      | Open/hide dedicated term                                  | 'multi-term-dedicated-toggle                                |
+| nm                | Open      | Open mu4e                                                 | 'mu4e                                                       |
+| C-c e             | Open      | Open/connect with  ERC                                    | 'stk/erc-connect                                            |
 | C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))                                                                                             |
-| C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))                                                                                            |
-| C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                                                                                               |
-| C-c i             | Org       | Start the clock on the current item                       | 'org-clock-in                                                                                                                              |
-| C-c I             | Org       | Stop the clock on the current item                        | 'org-clock-out                                                                                                                             |
-| C-c C-9           | Org       | Insert a new subheading and demote it                     | 'org-insert-subheading                                                                                                                     |
-| C-c C-0           | Org       | Insert a new TODO subheading                              | 'org-insert-todo-subheading                                                                                                                |
-| C-h C-.           | Org       | Open/switch to home.org                                   | (lambda () (interactive) (find-file "~/org/home.org"))                                                                                     |
-| C-h C-u           | Org       | Open/switch to work.org                                   | (lambda () (interactive) (find-file "~/org/work.org"))                                                                                     |
-| C-c v             | PHP       | var dump die template                                     | 'var_dump-die                                                                                                                              |
-| C-c V             | PHP       | var dump template                                         | 'var_dump                                                                                                                                  |
+| C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
+| C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                |
+| C-c i             | Org       | Start the clock on the current item                       | 'org-clock-in                                               |
+| C-c I             | Org       | Stop the clock on the current item                        | 'org-clock-out                                              |
+| C-c C-9           | Org       | Insert a new subheading and demote it                     | 'org-insert-subheading                                      |
+| C-c C-0           | Org       | Insert a new TODO subheading                              | 'org-insert-todo-subheading                                 |
+| C-h C-.           | Org       | Open/switch to home.org                                   | (lambda () (interactive) (find-file "~/org/home.org"))      |
+| C-h C-u           | Org       | Open/switch to work.org                                   | (lambda () (interactive) (find-file "~/org/work.org"))      |
+| C-c v             | PHP       | var dump die template                                     | 'var_dump-die                                               |
+| C-c V             | PHP       | var dump template                                         | 'var_dump                                                   |
 
 ** Settings
 
@@ -606,6 +610,14 @@ For the frame title either show a file or a buffer name (if the buffer isn't vis
 For some reason this didn't work with =setq= so I had to use =custom-set-variables=. It changes ansi colors for comint mode, e.g. shell-mode
 
 ** Custom Functions
+
+*** stk/erc-connect
+
+#+BEGIN_SRC emacs-lisp
+(defun stk/erc-connect () 
+  (interactive) 
+  (erc-tls :server erc-server :port erc-port :nick erc-nick :full-name erc-user-full-name :password erc-password))
+#+END_SRC
 
 *** stk/url-insert-file-contents
 
