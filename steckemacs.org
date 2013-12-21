@@ -224,6 +224,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           creole-mode
           clojure-mode
           csv-mode
+          deft
           dired+
           diff-hl
           elpy
@@ -346,7 +347,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 =C-t= is translated to =C-p= (move up), this helps me with navigating using the [[http://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard][Dvorak keyboard layout]].
 =my-keys-minor-mode-map= is used to set =C-return= in this case in a way so that other minor modes cannot override it.
 
-****                                                            :noexport:
+**** Key definition table                                          :noexport:
 #+TBLNAME: keys
 | Combo             | Category  | Desciption                                                | Command                                                     |
 |-------------------+-----------+-----------------------------------------------------------+-------------------------------------------------------------|
@@ -373,7 +374,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-x C-u           | Internet  | Prompt for URL and insert contents at point               | 'stk/url-insert-file-contents                               |
 | C-c C-w           | Internet  | Browse URL under cursor                                   | 'browse-url-at-point                                        |
 | C-h C-r           | Editing   | Kill region or current line                               | 'kill-region                                                |
-| C-h n             | Editing   | Newline and indent (also on C-j)                          | 'newline-and-indent                                                                                                                        |
+| C-h n             | Editing   | Newline and indent (also on C-j)                          | 'newline-and-indent                                         |
 | C-z               | Editing   | Undo - but do not trigger redo                            | 'undo-only                                                  |
 | <M-f10>           | Editing   | Move line or region up                                    | 'move-text-up                                               |
 | <M-f9>            | Editing   | Move line or region down                                  | 'move-text-down                                             |
@@ -451,9 +452,10 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | bm                | VCS       | Magit blame mode                                          | 'magit-blame-mode                                           |
 | C-c s             | Open      | Open emacs shell                                          | 'shell                                                      |
 | C-h C-c           | Open      | Open/hide dedicated term                                  | 'multi-term-dedicated-toggle                                |
+| C-c c             | Open      | Open deft (quick notes tool)                              | 'deft                                                       |
 | nm                | Open      | Open mu4e                                                 | 'mu4e                                                       |
 | C-c e             | Open      | Open/connect with  ERC                                    | 'stk/erc-connect                                            |
-| C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))                                                                                             |
+| C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))              |
 | C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
 | C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                |
 | C-c i             | Org       | Start the clock on the current item                       | 'org-clock-in                                               |
@@ -929,6 +931,15 @@ Github: https://github.com/clojure-emacs/cider
 
 Turn on autocompletion for =conf-mode= by adding it to =ac-modes=.
 
+*** deft
+#+BEGIN_SRC emacs-lisp
+  (setq
+   deft-extension "el"
+   deft-directory "~/deft"
+   deft-text-mode 'lisp-interaction-mode
+   deft-use-filename-as-title t
+   )
+#+END_SRC
 *** diff-hl
 
 #+BEGIN_QUOTE
@@ -1553,40 +1564,14 @@ Homepage: http://orgmode.org/
 
 Some helpers to make TODO state changes clock the time.
 
-**** Export
+**** org-mode-blog
+
+Load the project template for my blog
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-publish-project-alist
-        '(("blog"
-           :components ("blog-content" "blog-static"))
-          ("blog-content"
-           :base-directory "~/org-mode-blog/"
-           :base-extension "org"
-           :publishing-directory org-mode-blog-publishing-directory
-           :recursive t
-           :publishing-function org-html-publish-to-html
-           :export-with-tags nil
-           :headline-levels 4
-           :auto-sitemap t
-           :sitemap-title "Sitemap"
-           :section-numbers nil
-           :with-toc nil
-           :with-author nil
-           :with-creator nil
-           :html-doctype "html5"
-           :html-preamble nil
-           :html-postamble "<hr><div id='comments'></div>"
-           :html-head  "<link rel=\"stylesheet\" href=\"/css/style.css\" type=\"text/css\"/>\n"
-           :html-head-extra "<script async src=\"/js/juvia.js\"></script>"
-           :html-html5-fancy t
-           :html-head-include-default-style nil
-           )
-          ("blog-static"
-           :base-directory "~/org-mode-blog/"
-           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf"
-           :publishing-directory org-mode-blog-publishing-directory
-           :recursive t
-           :publishing-function org-publish-attachment)))
+(let ((file (expand-file-name "elisp/org-publish-project-alist.el" "~/org-mode-blog")))
+  (when (file-exists-p file)
+    (load file t t t)))
 #+END_SRC
 
 Don't forget to set =org-mode-blog-publishing-directory= to the desired export location in =~/.user.el=.
@@ -1791,44 +1776,6 @@ Do different things on repeated keypresses.
 
 Pressing =C-a= once goes back to the indentation, pressing it twice goes the beginning of the line.
 Pressing =C-e= once goes back to the end of the line, pressing it twice advances to the next line's indentation.
-
-*** smartparens
-**** org-mode
-
-Got that from [[https://bitbucket.org/Fuco/.emacs.d][Fuco's config]]...
-
-#+BEGIN_SRC emacs-lisp
-  (sp-with-modes 'org-mode
-    (sp-local-pair "*" "*" :unless '(sp-point-after-word-p sp-point-at-bol-p) :wrap "C-*" :skip-match 'sp--org-skip-asterisk)
-    (sp-local-pair "_" "_" :unless '(sp-point-after-word-p) :wrap "C-_" :skip-match 'sp--org-skip-markup)
-    (sp-local-pair "/" "/" :unless '(sp-point-after-word-p) :skip-match 'sp--org-skip-markup)
-    (sp-local-pair "~" "~" :unless '(sp-point-after-word-p) :skip-match 'sp--org-skip-code))
-
-(defun sp--org-skip-markup (ms mb me)
-  (save-excursion
-    (and (progn
-           (goto-char mb)
-           (save-match-data (looking-back "\\sw\\|\\s_\\|\\s.")))
-         (progn
-           (goto-char me)
-           (save-match-data (looking-at "\\sw\\|\\s_\\|\\s."))))))
-
-(defun sp--org-skip-asterisk (ms mb me)
-  (or (save-excursion
-        (goto-char (line-beginning-position))
-        (save-match-data (looking-at "^\\*+")))
-      (sp--org-skip-markup ms mb me)))
-
-(defun sp--org-skip-code (ms mb me)
-  (or (sp--org-skip-markup ms mb me)
-      (save-excursion
-        (and (progn
-               (goto-char mb)
-               (save-match-data (looking-back "\\s-")))
-             (progn
-               (goto-char me)
-               (save-match-data (looking-at "\\s-")))))))
-#+END_SRC
 
 *** skewer
 
