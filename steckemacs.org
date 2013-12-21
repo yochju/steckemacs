@@ -215,6 +215,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           ac-nrepl
           ac-slime
           ag
+          apache-mode
           auto-complete
           auto-save-buffers-enhanced
           back-button
@@ -614,8 +615,8 @@ For some reason this didn't work with =setq= so I had to use =custom-set-variabl
 *** stk/erc-connect
 
 #+BEGIN_SRC emacs-lisp
-(defun stk/erc-connect () 
-  (interactive) 
+(defun stk/erc-connect ()
+  (interactive)
   (erc-tls :server erc-server :port erc-port :nick erc-nick :full-name erc-user-full-name :password erc-password))
 #+END_SRC
 
@@ -1337,7 +1338,6 @@ Adds a button to the package info page to visit the repository homepage.
   (require 'melpa-upstream-visit)
 #+END_SRC
 
-
 *** move-text
 
 Allows to move the current line or region up/down
@@ -1420,60 +1420,47 @@ Org mode is the most amazing tool for Emacs. Even this Emacs configuration is wr
 
 Homepage: http://orgmode.org/
 
+**** General settings
+
 #+BEGIN_SRC emacs-lisp
   (require 'org)
   (require 'ox-org)
   (require 'ox-md)
-  (let ((agendas "~/.agenda_files"))
-    (when (file-readable-p agendas)
-      (setq org-agenda-files agendas)
-      (setq initial-buffer-choice (lambda ()
-                                    (org-agenda nil "n")
-                                    (delete-other-windows)
-                                    (current-buffer)
-                                    ))
-      ))
   (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
   (add-to-list 'org-modules 'org-habit)
+  (add-to-list 'ac-modes 'org-mode)
   (setq org-startup-folded 'nofold)
-  (setq org-startup-indented t)
+  (setq org-startup-indented nil)
   (setq org-startup-with-inline-images t)
   (setq org-startup-truncated t)
-  (setq org-agenda-start-with-log-mode t)
-  (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
-  (setq org-refile-use-outline-path 'file)
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
   (setq org-confirm-babel-evaluate nil)
   (setq org-use-speed-commands t)
-  (setq org-clock-idle-time 15)
-  (setq org-clock-in-resume t)
-  (setq org-clock-persist t)
-  (setq org-clock-out-remove-zero-time-clocks t)
-  (setq org-clock-sound t)
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+  (setq org-refile-use-outline-path 'file)
   (setq org-default-notes-file (concat org-directory "/notes.org"))
+#+END_SRC
 
-  (setq org-capture-templates
-        '(
-          ("t" "Task" entry (file "") "* TODO %?\n %a")
-          ("s" "Simple Task" entry (file "") "* TODO %?\n")
-          ))
+**** Agenda
 
-  (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC\n"))
-  (add-to-list 'org-structure-template-alist '("S" "#+BEGIN_SRC shell-script\n?\n#+END_SRC\n"))
+#+BEGIN_SRC emacs-lisp
+  ;; create the file for the agendas if it doesn't exist
+  (let ((agendas "~/.agenda_files"))
+    (unless (file-readable-p agendas)
+      (with-temp-file agendas nil))
+    (setq org-agenda-files agendas))
 
-  ;; minted
-  (require 'ox-latex)
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
-  (setq org-latex-listings 'minted)
+  (defun stk/initial-buffer-choice ()
+    (org-agenda nil "n")
+    (delete-other-windows)
+    (current-buffer))
+  (setq initial-buffer-choice #'stk/initial-buffer-choice)
 
-  (setq org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  (setq org-agenda-start-with-log-mode t)
 
   (setq
-   appt-display-mode-line t     ; show in the modeline
+   appt-display-mode-line t      ; show in the modeline
    appt-display-format 'window)
   (appt-activate 1)              ; activate appt (appointment notification)
 
@@ -1487,11 +1474,28 @@ Homepage: http://orgmode.org/
   (add-hook 'org-mode-hook 'stk/org-mode-hook)
 
   (setq appt-disp-window-function '(lambda (min-to-app new-time msg) (interactive)
-                                     (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'")))
-        )
+                                     (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'"))))
+
   ;; add state to the sorting strategy of todo
   (setcdr (assq 'todo org-agenda-sorting-strategy) '(todo-state-up priority-down category-keep))
-  ;; define todo states: set time stamps one waiting, delegated and done
+#+END_SRC
+
+**** Templates
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-capture-templates
+        '(
+          ("t" "Task" entry (file "") "* TODO %?\n %a")
+          ("s" "Simple Task" entry (file "") "* TODO %?\n")
+          ))
+
+  (add-to-list 'org-structure-template-alist '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC\n"))
+  (add-to-list 'org-structure-template-alist '("S" "#+BEGIN_SRC shell-script\n?\n#+END_SRC\n"))
+#+END_SRC
+
+**** Todo
+
+#+BEGIN_SRC emacs-lisp
   (setq org-todo-keywords
         '((sequence
            "TODO(t)"
@@ -1511,7 +1515,15 @@ Homepage: http://orgmode.org/
           ("SOMEDAY" . 'font-lock-doc-face)
           ))
 
-  ;; helpers to make TODO state changes clock the time
+#+END_SRC
+
+**** Clocking
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-clock-idle-time 15)
+  (setq org-clock-in-resume t)
+  (setq org-clock-persist t)
+
   (defun stk/org-clock-in-if-in-progress ()
     "Clock in when the task is marked IN PROGRESS."
     (when (and (string= org-state "IN PROGRESS")
@@ -1537,20 +1549,72 @@ Homepage: http://orgmode.org/
 
   (add-hook 'org-after-todo-state-change-hook
             'stk/org-clock-out-if-waiting)
-
-  ;; enable sync mode if org-mobile-directory is set
-  (when (boundp 'org-mobile-directory)
-    (org-mobile-sync-mode 1))
-
 #+END_SRC
+
+Some helpers to make TODO state changes clock the time.
+
+**** Export
 
 #+BEGIN_SRC emacs-lisp
-  (defun stk/disable-ac-for-emacs-lisp-in-org-mode ()
-    (when (boundp 'org-mode-p) (set (make-local-variable 'ac-modes) (delq 'emacs-lisp-mode ac-modes))))
-  (add-hook 'emacs-lisp-mode-hook 'stk/disable-ac-for-emacs-lisp-in-org-mode)
+  (setq org-publish-project-alist
+        '(("blog"
+           :components ("blog-content" "blog-static"))
+          ("blog-content"
+           :base-directory "~/org-mode-blog/"
+           :base-extension "org"
+           :publishing-directory org-mode-blog-publishing-directory
+           :recursive t
+           :publishing-function org-html-publish-to-html
+           :export-with-tags nil
+           :headline-levels 4
+           :auto-sitemap t
+           :sitemap-title "Sitemap"
+           :section-numbers nil
+           :with-toc nil
+           :with-author nil
+           :with-creator nil
+           :html-doctype "html5"
+           :html-preamble nil
+           :html-postamble "<hr><div id='comments'></div>"
+           :html-head  "<link rel=\"stylesheet\" href=\"/css/style.css\" type=\"text/css\"/>\n"
+           :html-head-extra "<script async src=\"/js/juvia.js\"></script>"
+           :html-html5-fancy t
+           :html-head-include-default-style nil
+           )
+          ("blog-static"
+           :base-directory "~/org-mode-blog/"
+           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf"
+           :publishing-directory org-mode-blog-publishing-directory
+           :recursive t
+           :publishing-function org-publish-attachment)))
 #+END_SRC
 
-Org mode makes a mess with emacs lisp blocks and auto-complete so we try to disable in the hook.
+Don't forget to set =org-mode-blog-publishing-directory= to the desired export location in =~/.user.el=.
+
+**** org-mobile-sync-mode
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-mobile-directory "~/Dropbox/MobileOrg")
+  (setq org-mobile-inbox-for-pull (concat org-directory "/notes.org"))
+    (when (boundp 'org-mobile-directory)
+      (org-mobile-sync-mode 1))
+#+END_SRC
+
+Enable sync mode only if =org-mobile-directory= is set.
+
+**** LaTeX
+
+#+BEGIN_SRC emacs-lisp
+  (require 'ox-latex)
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (setq org-latex-listings 'minted)
+
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+#+END_SRC
 
 *** php-mode
 
@@ -1727,6 +1791,44 @@ Do different things on repeated keypresses.
 
 Pressing =C-a= once goes back to the indentation, pressing it twice goes the beginning of the line.
 Pressing =C-e= once goes back to the end of the line, pressing it twice advances to the next line's indentation.
+
+*** smartparens
+**** org-mode
+
+Got that from [[https://bitbucket.org/Fuco/.emacs.d][Fuco's config]]...
+
+#+BEGIN_SRC emacs-lisp
+  (sp-with-modes 'org-mode
+    (sp-local-pair "*" "*" :unless '(sp-point-after-word-p sp-point-at-bol-p) :wrap "C-*" :skip-match 'sp--org-skip-asterisk)
+    (sp-local-pair "_" "_" :unless '(sp-point-after-word-p) :wrap "C-_" :skip-match 'sp--org-skip-markup)
+    (sp-local-pair "/" "/" :unless '(sp-point-after-word-p) :skip-match 'sp--org-skip-markup)
+    (sp-local-pair "~" "~" :unless '(sp-point-after-word-p) :skip-match 'sp--org-skip-code))
+
+(defun sp--org-skip-markup (ms mb me)
+  (save-excursion
+    (and (progn
+           (goto-char mb)
+           (save-match-data (looking-back "\\sw\\|\\s_\\|\\s.")))
+         (progn
+           (goto-char me)
+           (save-match-data (looking-at "\\sw\\|\\s_\\|\\s."))))))
+
+(defun sp--org-skip-asterisk (ms mb me)
+  (or (save-excursion
+        (goto-char (line-beginning-position))
+        (save-match-data (looking-at "^\\*+")))
+      (sp--org-skip-markup ms mb me)))
+
+(defun sp--org-skip-code (ms mb me)
+  (or (sp--org-skip-markup ms mb me)
+      (save-excursion
+        (and (progn
+               (goto-char mb)
+               (save-match-data (looking-back "\\s-")))
+             (progn
+               (goto-char me)
+               (save-match-data (looking-at "\\s-")))))))
+#+END_SRC
 
 *** skewer
 
