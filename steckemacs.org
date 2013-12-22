@@ -226,6 +226,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           csv-mode
           deft
           dired+
+          discover
           diff-hl
           elpy
           erc-hl-nicks
@@ -934,9 +935,9 @@ Turn on autocompletion for =conf-mode= by adding it to =ac-modes=.
 *** deft
 #+BEGIN_SRC emacs-lisp
   (setq
-   deft-extension "el"
+   deft-extension "org"
    deft-directory "~/deft"
-   deft-text-mode 'lisp-interaction-mode
+   deft-text-mode 'org-mode
    deft-use-filename-as-title t
    )
 #+END_SRC
@@ -1318,7 +1319,6 @@ See the [[http://magit.github.io/magit/magit.html][Magit manual]] for more infor
     (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
   (setq magit-save-some-buffers nil) ;don't ask to save buffers
   (setq magit-set-upstream-on-push t) ;ask to set upstream
-  (setq magit-server-window-for-commit nil) ;use the current window for committing
   (setq magit-diff-refine-hunk 'all) ;always show word-based diff
 #+END_SRC
 
@@ -1569,7 +1569,7 @@ Some helpers to make TODO state changes clock the time.
 Load the project template for my blog
 
 #+BEGIN_SRC emacs-lisp
-(let ((file (expand-file-name "elisp/org-publish-project-alist.el" "~/org-mode-blog")))
+(let ((file (expand-file-name "elisp/org-mode-blog-setup.el" "~/org-mode-blog")))
   (when (file-exists-p file)
     (load file t t t)))
 #+END_SRC
