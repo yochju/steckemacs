@@ -1228,7 +1228,7 @@ Github: https://github.com/lewang/flx
 
 *** ielm
 
-IELM is short for *I*nferior *E*macs *L*isp *M*ode. It is a REPL for Emacs Lisp that is sometimes useful if you want to get immediate feedback and a prompt to work with. I tend to use the =*scratch*= buffer for explorations like that usually but would be probably better off to use IELM more often :)
+IELM is short for Inferior Emacs Lisp Mode. It is a REPL for Emacs Lisp that is sometimes useful if you want to get immediate feedback and a prompt to work with. I tend to use the =*scratch*= buffer for explorations like that usually but would be probably better off to use IELM more often :)
 
 #+BEGIN_SRC emacs-lisp
   (eval-after-load 'ielm
@@ -1451,6 +1451,10 @@ Homepage: http://orgmode.org/
   (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (setq org-refile-use-outline-path 'file)
   (setq org-default-notes-file (concat org-directory "/notes.org"))
+
+  ;; Don't use the same TODO state as the current heading for new heading
+  (defun stk/org-insert-todo-heading () (interactive) (org-insert-todo-heading t))
+  (define-key org-mode-map (kbd "<M-S-return>") 'stk/org-insert-todo-heading)
 #+END_SRC
 
 **** Agenda
