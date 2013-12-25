@@ -88,16 +88,10 @@ The variable =load-path= lists all the directories where Emacs should look for E
   (let ((default-directory "~/.emacs.d/elisp/"))
     (unless (file-exists-p default-directory)
       (make-directory default-directory))
-    (setq load-path
-          (append
-           (let ((load-path (copy-sequence load-path))) ;; Shadow
-             (append
-              (copy-sequence (normal-top-level-add-to-load-path '(".")))
-              (normal-top-level-add-subdirs-to-load-path)))
-           load-path)))
+    (add-to-list 'load-path default-directory))
 #+END_SRC
 
-Here we create the directory =~/.emacs.d/elisp/= if it does not exist, add it to the =load-path= and also add all subdirectories. Doing that any =.el= or =.elc= files in these directories will be available to *emacs*.
+Here we create the directory =~/.emacs.d/elisp= if it does not exist, add it to the =load-path=. Doing that any =.el= or =.elc= files in this directory can be required from *emacs*.
 
 ** Online Check
 
@@ -890,6 +884,7 @@ https://raw.github.com/rolandwalker/back-button/master/back_button_example.png
 =back-button= is written by Roland Walker. For more information see the [[https://github.com/rolandwalker/back-button][Github page]].
 
 #+BEGIN_SRC emacs-lisp
+  (setq back-button-local-keystrokes nil) ;don't overwrite C-x SPC binding
   (require 'back-button)
   (back-button-mode 1)
 #+END_SRC
@@ -1440,7 +1435,7 @@ Homepage: http://orgmode.org/
   (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'ac-modes 'org-mode)
-  (setq org-startup-folded 'nofold)
+  (setq org-startup-folded t)
   (setq org-startup-indented nil)
   (setq org-startup-with-inline-images t)
   (setq org-startup-truncated t)
