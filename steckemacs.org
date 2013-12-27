@@ -1482,14 +1482,17 @@ Homepage: http://orgmode.org/
   (org-agenda-to-appt)           ; add appointments on startup
 
   ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
+  (defun stk/org-agenda-to-appt-refresh () (org-agenda-to-appt 'refresh))
   (defun stk/org-mode-hook ()
-    (add-hook 'after-save-hook '(lambda () (org-agenda-to-appt 'refresh)) nil 'make-it-local)
-    (yas-minor-mode -1)
-    )
+    (add-hook 'after-save-hook 'stk/org-agenda-to-appt-refresh nil 'make-it-local)
+    (yas-minor-mode -1))
   (add-hook 'org-mode-hook 'stk/org-mode-hook)
 
-  (setq appt-disp-window-function '(lambda (min-to-app new-time msg) (interactive)
-                                     (shell-command (concat "notify-send -i /usr/share/icons/gnome/32x32/status/appointment-soon.png '" (format "Appointment in %s min" min-to-app) "' '" msg "'"))))
+  (require 'notifications)
+  (defun stk/appt-disp-window-function (min-to-app new-time msg)
+    (interactive)
+    (notifications-notify :title (format "Appointment in %s min" min-to-app) :body msg))
+  (setq appt-disp-window-function 'stk/appt-disp-window-function)
 
   ;; add state to the sorting strategy of todo
   (setcdr (assq 'todo org-agenda-sorting-strategy) '(todo-state-up priority-down category-keep))
