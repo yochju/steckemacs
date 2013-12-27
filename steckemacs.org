@@ -610,7 +610,6 @@ For the frame title either show a file or a buffer name (if the buffer isn't vis
 For some reason this didn't work with =setq= so I had to use =custom-set-variables=. It changes ansi colors for comint mode, e.g. shell-mode
 
 ** Custom Functions
-
 *** stk/erc-connect
 
 #+BEGIN_SRC emacs-lisp
@@ -750,6 +749,16 @@ Display, the copy the filename of current buffer to kill ring.
              (format "%s %s %s\n" (if project project "?") (+ hours mins) headline ))
             )))))
 #+END_SRC
+
+*** stk/isearch-goto-match-beginning
+
+#+BEGIN_SRC emacs-lisp
+  (defun stk/isearch-goto-match-beginning ()
+    (when isearch-forward (goto-char isearch-other-end)))
+  (add-hook 'isearch-mode-end-hook 'stk/isearch-goto-match-beginning)
+#+END_SRC
+
+Make =isearch-forward= put the cursor at the start of the search, not the end, so that isearch can be used for navigation. See also http://www.emacswiki.org/emacs/IsearchOtherEnd.
 
 ** Advices
 
@@ -1493,6 +1502,7 @@ Homepage: http://orgmode.org/
     (interactive)
     (notifications-notify :title (format "Appointment in %s min" min-to-app) :body msg))
   (setq appt-disp-window-function 'stk/appt-disp-window-function)
+  (setq appt-delete-window-function nil)
 
   ;; add state to the sorting strategy of todo
   (setcdr (assq 'todo org-agenda-sorting-strategy) '(todo-state-up priority-down category-keep))
