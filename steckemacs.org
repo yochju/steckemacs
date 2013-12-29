@@ -78,6 +78,14 @@ This table is generated with an Elisp block =keys-doc= from an Org table which i
 
 * Code
 
+** Always maximize Emacs
+
+#+BEGIN_SRC emacs-lisp
+  (modify-all-frames-parameters '((fullscreen . maximized)))
+#+END_SRC
+
+This will maximize the current and all future Emacs frames. The parameter has been added in Emacs 24.4
+
 ** Load Path
 
 The variable =load-path= lists all the directories where Emacs should look for Elisp files. The first file found is used, therefore the order of the directories is relevant.
@@ -754,7 +762,7 @@ Display, the copy the filename of current buffer to kill ring.
 
 #+BEGIN_SRC emacs-lisp
   (defun stk/isearch-goto-match-beginning ()
-    (when isearch-forward (goto-char isearch-other-end)))
+    (when (and isearch-forward (not isearch-mode-end-hook-quit)) (goto-char isearch-other-end)))
   (add-hook 'isearch-mode-end-hook 'stk/isearch-goto-match-beginning)
 #+END_SRC
 
