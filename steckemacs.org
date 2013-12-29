@@ -396,6 +396,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c q             | Editing   | Toggle word wrap                                          | 'auto-fill-mode                                             |
 | C-c w             | Editing   | Cleanup whitespaces                                       | 'whitespace-cleanup                                         |
 | C-h C-v           | Editing   | Toggle visual line mode                                   | 'visual-line-mode                                           |
+| C-h TAB           | Editing   | Indent the whole buffer                                   | 'stk/indent-whole-buffer                                    |
 | C-?               | Source    | Go to definition of function or variable at point         | 'stk/find-function-or-variable-at-point                     |
 | C-h C-f           | Source    | Go to the definition of the function under cursor         | 'find-function-at-point                                     |
 | M-5               | Source    | Helm select etags                                         | 'helm-etags-select                                          |
@@ -467,6 +468,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c C-0           | Org       | Insert a new TODO subheading                              | 'org-insert-todo-subheading                                 |
 | C-h C-.           | Org       | Open/switch to home.org                                   | (lambda () (interactive) (find-file "~/org/home.org"))      |
 | C-h C-u           | Org       | Open/switch to work.org                                   | (lambda () (interactive) (find-file "~/org/work.org"))      |
+| C-h C-w           | Org       | Cut the current subtree into the clipboard                | 'org-cut-subtree                                            |
 | C-c v             | PHP       | var dump die template                                     | 'var_dump-die                                               |
 | C-c V             | PHP       | var dump template                                         | 'var_dump                                                   |
 
@@ -767,6 +769,14 @@ Display, the copy the filename of current buffer to kill ring.
 #+END_SRC
 
 Make =isearch-forward= put the cursor at the start of the search, not the end, so that isearch can be used for navigation. See also http://www.emacswiki.org/emacs/IsearchOtherEnd.
+
+*** stk/mark-whole-buffer
+
+#+BEGIN_SRC emacs-lisp
+  (defun stk/indent-whole-buffer ()
+    (interactive)
+    (indent-region (point-min) (point-max)))
+#+END_SRC
 
 ** Advices
 
