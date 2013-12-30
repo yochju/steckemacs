@@ -419,8 +419,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | sv                | Buffers   | Save the current buffer                                   | 'save-buffer                                                |
 | sc                | Buffers   | Switch to scratch buffer                                  | (lambda () (interactive)(switch-to-buffer "*scratch*"))     |
 | <f9>              | Buffers   | Split window and show/hide last buffer                    | 'my/split-window                                            |
-| C-h c             | History   | Helm show the kill ring                                   | 'helm-show-kill-ring                                        |
-| C-h m             | History   | Helm show all mark rings                                  | 'helm-all-mark-rings                                        |
+| C-h C-SPC         | History   | Helm show the kill ring                                   | 'helm-show-kill-ring                                        |
+| C-h SPC           | History   | Helm show all mark rings                                  | 'helm-all-mark-rings                                        |
 | C-3               | History   | Go backward in movement history                           | 'back-button-local-backward                                 |
 | C-4               | History   | Go forward in movement history                            | 'back-button-local-forward                                  |
 | M-2               | Occur     | Show all symbols like the one cursor is located at        | 'highlight-symbol-occur                                     |
