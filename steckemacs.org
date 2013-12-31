@@ -284,6 +284,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           tern
           tern-auto-complete
           visual-regexp
+          vlf
           volatile-highlights
           yaml-mode
           yari
@@ -296,9 +297,9 @@ Quite a big list of packages. When Emacs starts up the first time it takes quite
 #+BEGIN_SRC emacs-lisp
   (when stk/onlinep
     (package-refresh-contents)
-    (mapcar 'package-install
-            (loop for p in my-packages
-                  unless (package-installed-p p) collect p)))
+    (cl-loop for p in my-packages
+             unless (package-installed-p p)
+             do (package-install p)))
 #+END_SRC
 
 This part first checks if there is an internet connection. If true it refreshes the package archive cache and goes on to install all the packages that are not yet installed.
