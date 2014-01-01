@@ -234,7 +234,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           erc-hl-nicks
           expand-region
           fasd
-          fic-ext-mode
+          fixmee
           flycheck
           flx-ido
           geben
@@ -360,7 +360,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c n             | General   | Show file name + path, save to clipboard                  | 'show-file-name                                             |
 | C-x a s           | General   | Toggle auto saving of buffers                             | 'auto-save-buffers-enhanced-toggle-activity                 |
 | C-c d             | General   | Change dictionary                                         | 'ispell-change-dictionary                                   |
-| C-c f             | General   | Toggle flyspell mode (spellchecking)                      | 'flyspell-mode                                              |
+| C-c C-f           | General   | Toggle flyspell mode (spellchecking)                      | 'flyspell-mode                                              |
 | M-x               | General   | Helm M-x (execute command)                                | 'helm-M-x                                                   |
 | C-h C-h           | General   | Helm M-x (execute command)                                | 'helm-M-x                                                   |
 | C-h h             | General   | Helm navigate project files                               | 'helm-projectile                                            |
@@ -1104,13 +1104,20 @@ Github: https://github.com/steckerhalter/emacs-fasd
   (global-fasd-mode 1)
 #+END_SRC
 
-*** fic-ext-mode
+*** fixmee
+#+BEGIN_QUOTE
+Fixmee-mode tracks fixme notices in code comments, highlights them, ranks them by urgency, and lets you navigate to them quickly.
 
-Mode to color TODO/FIXME black on red.
+A distinguishing feature of this library is that it tracks the urgency of each notice, allowing the user to jump directly to the most important problems.
+#+END_QUOTE
+
+=fixmee= was written by Roland Walker and lives on Github: https://github.com/rolandwalker/fixmee
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'fic-ext-mode)
+(global-fixmee-mode 1)
 #+END_SRC
+
+I had tried similar modes like =fic-ext=mode= but fount them lacking a bit. Let's see how this one performs...
 
 *** flycheck-mode
 
