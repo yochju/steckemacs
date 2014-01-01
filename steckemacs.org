@@ -177,9 +177,6 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
           (:name php-documentor
                  :type http
                  :url "https://raw.github.com/wenbinye/dot-emacs/master/site-lisp/contrib/php-documentor.el")
-          (:name helm-swoop
-                 :type git
-                 :url "https://github.com/ShingoFukuyama/helm-swoop")
           ))
 #+END_SRC
 
@@ -250,6 +247,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
           helm-gtags
           helm-git
           helm-projectile
+          helm-swoop
           highlight-symbol
           htmlize
           iedit
@@ -838,7 +836,7 @@ Auto-Complete is an intelligent auto-completion extension for Emacs. It extends 
 
 #+CAPTION: Auto-Complete
 #+NAME: fig:ac
-[[http://steckerhalter.co.vu/stuff/img/ac.png]]
+[[http://steckerhalter.co.vu/img/ac.png]]
 
 It is written by Tomohiro Matsuyama (aka m2ym). He moved the project from [[http://cx4a.org/][his personal site]] to [[https://github.com/auto-complete/auto-complete][Github]] a while ago which helped quite a lot with further development.
 
@@ -1189,6 +1187,20 @@ You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm W
 I'm not using [[https://github.com/emacs-helm/helm/wiki#6-helm-find-files][Helm Find Files]] to browse files anymore. I tried using it but gave up after a while. I found it to be more cumbersome than [[*ido-mode][ido-mode]]. But in general I really like to have Helm around to get to see all available completions.
 
 I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also the separate [[https://github.com/emacs-helm/helm-descbinds][Helm Descbinds]] (=C-h b=) to get a quick key bindings overview.
+
+*** helm-swoop
+
+=helm-swoop= is a great Helm powered buffer search/occur interface:
+
+#+CAPTION: helm-swoop
+#+NAME: fig:swoop
+https://raw.github.com/ShingoFukuyama/helm-swoop/master/image/helm-swoop.gif
+
+Github: https://github.com/ShingoFukuyama/helm-swoop
+
+#+BEGIN_SRC emacs-lisp
+  (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+#+END_SRC
 
 *** highlight-symbol
 
