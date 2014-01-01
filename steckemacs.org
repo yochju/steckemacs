@@ -515,7 +515,7 @@ Load user settings if the file is available. Put all your personal modifications
    kill-ring-max 5000                     ;truncate kill ring after 5000 entries
    mark-ring-max 5000                     ;truncate mark ring after 5000 entries
    mouse-autoselect-window -.1            ;window focus follows the mouse pointer
-   mouse-wheel-scroll-amount '(1 ((shift) . 1)) ;make mouse scrolling smooth
+   mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control))) ;make mouse scrolling smooth
    indicate-buffer-boundaries 'left             ;fringe markers
    )
 
