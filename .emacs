@@ -44,9 +44,6 @@
 (setq steckemacs-directory (file-name-directory (file-truename load-file-name)))
 (setq org-confirm-babel-evaluate nil)
 
-(add-hook 'after-init-hook
-          (lambda ()
-            (org-babel-load-file
-             (expand-file-name "steckemacs.org" steckemacs-directory))))
+(org-babel-load-file (expand-file-name "steckemacs.org" steckemacs-directory))
 
 ;;; .emacs ends here
