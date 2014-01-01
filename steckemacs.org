@@ -1622,10 +1622,9 @@ Don't forget to set =org-mode-blog-publishing-directory= to the desired export l
 **** org-mobile-sync-mode
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-mobile-directory "~/Dropbox/MobileOrg")
-  (setq org-mobile-inbox-for-pull (concat org-directory "/notes.org"))
-    (when (boundp 'org-mobile-directory)
-      (org-mobile-sync-mode 1))
+  (when (boundp 'org-mobile-directory)
+    (setq org-mobile-inbox-for-pull (concat org-directory "/notes.org"))
+    (org-mobile-sync-mode 1))
 #+END_SRC
 
 Enable sync mode only if =org-mobile-directory= is set.
