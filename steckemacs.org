@@ -458,6 +458,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c c             | Open      | Open deft (quick notes tool)                              | 'deft                                                       |
 | nm                | Open      | Open mu4e                                                 | 'mu4e                                                       |
 | C-c e             | Open      | Open/connect with  ERC                                    | 'stk/erc-connect                                            |
+| C-h C-<return>    | Open      | Emacs Web Wowser (internal Webbrowser)                    | 'eww                                                        |
 | C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))              |
 | C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
 | C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                |
@@ -952,6 +953,7 @@ Turn on autocompletion for =conf-mode= by adding it to =ac-modes=.
    deft-directory "~/deft"
    deft-text-mode 'org-mode
    deft-use-filename-as-title t
+   deft-auto-save-interval 30
    )
 #+END_SRC
 *** diff-hl
@@ -1073,6 +1075,17 @@ ERC is a powerful, modular, and extensible IRC client for Emacs.
   ;;       erc-password "user:pw"
   ;;       )
 #+END_SRC
+
+*** eww
+*Emacs Web Wowser* is the bult-in Emacs Webbrowser (Emacs 24.4 and later).
+
+Rationale: http://lars.ingebrigtsen.no/2013/06/eww.html
+
+#+BEGIN_SRC emacs-lisp
+  (setq eww-search-prefix "https://startpage.com/do/m/mobilesearch?query=")
+#+END_SRC
+
+Using [[https://startpage.com][startpage.com]] mobile view here as default search because the default duckduckgo is just too slow for my taste.
 
 *** fasd
 
