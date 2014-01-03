@@ -460,6 +460,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c e             | Open      | Open/connect with  ERC                                    | 'stk/erc-connect                                            |
 | C-h C-m           | Open      | Popup discover-my-major window                            | 'discover-my-major                                          |
 | C-h C-<return>    | Open      | Emacs Web Wowser (internal Webbrowser)                    | 'eww                                                        |
+| C-h M-RET         | Open      | Emacs Web Wowser kill-ring contents                       | 'stk/eww-browse-kill-ring                                   |
 | C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))              |
 | C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
 | C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                |
