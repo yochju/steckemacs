@@ -622,14 +622,6 @@ For the frame title either show a file or a buffer name (if the buffer isn't vis
 For some reason this didn't work with =setq= so I had to use =custom-set-variables=. It changes ansi colors for comint mode, e.g. shell-mode
 
 ** Custom Functions
-*** stk/erc-connect
-
-#+BEGIN_SRC emacs-lisp
-(defun stk/erc-connect ()
-  (interactive)
-  (erc-tls :server erc-server :port erc-port :nick erc-nick :full-name erc-user-full-name :password erc-password))
-#+END_SRC
-
 *** stk/url-insert-file-contents
 
 #+BEGIN_SRC emacs-lisp
@@ -1076,6 +1068,15 @@ ERC is a powerful, modular, and extensible IRC client for Emacs.
 ;;       erc-email-userid "user"
 ;;       erc-password "user:pw"
 ;;       )
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(defun stk/erc-connect ()
+  "Connect with ERC or open the last active buffer."
+  (interactive)
+  (if (erc-buffer-list)
+      (erc-track-switch-buffer 1)
+    (erc-tls :server erc-server :port erc-port :nick erc-nick :full-name erc-user-full-name :password erc-password)))
 #+END_SRC
 
 *** eww
