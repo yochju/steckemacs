@@ -460,7 +460,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c e             | Open      | Open/connect with  ERC                                    | 'stk/erc-connect                                            |
 | C-h C-m           | Open      | Popup discover-my-major window                            | 'discover-my-major                                          |
 | C-h C-<return>    | Open      | Emacs Web Wowser (internal Webbrowser)                    | 'eww                                                        |
-| C-h M-RET         | Open      | Emacs Web Wowser kill-ring contents                       | 'stk/eww-browse-kill-ring                                   |
+| C-h M-RET         | Open      | Emacs Web Wowser do what I mean                           | 'stk/eww-browse-dwim                                        |
 | C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))              |
 | C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
 | C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                |
@@ -1089,6 +1089,20 @@ Rationale: http://lars.ingebrigtsen.no/2013/06/eww.html
 
 Using [[https://startpage.com][startpage.com]] mobile view here as default search because the default duckduckgo is just too slow for my taste.
 
+#+BEGIN_SRC emacs-lisp
+(defun stk/eww-browse-dwim ()
+  "`eww' browse \"do what I mean\".
+ Browse the url at point if there is one. Otherwise use the last
+ kill-ring item and provide that to `eww'. If it is an url `eww'
+ will browse it, if not `eww' will search for it using a search
+ engine."
+  (interactive)
+  (let ((arg (or
+              (url-get-url-at-point)
+              (current-kill 0 t))))
+    (eww arg)))
+#+END_SRC
+
 *** fasd
 
 #+BEGIN_QUOTE
@@ -1462,6 +1476,11 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 
 #+BEGIN_SRC emacs-lisp
 (setq multi-term-dedicated-select-after-open-p t) ;select the buffer!
+(defun stk/configure-term ()
+    (interactive)
+    (setq truncate-lines 1)
+    (define-key term-raw-map (kbd "C-c y") 'term-paste))
+(add-hook 'term-mode-hook 'stk/configure-term t)
 #+END_SRC
 
 *** nrepl-eval-sexp-fu
