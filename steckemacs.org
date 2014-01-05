@@ -1804,6 +1804,17 @@ Homepage: http://julien.danjou.info/projects/emacs-packages#rainbow-mode
   )
 #+END_SRC
 
+*** recentf
+
+#+BEGIN_QUOTE
+This package maintains a menu for visiting files that were operated on recently.  When enabled a new "Open Recent" sub menu is displayed in the "File" menu.  The recent files list is automatically saved across Emacs sessions.  You can customize the number of recent files displayed, the location of the menu and others options (see the source code for details).
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+(setq recentf-save-file (expand-file-name "~/.recentf"))
+(recentf-mode 1)
+#+END_SRC
+
 *** robe
 
 Advanced autocompletion for Ruby
