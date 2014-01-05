@@ -104,19 +104,19 @@ Here we create the directory =~/.emacs.d/elisp= if it does not exist, add it to 
 ** Online Check
 
 #+BEGIN_SRC emacs-lisp
-(setq stk/onlinep nil)
+(setq my-onlinep nil)
 (unless
     (condition-case nil
         (delete-process
          (make-network-process
-          :name "stk/check-internet"
+          :name "my-check-internet"
           :host "elpa.gnu.org"
           :service 80))
       (error t))
-  (setq stk/onlinep t))
+  (setq my-onlinep t))
 #+END_SRC
 
-Try to open a connection to =elpa.gnu.org= and if it succeeds set =stk/onlinep= to true. We use this flag later for network related operations.
+Try to open a connection to =elpa.gnu.org= and if it succeeds set =my-onlinep= to true. We use this flag later for network related operations.
 
 ** El-Get
 
@@ -138,7 +138,7 @@ Dimitri (on the image above, [[fig:dimitri]]) is the clever guy that brougth us 
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (setq el-get-install-skip-emacswiki-recipes t) (ref:wiki)
 (unless (require 'el-get nil 'noerror)
-  (if stk/onlinep
+  (if my-onlinep
     (with-current-buffer
         (url-retrieve-synchronously
          "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
@@ -293,7 +293,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
 Quite a big list of packages. When Emacs starts up the first time it takes quite a while to install all of them.
 
 #+BEGIN_SRC emacs-lisp
-(when stk/onlinep
+(when my-onlinep
   (package-refresh-contents)
   (cl-loop for p in my-packages
            unless (package-installed-p p)
@@ -373,7 +373,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C--               | Interface | Decrease the font size                                    | 'text-scale-decrease                                        |
 | C-=               | Interface | Increase the font size                                    | 'text-scale-increase                                        |
 | ln                | Interface | Show/hide the line numbers                                | 'linum-mode                                                 |
-| C-x C-u           | Internet  | Prompt for URL and insert contents at point               | 'stk/url-insert-file-contents                               |
+| C-x C-u           | Internet  | Prompt for URL and insert contents at point               | 'my-url-insert-file-contents                               |
 | C-c C-w           | Internet  | Browse URL under cursor                                   | 'browse-url-at-point                                        |
 | C-z               | Editing   | Undo - but do not trigger redo                            | 'undo-only                                                  |
 | <M-f10>           | Editing   | Move line or region up                                    | 'move-text-up                                               |
@@ -392,8 +392,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c q             | Editing   | Toggle word wrap                                          | 'auto-fill-mode                                             |
 | C-c w             | Editing   | Cleanup whitespaces                                       | 'whitespace-cleanup                                         |
 | C-h C-v           | Editing   | Toggle visual line mode                                   | 'visual-line-mode                                           |
-| C-h TAB           | Editing   | Indent the whole buffer                                   | 'stk/indent-whole-buffer                                    |
-| C-?               | Source    | Go to definition of function or variable at point         | 'stk/find-function-or-variable-at-point                     |
+| C-h TAB           | Editing   | Indent the whole buffer                                   | 'my-indent-whole-buffer                                    |
+| C-?               | Source    | Go to definition of function or variable at point         | 'my-find-function-or-variable-at-point                     |
 | C-h C-f           | Source    | Go to the definition of the function under cursor         | 'find-function-at-point                                     |
 | M-5               | Source    | Helm select etags                                         | 'helm-etags-select                                          |
 | M-6               | Source    | Find tag in a new window                                  | 'find-tag-other-window                                      |
@@ -402,8 +402,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-e           | Source    | Toggle debug on error                                     | 'toggle-debug-on-error                                      |
 | C-h C-d           | Directory | Open dired in current file location                       | 'dired-jump                                                 |
 | sb                | Directory | Open the speedbar                                         | 'speedbar                                                   |
-| C-c T             | Directory | Open terminal in current directory                        | (lambda () (interactive) (stk/open-terminal nil))           |
-| C-c t             | Directory | Open terminal in current project root                     | (lambda () (interactive) (stk/open-terminal t))             |
+| C-c T             | Directory | Open terminal in current directory                        | (lambda () (interactive) (my-open-terminal nil))           |
+| C-c t             | Directory | Open terminal in current project root                     | (lambda () (interactive) (my-open-terminal t))             |
 | C-h C-/           | Directory | Use fasd to navigate to a file or directory               | 'fasd-find-file                                             |
 | C-h C-s           | Buffers   | Save the current buffer                                   | 'save-buffer                                                |
 | C-c r             | Buffers   | Revert a buffer to the saved state                        | 'revert-buffer                                              |
@@ -457,10 +457,10 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h n             | Open      | New multi-term buffer                                     | 'multi-term                                                 |
 | C-c c             | Open      | Open deft (quick notes tool)                              | 'deft                                                       |
 | nm                | Open      | Open mu4e                                                 | 'mu4e                                                       |
-| C-c e             | Open      | Open/connect with  ERC                                    | 'stk/erc-connect                                            |
+| C-c e             | Open      | Open/connect with  ERC                                    | 'my-erc-connect                                            |
 | C-h C-m           | Open      | Popup discover-my-major window                            | 'discover-my-major                                          |
 | C-h C-<return>    | Open      | Emacs Web Wowser (internal Webbrowser)                    | 'eww                                                        |
-| C-h M-RET         | Open      | Emacs Web Wowser do what I mean                           | 'stk/eww-browse-dwim                                        |
+| C-h M-RET         | Open      | Emacs Web Wowser do what I mean                           | 'my-eww-browse-dwim                                        |
 | C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))              |
 | C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
 | C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                |
@@ -622,20 +622,20 @@ For the frame title either show a file or a buffer name (if the buffer isn't vis
 For some reason this didn't work with =setq= so I had to use =custom-set-variables=. It changes ansi colors for comint mode, e.g. shell-mode
 
 ** Custom Functions
-*** stk/url-insert-file-contents
+*** my-url-insert-file-contents
 
 #+BEGIN_SRC emacs-lisp
-(defun stk/url-insert-file-contents (url)
+(defun my-url-insert-file-contents (url)
   "Prompt for URL and insert file contents at point."
   (interactive "sURL: ")
   (url-insert-file-contents url)
   )
 #+END_SRC
 
-*** stk/find-function-or-variable-at-point
+*** my-find-function-or-variable-at-point
 
 #+BEGIN_SRC emacs-lisp
-(defun stk/find-function-or-variable-at-point ()
+(defun my-find-function-or-variable-at-point ()
   "Find directly the function/variable at point in the other window."
   (interactive)
   (let ((var (variable-at-point))
@@ -705,18 +705,18 @@ Call a second time to restore the original window configuration."
       (if this-win-2nd (other-window 1))))))
 #+END_SRC
 
-*** stk/open-terminal
+*** my-open-terminal
 
 #+BEGIN_SRC emacs-lisp
-(defvar stk/terminal '("terminator" . "--working-directory=")
+(defvar my-terminal '("terminator" . "--working-directory=")
   "Terminal executable and after the dot the working directory option for the terminal"
   )
 
-(defun stk/open-terminal (project-root-p)
+(defun my-open-terminal (project-root-p)
   "Open the terminal emulator either from the project root or
   from the location of the current file."
-  (start-process "*stk/terminal*" nil (car stk/terminal)
-   (concat (cdr stk/terminal)
+  (start-process "*my-terminal*" nil (car my-terminal)
+   (concat (cdr my-terminal)
            (file-truename
             (if project-root-p (projectile-project-root)
               (file-name-directory (or dired-directory load-file-name buffer-file-name)))
@@ -725,12 +725,12 @@ Call a second time to restore the original window configuration."
   )
 #+END_SRC
 
-*** stk/tks
+*** my-tks
 #+BEGIN_SRC emacs-lisp
-(defun stk/tks (ipos tables params)
+(defun my-tks (ipos tables params)
   "Formatting function for org `clocktable' that generates TKS compatible output.
 Usage example:
-,#+BEGIN: clocktable :scope agenda :block today :formatter stk/tks :properties (\"project\")
+,#+BEGIN: clocktable :scope agenda :block today :formatter my-tks :properties (\"project\")
 ,#+END: clocktable
 "
   (insert-before-markers (format-time-string "%d/%m/%Y\n\n"))
@@ -754,20 +754,20 @@ Usage example:
           )))))
 #+END_SRC
 
-*** stk/isearch-goto-match-beginning
+*** my-isearch-goto-match-beginning
 
 #+BEGIN_SRC emacs-lisp
-(defun stk/isearch-goto-match-beginning ()
+(defun my-isearch-goto-match-beginning ()
   (when (and isearch-forward (not isearch-mode-end-hook-quit)) (goto-char isearch-other-end)))
-(add-hook 'isearch-mode-end-hook 'stk/isearch-goto-match-beginning)
+(add-hook 'isearch-mode-end-hook 'my-isearch-goto-match-beginning)
 #+END_SRC
 
 Make =isearch-forward= put the cursor at the start of the search, not the end, so that isearch can be used for navigation. See also http://www.emacswiki.org/emacs/IsearchOtherEnd.
 
-*** stk/mark-whole-buffer
+*** my-mark-whole-buffer
 
 #+BEGIN_SRC emacs-lisp
-(defun stk/indent-whole-buffer ()
+(defun my-indent-whole-buffer ()
   (interactive)
   (indent-region (point-min) (point-max)))
 #+END_SRC
@@ -856,7 +856,7 @@ Initial setup:
 
 #+BEGIN_SRC emacs-lisp
 (require 'pos-tip)
-(defun stk/ac-show-help (ac-doc-function)
+(defun my-ac-show-help (ac-doc-function)
   "Show docs for symbol at point or at beginning of list if not on a symbol.
 Pass symbol-name to the function AC-DOC-FUNCTION."
   (interactive)
@@ -876,7 +876,7 @@ Pass symbol-name to the function AC-DOC-FUNCTION."
 (define-key lisp-mode-shared-map (kbd "C-c C-d")
   (lambda ()
     (interactive)
-    (stk/ac-show-help #'ac-symbol-documentation)))
+    (my-ac-show-help #'ac-symbol-documentation)))
 #+END_SRC
 
 I wanted to be able to get a documentation popup without having to trigger auto-complete. It's mostly stolen from [[http://jaderholm.com/][Scott Jaderholm]] (the code is on [[http://www.emacswiki.org/emacs/AutoComplete][Emacswiki]]), but has been made more general to also work with other completion functions.
@@ -962,10 +962,10 @@ Github: https://github.com/dgutov/diff-hl
 (global-diff-hl-mode)
 (diff-hl-margin-mode)
 
-(defun stk/diff-hl-update ()
+(defun my-diff-hl-update ()
   (with-current-buffer (current-buffer) (diff-hl-update)))
 
-(add-hook 'magit-refresh-file-buffer-hook 'stk/diff-hl-update)
+(add-hook 'magit-refresh-file-buffer-hook 'my-diff-hl-update)
 #+END_SRC
 
 Turn on the global mode and use the margin (not the fringe) to show the diff. Run =diff-hl-update= via =magit-refresh-file-buffer-hook= (which is run for each buffer after a commit).
@@ -1071,7 +1071,7 @@ ERC is a powerful, modular, and extensible IRC client for Emacs.
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-(defun stk/erc-connect ()
+(defun my-erc-connect ()
   "Connect with ERC or open the last active buffer."
   (interactive)
   (if (erc-buffer-list)
@@ -1091,7 +1091,7 @@ Rationale: http://lars.ingebrigtsen.no/2013/06/eww.html
 Using [[https://startpage.com][startpage.com]] mobile view here as default search because the default duckduckgo is just too slow for my taste.
 
 #+BEGIN_SRC emacs-lisp
-(defun stk/eww-browse-dwim ()
+(defun my-eww-browse-dwim ()
   "`eww' browse \"do what I mean\".
  Browse the url at point if there is one. Otherwise use the last
  kill-ring item and provide that to `eww'. If it is an url `eww'
@@ -1477,11 +1477,11 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 
 #+BEGIN_SRC emacs-lisp
 (setq multi-term-dedicated-select-after-open-p t) ;select the buffer!
-(defun stk/configure-term ()
+(defun my-configure-term ()
     (interactive)
     (setq truncate-lines 1)
     (define-key term-raw-map (kbd "C-c y") 'term-paste))
-(add-hook 'term-mode-hook 'stk/configure-term t)
+(add-hook 'term-mode-hook 'my-configure-term t)
 #+END_SRC
 
 *** nrepl-eval-sexp-fu
@@ -1527,8 +1527,8 @@ Homepage: http://orgmode.org/
 (setq org-habit-graph-column 60)
 
 ;; Don't use the same TODO state as the current heading for new heading
-(defun stk/org-insert-todo-heading () (interactive) (org-insert-todo-heading t))
-(define-key org-mode-map (kbd "<M-S-return>") 'stk/org-insert-todo-heading)
+(defun my-org-insert-todo-heading () (interactive) (org-insert-todo-heading t))
+(define-key org-mode-map (kbd "<M-S-return>") 'my-org-insert-todo-heading)
 #+END_SRC
 
 **** Agenda
@@ -1540,11 +1540,11 @@ Homepage: http://orgmode.org/
     (with-temp-file agendas nil))
   (setq org-agenda-files agendas))
 
-(defun stk/initial-buffer-choice ()
+(defun my-initial-buffer-choice ()
   (org-agenda nil "n")
   (delete-other-windows)
   (current-buffer))
-(setq initial-buffer-choice #'stk/initial-buffer-choice)
+(setq initial-buffer-choice #'my-initial-buffer-choice)
 
 (setq org-agenda-start-with-log-mode t)
 
@@ -1556,17 +1556,17 @@ Homepage: http://orgmode.org/
 (org-agenda-to-appt)           ; add appointments on startup
 
 ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
-(defun stk/org-agenda-to-appt-refresh () (org-agenda-to-appt 'refresh))
-(defun stk/org-mode-hook ()
-  (add-hook 'after-save-hook 'stk/org-agenda-to-appt-refresh nil 'make-it-local)
+(defun my-org-agenda-to-appt-refresh () (org-agenda-to-appt 'refresh))
+(defun my-org-mode-hook ()
+  (add-hook 'after-save-hook 'my-org-agenda-to-appt-refresh nil 'make-it-local)
   (yas-minor-mode -1))
-(add-hook 'org-mode-hook 'stk/org-mode-hook)
+(add-hook 'org-mode-hook 'my-org-mode-hook)
 
 (require 'notifications)
-(defun stk/appt-disp-window-function (min-to-app new-time msg)
+(defun my-appt-disp-window-function (min-to-app new-time msg)
   (interactive)
   (notifications-notify :title (format "Appointment in %s min" min-to-app) :body msg))
-(setq appt-disp-window-function 'stk/appt-disp-window-function)
+(setq appt-disp-window-function 'my-appt-disp-window-function)
 (setq appt-delete-window-function nil)
 
 ;; add state to the sorting strategy of todo
@@ -1617,20 +1617,20 @@ Homepage: http://orgmode.org/
 (setq org-clock-in-resume t)
 (setq org-clock-persist t)
 
-(defun stk/org-clock-in-if-in-progress ()
+(defun my-org-clock-in-if-in-progress ()
   "Clock in when the task is marked IN PROGRESS."
   (when (and (string= org-state "IN PROGRESS")
              (not (string= org-last-state org-state)))
     (org-clock-in)))
 
 (add-hook 'org-after-todo-state-change-hook
-          'stk/org-clock-in-if-in-progress)
+          'my-org-clock-in-if-in-progress)
 
-(defadvice org-clock-in (after stk activate)
+(defadvice org-clock-in (after my-org-clock-in activate)
   "Set this task's status to IN PROGRESS."
   (org-todo "IN PROGRESS"))
 
-(defun stk/org-clock-out-if-waiting ()
+(defun my-org-clock-out-if-waiting ()
   "Clock out when the task is marked WAITING."
   (when (and (string= org-state "WAITING")
              (equal (marker-buffer org-clock-marker) (current-buffer))
@@ -1641,7 +1641,7 @@ Homepage: http://orgmode.org/
     (org-clock-out)))
 
 (add-hook 'org-after-todo-state-change-hook
-          'stk/org-clock-out-if-waiting)
+          'my-org-clock-out-if-waiting)
 #+END_SRC
 
 Some helpers to make TODO state changes clock the time.
@@ -1705,7 +1705,7 @@ Github: https://github.com/ejmr/php-mode
   (local-set-key (kbd "C-c d")
                  (lambda ()
                    (interactive)
-                   (stk/ac-show-help #'ac-php-doc-documentation)))
+                   (my-ac-show-help #'ac-php-doc-documentation)))
   (require 'php-align nil t)
   (php-align-setup)
   (php-eldoc-enable)
@@ -1860,10 +1860,10 @@ Do different things on repeated keypresses.
 
 #+BEGIN_SRC emacs-lisp
 (require 'sequential-command)
-(define-sequential-command stk/beg back-to-indentation beginning-of-line)
-(global-set-key "\C-a" 'stk/beg)
-(define-sequential-command stk/end end-of-line forward-to-indentation)
-(global-set-key "\C-e" 'stk/end)
+(define-sequential-command my-beg back-to-indentation beginning-of-line)
+(global-set-key "\C-a" 'my-beg)
+(define-sequential-command my-end end-of-line forward-to-indentation)
+(global-set-key "\C-e" 'my-end)
 #+END_SRC
 
 Pressing =C-a= once goes back to the indentation, pressing it twice goes the beginning of the line.
