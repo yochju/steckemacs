@@ -1480,6 +1480,7 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 (defun my-configure-term ()
     (interactive)
     (setq truncate-lines 1)
+    (define-key term-raw-map (kbd "C-y") 'term-send-raw)
     (define-key term-raw-map (kbd "C-c y") 'term-paste))
 (add-hook 'term-mode-hook 'my-configure-term t)
 #+END_SRC
