@@ -518,6 +518,7 @@ Load user settings if the file is available. Put all your personal modifications
  mouse-autoselect-window -.1            ;window focus follows the mouse pointer
  mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control))) ;make mouse scrolling smooth
  indicate-buffer-boundaries 'left             ;fringe markers
+ split-height-threshold 110                   ;more readily split horziontally
  )
 
 (put 'narrow-to-region 'disabled nil)   ;narrow to region should be enabled by default
@@ -738,20 +739,21 @@ Usage example:
     (while (setq tbl (pop tables))
       (setq entries (nth 2 tbl))
       (while (setq entry (pop entries))
-        (let* ((level (car entry))
-               (headline (replace-regexp-in-string (concat org-todo-regexp "\\( +\\|[ \t]*$\\)") "" (nth 1 entry)))
-               (rest (mod (nth 3 entry) 60))
-               (hours (/ (nth 3 entry) 60))
-               (mins (cond
-                      ((<= rest 15) 0.25)
-                      ((<= rest 30) 0.5)
-                      ((<= rest 45) 0.75)
-                      (t 1)))
-               (project (cdr (assoc "project" (nth 4 entry))))
-               )
-          (insert-before-markers
-           (format "%s %s %s\n" (if project project "?") (+ hours mins) headline ))
-          )))))
+        (when (string-match org-todo-regexp (nth 1 entry))
+          (let* ((level (car entry))
+                 (headline (replace-regexp-in-string (concat org-todo-regexp "\\( +\\|[ \t]*$\\)") "" (nth 1 entry)))
+                 (rest (mod (nth 3 entry) 60))
+                 (hours (/ (nth 3 entry) 60))
+                 (mins (cond
+                        ((<= rest 15) 0.25)
+                        ((<= rest 30) 0.5)
+                        ((<= rest 45) 0.75)
+                        (t 1)))
+                 (project (cdr (assoc "project" (nth 4 entry))))
+                 )
+            (insert-before-markers
+             (format "%s %s %s\n" (if project project "?") (+ hours mins) headline ))
+            ))))))
 #+END_SRC
 
 *** my-isearch-goto-match-beginning
