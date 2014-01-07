@@ -1595,20 +1595,17 @@ Homepage: http://orgmode.org/
 (setq org-todo-keywords
       '((sequence
          "TODO(t)"
-         "IN PROGRESS(p)"
-         "HOLD(h)"
          "WAITING(w)"
-         "SOMEDAY(s)"
+         "SCHEDULED(s)"
+         "FUTURE(f)"
          "|"
          "DONE(d)"
-         "CANCELLED(c)"
          )))
 (setq org-todo-keyword-faces
       '(
-        ("IN PROGRESS" . 'warning)
-        ("HOLD" . 'font-lock-keyword-face)
-        ("WAITING" . 'font-lock-builtin-face)
-        ("SOMEDAY" . 'font-lock-doc-face)
+        ("SCHEDULED" . 'warning)
+        ("WAITING" . 'font-lock-doc-face)
+        ("FUTURE" . "white")
         ))
 
 #+END_SRC
@@ -1619,35 +1616,7 @@ Homepage: http://orgmode.org/
 (setq org-clock-idle-time 15)
 (setq org-clock-in-resume t)
 (setq org-clock-persist t)
-
-(defun my-org-clock-in-if-in-progress ()
-  "Clock in when the task is marked IN PROGRESS."
-  (when (and (string= org-state "IN PROGRESS")
-             (not (string= org-last-state org-state)))
-    (org-clock-in)))
-
-(add-hook 'org-after-todo-state-change-hook
-          'my-org-clock-in-if-in-progress)
-
-(defadvice org-clock-in (after my-org-clock-in activate)
-  "Set this task's status to IN PROGRESS."
-  (org-todo "IN PROGRESS"))
-
-(defun my-org-clock-out-if-waiting ()
-  "Clock out when the task is marked WAITING."
-  (when (and (string= org-state "WAITING")
-             (equal (marker-buffer org-clock-marker) (current-buffer))
-             (< (point) org-clock-marker)
-             (> (save-excursion (outline-next-heading) (point))
-                org-clock-marker)
-             (not (string= org-last-state org-state)))
-    (org-clock-out)))
-
-(add-hook 'org-after-todo-state-change-hook
-          'my-org-clock-out-if-waiting)
 #+END_SRC
-
-Some helpers to make TODO state changes clock the time.
 
 **** org-mode-blog
 
