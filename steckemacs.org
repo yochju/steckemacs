@@ -1551,6 +1551,8 @@ Homepage: http://orgmode.org/
 (setq org-agenda-start-with-log-mode t)
 
 (setq
+ appt-message-warning-time 30
+ appt-display-interval 15
  appt-display-mode-line t      ; show in the modeline
  appt-display-format 'window)
 (appt-activate 1)              ; activate appt (appointment notification)
@@ -1566,10 +1568,9 @@ Homepage: http://orgmode.org/
 
 (require 'notifications)
 (defun my-appt-disp-window-function (min-to-app new-time msg)
-  (interactive)
   (notifications-notify :title (format "Appointment in %s min" min-to-app) :body msg))
 (setq appt-disp-window-function 'my-appt-disp-window-function)
-(setq appt-delete-window-function nil)
+(setq appt-delete-window-function (lambda (&rest args)))
 
 ;; add state to the sorting strategy of todo
 (setcdr (assq 'todo org-agenda-sorting-strategy) '(todo-state-up priority-down category-keep))
