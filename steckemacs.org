@@ -531,7 +531,6 @@ Load user settings if the file is available. Put all your personal modifications
  indent-tabs-mode nil                   ;use spaces instead of tabs
  c-basic-offset 4                       ;"tab" with in c-related modes
  c-hungry-delete-key t                  ;delete more than one space
- truncate-lines t                       ;truncate lines by default
  )
 #+END_SRC
 
