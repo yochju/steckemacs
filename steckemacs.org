@@ -196,7 +196,6 @@ The sync function expects the package names which are extracted from =el-get-sou
 ** Packages
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 #+END_SRC
