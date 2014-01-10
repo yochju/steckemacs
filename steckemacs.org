@@ -1480,9 +1480,19 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 (defun my-configure-term ()
     (interactive)
     (define-key term-raw-map (kbd "C-y") 'term-send-raw)
-    (define-key term-raw-map (kbd "C-c y") 'term-paste))
+    (define-key term-raw-map (kbd "C-p") 'term-send-raw)
+    (define-key term-raw-map (kbd "C-n") 'term-send-raw)
+    (define-key term-raw-map (kbd "C-s") 'term-send-raw)
+    (define-key term-raw-map (kbd "C-r") 'term-send-raw)
+    (define-key term-raw-map (kbd "C-c y") 'term-paste)
+    (define-key term-raw-map (kbd "M-p") 'previous-line)
+    (define-key term-raw-map (kbd "M-n") 'next-line)
+    (define-key term-raw-map (kbd "M-r") 'isearch-backward)
+    (define-key term-raw-map (kbd "M-s") 'isearch-forward))
 (add-hook 'term-mode-hook 'my-configure-term t)
 #+END_SRC
+
+I'd like to have the terminal respect the default keys of the shell as much as possible hence I remap the non-standard bindings to the defaults and the Emacs keys to meta-bindings.
 
 *** nrepl-eval-sexp-fu
 
