@@ -260,7 +260,6 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
         mmm-mode
         move-text
         multi-term
-        multi-web-mode
         multiple-cursors
         nrepl-eval-sexp-fu
         org
@@ -283,6 +282,7 @@ The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds pa
         visual-regexp
         vlf
         volatile-highlights
+        web-mode
         yaml-mode
         yari
         yasnippet)
@@ -2009,6 +2009,23 @@ Github: https://github.com/capitaomorte/yasnippet
 (setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt yas-x-prompt yas-dropdown-prompt yas-no-prompt))
 #+END_SRC
 
+*** web-mode
+#+BEGIN_QUOTE
+web-mode.el is an autonomous emacs major-mode for editing web templates:
+HTML documents embedding parts (CSS / JavaScript) and blocks (client/server side)
+#+END_QUOTE
+
+Homepage: http://web-mode.org/
+Github: https://github.com/fxbois/web-mode
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(defun my-font-lock-mode-setup ()
+  (when (equal major-mode 'web-mode) (setq font-lock-mode nil)))
+(add-hook 'font-lock-mode-hook 'my-font-lock-mode-setup)
+#+END_SRC
+
+Enable web-mode for html buffers. Disable font-locking in web-mode because it's conflicting with other modes that do font-locking.
 *** w3m
 
 An Emacs client for the command line web-browser =w3m=
