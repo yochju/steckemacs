@@ -215,6 +215,7 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         ag
         apache-mode
         auto-complete
+        auto-dim-other-buffers
         auto-save-buffers-enhanced
         back-button
         buffer-move
@@ -285,8 +286,7 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         web-mode
         yaml-mode
         yari
-        yasnippet)
-      )
+        yasnippet))
 #+END_SRC
 
 Quite a big list of packages. When Emacs starts up the first time it takes quite a while to install all of them.
@@ -880,6 +880,17 @@ Pass symbol-name to the function AC-DOC-FUNCTION."
 #+END_SRC
 
 I wanted to be able to get a documentation popup without having to trigger auto-complete. It's mostly stolen from [[http://jaderholm.com/][Scott Jaderholm]] (the code is on [[http://www.emacswiki.org/emacs/AutoComplete][Emacswiki]]), but has been made more general to also work with other completion functions.
+
+*** auto-dim-other-buffers
+#+BEGIN_QUOTE
+Visually makes non-current buffers less prominent
+#+END_QUOTE
+
+Github: https://github.com/mina86/auto-dim-other-buffers.el
+
+#+BEGIN_SRC emacs-lisp
+(auto-dim-other-buffers-mode 1)
+#+END_SRC
 
 *** auto-save-buffers-enhanced
 
