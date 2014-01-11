@@ -18,7 +18,7 @@ deploy:
 
 html:
 	@echo Creating html...
-	@$(emacs) --eval \
+	@TERM=xterm-256color $(emacs) --eval \
 	"(progn \
 	(package-initialize) \
 	(load-theme 'grandshell t) \
