@@ -519,6 +519,7 @@ Load user settings if the file is available. Put all your personal modifications
  mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control))) ;make mouse scrolling smooth
  indicate-buffer-boundaries 'left             ;fringe markers
  split-height-threshold 110                   ;more readily split horziontally
+ enable-recursive-minibuffers t
  )
 
 (put 'narrow-to-region 'disabled nil)   ;narrow to region should be enabled by default
@@ -1213,7 +1214,7 @@ You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm W
 
 #+BEGIN_SRC emacs-lisp
 (require 'helm-config)
-(setq enable-recursive-minibuffers t)
+(setq helm-mode-handle-completion-in-region nil) ; don't use helm for `completion-at-point'
 (helm-mode 1)
 (helm-gtags-mode 1)
 (helm-descbinds-mode)
@@ -1222,7 +1223,6 @@ You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm W
 (setq helm-buffer-max-length 50)
 (setq helm-M-x-always-save-history t)
 (setq helm-buffer-details-flag nil)
-(setq helm-mode-handle-completion-in-region nil) ; don't use helm for `completion-at-point'
 (add-to-list 'helm-completing-read-handlers-alist '(org-refile)) ; helm-mode does not do org-refile well
 (require 'helm-git)
 #+END_SRC
