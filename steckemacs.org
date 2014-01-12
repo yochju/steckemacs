@@ -460,6 +460,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-m           | Open      | Popup discover-my-major window                            | 'discover-my-major                                          |
 | C-h C-<return>    | Open      | Emacs Web Wowser (internal Webbrowser)                    | 'eww                                                        |
 | C-h M-RET         | Open      | Emacs Web Wowser do what I mean                           | 'my-eww-browse-dwim                                         |
+| C-h o             | Org       | Helm: Org info manual                                     | 'helm-info-org                                              |
 | C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))              |
 | C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
 | C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                |
@@ -1221,6 +1222,7 @@ You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm W
 (setq helm-buffer-max-length 50)
 (setq helm-M-x-always-save-history t)
 (setq helm-buffer-details-flag nil)
+(setq helm-mode-handle-completion-in-region nil) ; don't use helm for `completion-at-point'
 (add-to-list 'helm-completing-read-handlers-alist '(org-refile)) ; helm-mode does not do org-refile well
 (require 'helm-git)
 #+END_SRC
