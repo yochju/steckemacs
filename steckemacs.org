@@ -960,7 +960,7 @@ Turn on autocompletion for =conf-mode= by adding it to =ac-modes=.
  deft-directory "~/deft"
  deft-text-mode 'org-mode
  deft-use-filename-as-title t
- deft-auto-save-interval 30
+ deft-auto-save-interval 20
  )
 #+END_SRC
 *** diff-hl
