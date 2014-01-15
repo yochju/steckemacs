@@ -600,9 +600,9 @@ Put that line into =~/.user.el= which is loaded [[*User%20Settings][in this init
 
 #+BEGIN_SRC emacs-lisp
 (setq frame-title-format
-      '("" invocation-name " "(:eval (if (buffer-file-name)
-                                         (abbreviate-file-name (buffer-file-name))
-                                       "%b"))))
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
 #+END_SRC
 
 For the frame title either show a file or a buffer name (if the buffer isn't visiting a file).
@@ -1647,6 +1647,8 @@ Homepage: http://orgmode.org/
 (setq org-clock-idle-time 15)
 (setq org-clock-in-resume t)
 (setq org-clock-persist t)
+(setq org-clock-frame-title-format (append '((t org-mode-line-string)) '(" ") frame-title-format))
+(setq org-clock-clocked-in-display 'both)
 #+END_SRC
 
 **** org-mode-blog
