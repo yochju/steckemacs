@@ -1905,7 +1905,6 @@ Smart Mode Line is a sexy mode-line for Emacs, that aims to be easy to read from
 It is written by Artur Bruce-Connor. The default Emacs mode-line has some shortcomings and =sml= does a good job at improving it.
 
 #+BEGIN_SRC emacs-lisp
-(setq sml/show-encoding t)
 (setq sml/vc-mode-show-backend t)
 (sml/setup)
 (sml/apply-theme 'respectful)
