@@ -1647,6 +1647,7 @@ Homepage: http://orgmode.org/
 (setq org-clock-idle-time 15)
 (setq org-clock-in-resume t)
 (setq org-clock-persist t)
+(org-clock-persistence-insinuate)
 (setq org-clock-frame-title-format (append '((t org-mode-line-string)) '(" ") frame-title-format))
 (setq org-clock-clocked-in-display 'both)
 #+END_SRC
