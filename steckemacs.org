@@ -1224,6 +1224,7 @@ You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm W
 (setq helm-M-x-always-save-history t)
 (setq helm-buffer-details-flag nil)
 (add-to-list 'helm-completing-read-handlers-alist '(org-refile)) ; helm-mode does not do org-refile well
+(add-to-list 'helm-completing-read-handlers-alist '(org-agenda-refile)) ; same goes for org-agenda-refile
 (require 'helm-git)
 #+END_SRC
 
