@@ -278,8 +278,6 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         skewer-mode
         smart-mode-line
         smartparens
-        tern
-        tern-auto-complete
         visual-regexp
         vlf
         volatile-highlights
@@ -1972,32 +1970,6 @@ SLIME, the Superior Lisp Interaction Mode for Emacs, is an Emacs mode for develo
 #+END_SRC
 
 Disable yasnippets for term-mode
-
-*** tern
-
-#+BEGIN_QUOTE
-Tern is a stand-alone, editor-independent JavaScript analyzer that can be used to improve the JavaScript integration of existing editors.
-#+END_QUOTE
-
-Needs the =tern= binary to be present, which can be installed with =npm=:
-
-#+BEGIN_SRC shell-script
-sudo npm install -g tern
-#+END_SRC
-
-See the [[http://ternjs.net/][project homepage]] for more info.
-
-#+BEGIN_SRC emacs-lisp
-(when (executable-find "tern")
-      (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-      (eval-after-load 'auto-complete
-        '(eval-after-load 'tern
-           '(progn
-              (require 'tern-auto-complete)
-              (tern-ac-setup)))))
-#+END_SRC
-
-Use tern autocompletion if the executable is found.
 
 *** uniqify
 
