@@ -351,7 +351,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | Combo             | Category  | Desciption                                                | Command                                                     |
 |-------------------+-----------+-----------------------------------------------------------+-------------------------------------------------------------|
 | C-h x             | General   | Kill emacs (including the daemon if it is running)        | (lambda () (interactive) (shell-command "pkill emacs"))     |
-| C-S-l             | General   | List available packages                                   | 'package-list-packages-no-fetch                             |
+| C-S-l             | General   | List available packages                                   | 'package-list-packages                                      |
 | C-c n             | General   | Show file name + path, save to clipboard                  | 'show-file-name                                             |
 | C-x a s           | General   | Toggle auto saving of buffers                             | 'auto-save-buffers-enhanced-toggle-activity                 |
 | C-c d             | General   | Change dictionary                                         | 'ispell-change-dictionary                                   |
