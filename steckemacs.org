@@ -159,6 +159,9 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
         (:name eval-sexp-fu
                :type http
                :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
+        (:name helm-google
+               :type git
+               :url "https://github.com/steckerhalter/helm-google")
         (:name magit-filenotify
                :type git
                :url "https://github.com/magit/magit-filenotify")
@@ -458,6 +461,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-m           | Open      | Popup discover-my-major window                            | 'discover-my-major                                          |
 | C-h C-<return>    | Open      | Emacs Web Wowser (internal Webbrowser)                    | 'eww                                                        |
 | C-h M-RET         | Open      | Emacs Web Wowser do what I mean                           | 'my-eww-browse-dwim                                         |
+| C-h C--           | Open      | Helm: Google                                              | 'helm-google                                                |
 | C-h o             | Org       | Helm: Org info manual                                     | 'helm-info-org                                              |
 | C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))              |
 | C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
