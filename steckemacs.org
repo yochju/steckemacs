@@ -1641,7 +1641,7 @@ Homepage: http://orgmode.org/
         ("WAITING" . 'font-lock-doc-face)
         ("FUTURE" . "white")
         ))
-
+(setq org-log-into-drawer t) ; don't clutter files with state logs
 #+END_SRC
 
 **** Clocking
