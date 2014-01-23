@@ -1576,6 +1576,12 @@ Homepage: http://orgmode.org/
     (with-temp-file agendas nil))
   (setq org-agenda-files agendas))
 
+;; display the agenda first
+(setq org-agenda-custom-commands
+      '(("n" "Agenda and all TODO's"
+        ((alltodo "")
+         (agenda "")))))
+
 (defun my-initial-buffer-choice ()
   (org-agenda nil "n")
   (delete-other-windows)
@@ -1583,6 +1589,8 @@ Homepage: http://orgmode.org/
 (setq initial-buffer-choice #'my-initial-buffer-choice)
 
 (setq org-agenda-start-with-log-mode t)
+(setq org-agenda-todo-ignore-scheduled 'future) ; don't show future scheduled
+(setq org-agenda-todo-ignore-deadlines 'far)    ; show only near deadlines
 
 (setq
  appt-message-warning-time 30
