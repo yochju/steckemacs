@@ -153,9 +153,10 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
 #+BEGIN_SRC emacs-lisp :results silent
 (setq el-get-sources
       '(
-        (:name ac-php-doc
-               :type git
-               :url "https://github.com/steckerhalter/ac-php-doc")
+        (:name company-cider
+               :type github
+               :pkgname "steckerhalter/company-cider"
+               :prepare (eval-after-load 'company '(add-to-list 'company-backends 'company-cider)))
         (:name eval-sexp-fu
                :type http
                :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
@@ -213,11 +214,8 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
 (setq my-packages
 
       '(ack-and-a-half
-        ac-nrepl
-        ac-slime
         ag
         apache-mode
-        auto-complete
         auto-dim-other-buffers
         auto-save-buffers-enhanced
         back-button
@@ -246,7 +244,6 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         highlight
         helm
         helm-descbinds
-        helm-c-yasnippet
         helm-gtags
         helm-git
         helm-projectile
@@ -268,7 +265,6 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         nrepl-eval-sexp-fu
         org
         org-mobile-sync
-        php-auto-yasnippets
         php-boris
         php-eldoc
         php-mode
@@ -286,8 +282,7 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         volatile-highlights
         web-mode
         yaml-mode
-        yari
-        yasnippet))
+        yari))
 #+END_SRC
 
 Quite a big list of packages. When Emacs starts up the first time it takes quite a while to install all of them.
@@ -776,6 +771,33 @@ Make =isearch-forward= put the cursor at the start of the search, not the end, s
   (indent-region (point-min) (point-max)))
 #+END_SRC
 
+*** my-show-help
+
+#+BEGIN_SRC emacs-lisp
+(require 'pos-tip)
+(defun my-show-help (doc-function)
+  "Show docs for symbol at point or at beginning of list if not on a symbol.
+Pass symbol-name to the function DOC-FUNCTION."
+  (interactive)
+  (let ((s (symbol-name
+            (save-excursion
+              (or (symbol-at-point)
+                  (progn (backward-up-list)
+                         (forward-char)
+                         (symbol-at-point)))))))
+    (let ((doc-string (funcall doc-function s)))
+      (when doc-string
+          (pos-tip-show doc-string 'popup-tip-face (point) nil -1 60))
+        (message "No documentation for %s" s)
+        )))
+(define-key lisp-mode-shared-map (kbd "C-c C-d")
+  (lambda ()
+    (interactive)
+    (my-show-help #'ac-symbol-documentation)))
+#+END_SRC
+
+I wanted to be able to get a documentation popup without having to trigger auto-complete. It's mostly stolen from [[http://jaderholm.com/][Scott Jaderholm]] (the code is on [[http://www.emacswiki.org/emacs/AutoComplete][Emacswiki]]), but has been made more general to also work with other completion functions.
+
 ** Advices
 
 #+BEGIN_SRC emacs-lisp
@@ -826,64 +848,6 @@ line instead."
              )
           )
 #+END_SRC
-
-*** auto-complete
-
-#+BEGIN_QUOTE
-Auto-Complete is an intelligent auto-completion extension for Emacs. It extends the standard Emacs completion interface and provides an environment that allows users to concentrate more on their own work.
-#+END_QUOTE
-
-#+CAPTION: Auto-Complete
-#+NAME: fig:ac
-[[http://steckerhalter.co.vu/img/ac.png]]
-
-It is written by Tomohiro Matsuyama (aka m2ym). He moved the project from [[http://cx4a.org/][his personal site]] to [[https://github.com/auto-complete/auto-complete][Github]] a while ago which helped quite a lot with further development.
-
-#+BEGIN_SRC emacs-lisp
-(require 'auto-complete-config)
-(ac-config-default)
-(setq ac-auto-show-menu 0.5)
-(setq ac-quick-help-height 50)
-(setq ac-quick-help-delay 1)
-(setq ac-use-fuzzy t)
-(setq ac-disable-faces nil)
-(setq ac-quick-help-prefer-x nil)
-(setq ac-dwim nil)
-#+END_SRC
-
-Initial setup:
-
-- load the default configuration
-- lower the menu delay
-- show quick help after 1s
-- use fuzzy matching
-
-#+BEGIN_SRC emacs-lisp
-(require 'pos-tip)
-(defun my-ac-show-help (ac-doc-function)
-  "Show docs for symbol at point or at beginning of list if not on a symbol.
-Pass symbol-name to the function AC-DOC-FUNCTION."
-  (interactive)
-  (let ((s (symbol-name
-            (save-excursion
-              (or (symbol-at-point)
-                  (progn (backward-up-list)
-                         (forward-char)
-                         (symbol-at-point)))))))
-    (let ((doc-string (funcall ac-doc-function s)))
-      (if doc-string
-          (if ac-quick-help-prefer-x
-              (pos-tip-show doc-string 'popup-tip-face (point) nil -1 60)
-            (popup-tip doc-string :point (point)))
-        (message "No documentation for %s" s)
-        ))))
-(define-key lisp-mode-shared-map (kbd "C-c C-d")
-  (lambda ()
-    (interactive)
-    (my-ac-show-help #'ac-symbol-documentation)))
-#+END_SRC
-
-I wanted to be able to get a documentation popup without having to trigger auto-complete. It's mostly stolen from [[http://jaderholm.com/][Scott Jaderholm]] (the code is on [[http://www.emacswiki.org/emacs/AutoComplete][Emacswiki]]), but has been made more general to also work with other completion functions.
 
 *** auto-dim-other-buffers
 #+BEGIN_QUOTE
@@ -939,21 +903,39 @@ Github: https://github.com/clojure-emacs/cider
 
 #+BEGIN_SRC emacs-lisp
 (setq cider-popup-stacktraces nil)
-(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-(add-hook 'cider-mode-hook 'ac-nrepl-setup)
-(add-to-list 'ac-modes 'cider-repl-mode)
-(eval-after-load "cider"
-  '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 #+END_SRC
+
+*** company
+#+BEGIN_QUOTE
+Company stands for "complete anything". It uses pluggable back-ends and front-ends to retrieve and display completion candidates.
+
+It comes with several back-ends such as Elisp, Clang, Semantic, Eclim, Ropemacs, Ispell, dabbrev, etags, gtags, files, keywords and a few others.
+#+END_QUOTE
+
+#+CAPTION: company
+#+NAME: fig:co
+http://company-mode.github.io/images/company-semantic.png
+
+#+BEGIN_SRC emacs-lisp
+(require 'company)
+(setq company-idle-delay 0.3)
+(setq company-tooltip-limit 20)
+(setq company-minimum-prefix-length 2)
+(setq company-echo-delay 0)
+(setq company-auto-complete nil)
+(global-company-mode 1)
+(add-to-list 'company-backends 'company-dabbrev t)
+(add-to-list 'company-backends 'company-ispell t)
+(add-to-list 'company-backends 'company-files t)
+#+END_SRC
+
+I started using =company= because =auto-complete= seemed to be buggy and slow. Some of the company features are pretty cool, for example the ability to search within completions with =C-s= or to show the symbol definition with =C-w=. =<f1>= shows the full documentation of a symbol. I miss the popup from auto-complete a bit but I guess that's not so important in the end.
 
 *** conf-mode
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.tks\\'" . org-mode))
-(add-to-list 'ac-modes 'conf-mode)
 #+END_SRC
-
-Turn on autocompletion for =conf-mode= by adding it to =ac-modes=.
 
 *** deft
 #+BEGIN_SRC emacs-lisp
@@ -1024,7 +1006,6 @@ Github: https://github.com/jorgenschaefer/elpy
 #+BEGIN_SRC emacs-lisp
 (elpy-enable)
 (delq 'flymake-mode elpy-default-minor-modes)
-(define-key ac-completing-map (kbd "<return>") 'ac-complete)
 #+END_SRC
 
 I'm using =flycheck= so please don't use =flymake= (which is old and bugly). Also RET should trigger completion for me and not a newline.
@@ -1258,17 +1239,8 @@ Highlights the word/symbol at point and any other occurrences in view. Also allo
 
 #+BEGIN_SRC emacs-lisp
 (setq highlight-symbol-on-navigation-p t)
-(setq highlight-symbol-idle-delay 0.2)
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 #+END_SRC
-
-*** html-mode
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'ac-modes 'html-mode)
-#+END_SRC
-
-Enable autocompletion for html-mode.
 
 *** ido-mode
 
@@ -1318,14 +1290,7 @@ IELM is short for Inferior Emacs Lisp Mode. It is a REPL for Emacs Lisp that is 
   '(progn
      (add-hook 'inferior-emacs-lisp-mode-hook
                (lambda ()
-                 (auto-complete-mode 1)
-                 (turn-on-eldoc-mode)
-                 (mapc
-                  (lambda (src) (add-to-list 'ac-sources src))
-                  '(ac-source-functions
-                    ac-source-variables
-                    ac-source-features
-                    ac-source-symbols))))))
+                 (turn-on-eldoc-mode)))))
 #+END_SRC
 
 We need to tweak IELM a bit so we get completion and eldoc hints.
@@ -1546,7 +1511,6 @@ Homepage: http://orgmode.org/
 (require 'ox-org)
 (require 'ox-md)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(add-to-list 'ac-modes 'org-mode)
 (setq org-startup-folded t)
 (setq org-startup-indented nil)
 (setq org-startup-with-inline-images t)
@@ -1604,8 +1568,7 @@ Homepage: http://orgmode.org/
 ;; add new appointments when saving the org buffer, use 'refresh argument to do it properly
 (defun my-org-agenda-to-appt-refresh () (org-agenda-to-appt 'refresh))
 (defun my-org-mode-hook ()
-  (add-hook 'after-save-hook 'my-org-agenda-to-appt-refresh nil 'make-it-local)
-  (yas-minor-mode -1))
+  (add-hook 'after-save-hook 'my-org-agenda-to-appt-refresh nil 'make-it-local))
 (add-hook 'org-mode-hook 'my-org-mode-hook)
 
 (require 'notifications)
@@ -1719,11 +1682,6 @@ Github: https://github.com/ejmr/php-mode
   (require 'tempo nil t) ;needed by php-documentor
   (require 'php-documentor nil t)
   (local-set-key (kbd "C-c p") 'php-documentor-dwim)
-  (local-set-key (kbd "C-c C-g") 'yas/create-php-snippet)
-  (local-set-key (kbd "C-c d")
-                 (lambda ()
-                   (interactive)
-                   (my-ac-show-help #'ac-php-doc-documentation)))
   (require 'php-align nil t)
   (php-align-setup)
   (php-eldoc-enable)
@@ -1842,7 +1800,7 @@ Advanced autocompletion for Ruby
 (add-hook 'ruby-mode-hook
           (lambda ()
             (robe-mode 1)
-            (push 'ac-source-robe ac-sources)))
+            (push 'company-robe company-backends)))
 #+END_SRC
 
 *** saveplace
@@ -1968,20 +1926,7 @@ SLIME, the Superior Lisp Interaction Mode for Emacs, is an Emacs mode for develo
 
 #+BEGIN_SRC emacs-lisp
 (when (file-exists-p "~/quicklisp/slime-helper.el") (load "~/quicklisp/slime-helper.el"))
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
-(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'slime-repl-mode))
 #+END_SRC
-
-*** term-mode
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'term-mode-hook (lambda()
-                (yas-minor-mode -1)))
-#+END_SRC
-
-Disable yasnippets for term-mode
 
 *** uniqify
 
@@ -1993,21 +1938,6 @@ Unique buffer names dependent on file name
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-min-dir-content 2)
-#+END_SRC
-
-*** yasnippet
-
-#+BEGIN_QUOTE
-YASnippet is a template system for Emacs. It allows you to type an abbreviation and automatically expand it into function templates. Bundled language templates include: C, C++, C#, Perl, Python, Ruby, SQL, LaTeX, HTML, CSS and more. The snippet syntax is inspired from TextMate's syntax, you can even import most TextMate templates to YASnippet. Watch a demo on YouTube or download a higher resolution version.
-#+END_QUOTE
-
-Written by João Távora or =capitaomorte=.
-
-Github: https://github.com/capitaomorte/yasnippet
-
-#+BEGIN_SRC emacs-lisp
-(yas-global-mode 1)
-(setq yas-prompt-functions '(yas-completing-prompt yas-ido-prompt yas-x-prompt yas-dropdown-prompt yas-no-prompt))
 #+END_SRC
 
 *** web-mode
