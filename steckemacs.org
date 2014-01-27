@@ -1689,10 +1689,7 @@ Github: https://github.com/ejmr/php-mode
   (local-set-key (kbd "C-c p") 'php-documentor-dwim)
   (require 'php-align nil t)
   (php-align-setup)
-  (php-eldoc-enable)
-  (set-up-php-ac)
-  )
-
+  (php-eldoc-enable))
 (add-hook 'php-mode-hook 'setup-php-mode)
 #+END_SRC
 
