@@ -223,6 +223,7 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         cider
         creole-mode
         clojure-mode
+        company
         csv-mode
         deft
         dired+
@@ -927,6 +928,10 @@ http://company-mode.github.io/images/company-semantic.png
 (add-to-list 'company-backends 'company-dabbrev t)
 (add-to-list 'company-backends 'company-ispell t)
 (add-to-list 'company-backends 'company-files t)
+
+(defun my-pcomplete-capf ()
+  (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+(add-hook 'org-mode-hook #'my-pcomplete-capf)
 #+END_SRC
 
 I started using =company= because =auto-complete= seemed to be buggy and slow. Some of the company features are pretty cool, for example the ability to search within completions with =C-s= or to show the symbol definition with =C-w=. =<f1>= shows the full documentation of a symbol. I miss the popup from auto-complete a bit but I guess that's not so important in the end.
