@@ -1942,6 +1942,18 @@ Unique buffer names dependent on file name
 (setq uniquify-min-dir-content 2)
 #+END_SRC
 
+*** vlf
+#+BEGIN_QUOTE
+Emacs minor mode that allows viewing, editing, searching and comparing large files in batches. Batch size can be adjusted on the fly and bounds the memory that is to be used for operations on the file. This way multiple large files can be instantly and simultaneously accessed without swapping and degraded performance.
+#+END_QUOTE
+
+Github: https://github.com/m00natic/vlfi
+
+#+BEGIN_SRC emacs-lisp
+(setq vlf-application 'dont-ask)        ; just do it
+(setq vlf-batch-size 8192)              ; a bit more text per batch please
+(require 'vlf-integrate)                ; just do it for real
+#+END_SRC
 *** web-mode
 #+BEGIN_QUOTE
 web-mode.el is an autonomous emacs major-mode for editing web templates:
