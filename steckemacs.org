@@ -436,7 +436,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | <M-right>         | Windows   | Move the current buffer window right                      | 'buf-move-right                                             |
 | vg                | Find/Grep | VC git grep                                               | 'vc-git-grep                                                |
 | C-h C-f           | Find/Grep | Grep find                                                 | 'grep-find                                                  |
-| C-c o             | Find/Grep | list matching regexp                                      | 'occur                                                      |
+| C-h C-o           | Find/Grep | list matching regexp                                      | 'occur                                                      |
 | C-h C-g           | Find/Grep | Use the ag cli tool to grep project                       | 'ag-project                                                 |
 | C-h C-l           | Find/Grep | Helm locate                                               | 'helm-locate                                                |
 | C-h C-z           | Find/Grep | Projectile find file                                      | 'projectile-find-file                                       |
@@ -463,7 +463,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
 | C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                |
 | C-c i             | Org       | Start the clock on the current item                       | 'org-clock-in                                               |
-| C-c I             | Org       | Stop the clock on the current item                        | 'org-clock-out                                              |
+| C-c o             | Org       | Stop the clock on the current item                        | 'org-clock-out                                              |
+| C-S-g             | Org       | Goto the current org clock                                | 'org-clock-goto                                             |
 | C-c C-9           | Org       | Insert a new subheading and demote it                     | 'org-insert-subheading                                      |
 | C-c C-0           | Org       | Insert a new TODO subheading                              | 'org-insert-todo-subheading                                 |
 | C-h C-.           | Org       | Open/switch to home.org                                   | (lambda () (interactive) (find-file "~/org/home.org"))      |
