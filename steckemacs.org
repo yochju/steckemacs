@@ -216,7 +216,6 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
       '(ack-and-a-half
         ag
         apache-mode
-        auto-dim-other-buffers
         auto-save-buffers-enhanced
         back-button
         buffer-move
@@ -849,17 +848,6 @@ line instead."
                  (TeX-command-menu "LaTeX")))
              )
           )
-#+END_SRC
-
-*** auto-dim-other-buffers
-#+BEGIN_QUOTE
-Visually makes non-current buffers less prominent
-#+END_QUOTE
-
-Github: https://github.com/mina86/auto-dim-other-buffers.el
-
-#+BEGIN_SRC emacs-lisp
-(auto-dim-other-buffers-mode 1)
 #+END_SRC
 
 *** auto-save-buffers-enhanced
