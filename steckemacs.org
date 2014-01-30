@@ -367,6 +367,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c m             | Interface | Toggle the menu bar                                       | 'menu-bar-mode                                              |
 | C--               | Interface | Decrease the font size                                    | 'text-scale-decrease                                        |
 | C-=               | Interface | Increase the font size                                    | 'text-scale-increase                                        |
+| <C-mouse-5>       | Interface | Decrease the font size                                    | 'text-scale-decrease                                        |
+| <C-mouse-4>       | Interface | Increase the font size                                    | 'text-scale-increase                                        |
 | ln                | Interface | Show/hide the line numbers                                | 'linum-mode                                                 |
 | C-x C-u           | Internet  | Prompt for URL and insert contents at point               | 'my-url-insert-file-contents                                |
 | C-c C-w           | Internet  | Browse URL under cursor                                   | 'browse-url-at-point                                        |
