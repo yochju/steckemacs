@@ -153,10 +153,6 @@ This sets up the load path and fetches and evaluates the stable El-Get branch if
 #+BEGIN_SRC emacs-lisp :results silent
 (setq el-get-sources
       '(
-        (:name company-cider
-               :type github
-               :pkgname "steckerhalter/company-cider"
-               :prepare (eval-after-load 'company '(add-to-list 'company-backends 'company-cider)))
         (:name eval-sexp-fu
                :type http
                :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
@@ -223,6 +219,7 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         creole-mode
         clojure-mode
         company
+        company-cider
         csv-mode
         deft
         dired+
@@ -919,6 +916,7 @@ http://company-mode.github.io/images/company-semantic.png
 (add-to-list 'company-backends 'company-dabbrev t)
 (add-to-list 'company-backends 'company-ispell t)
 (add-to-list 'company-backends 'company-files t)
+(add-to-list 'company-backends 'company-cider)
 
 (defun my-pcomplete-capf ()
   (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
