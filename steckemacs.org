@@ -1954,9 +1954,6 @@ Github: https://github.com/fxbois/web-mode
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(defun my-font-lock-mode-setup ()
-  (when (equal major-mode 'web-mode) (setq font-lock-mode nil)))
-(add-hook 'font-lock-mode-hook 'my-font-lock-mode-setup)
 #+END_SRC
 
 Enable web-mode for html buffers. Disable font-locking in web-mode because it's conflicting with other modes that do font-locking.
