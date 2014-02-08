@@ -951,15 +951,9 @@ Github: https://github.com/dgutov/diff-hl
 
 #+BEGIN_SRC emacs-lisp
 (global-diff-hl-mode)
-(diff-hl-margin-mode)
-
-(defun my-diff-hl-update ()
-  (with-current-buffer (current-buffer) (diff-hl-update)))
-
-(add-hook 'magit-refresh-file-buffer-hook 'my-diff-hl-update)
 #+END_SRC
 
-Turn on the global mode and use the margin (not the fringe) to show the diff. Run =diff-hl-update= via =magit-refresh-file-buffer-hook= (which is run for each buffer after a commit).
+Turn on the global mode.
 
 *** dired and dired+
 
