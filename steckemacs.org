@@ -1892,10 +1892,7 @@ Github: https://github.com/Fuco1/smartparens
 #+BEGIN_SRC emacs-lisp
 (require 'smartparens-config)
 (smartparens-global-mode t)
-(define-key sp-keymap (kbd "C-{") 'sp-select-previous-thing)
-(define-key sp-keymap (kbd "C-}") 'sp-select-next-thing)
-(define-key sp-keymap (kbd "C-\\") 'sp-select-previous-thing-exchange)
-(define-key sp-keymap (kbd "C-]") 'sp-select-next-thing-exchange)
+(sp-use-smartparens-bindings)
 ;; "fix"" highlight issue in scratch buffer
 (custom-set-faces '(sp-pair-overlay-face ((t ()))))
 #+END_SRC
