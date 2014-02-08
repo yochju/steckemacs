@@ -951,9 +951,15 @@ Github: https://github.com/dgutov/diff-hl
 
 #+BEGIN_SRC emacs-lisp
 (global-diff-hl-mode)
+
+(defadvice git-commit-commit (after git-commit-commit-after activate)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (when diff-hl-mode
+        (diff-hl-update)))))
 #+END_SRC
 
-Turn on the global mode.
+Turn on the global mode and advice the commit-function so that after a commit the diff-hl-enabled buffers are updated.
 
 *** dired and dired+
 
