@@ -519,6 +519,7 @@ Load user settings if the file is available. Put all your personal modifications
  enable-recursive-minibuffers t
  custom-unlispify-menu-entries nil      ;M-x customize should not cripple menu entries
  custom-unlispify-tag-names nil         ;M-x customize should not cripple tags
+ show-paren-delay 0
  )
 
 (put 'narrow-to-region 'disabled nil)   ;narrow to region should be enabled by default
