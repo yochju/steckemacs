@@ -517,6 +517,8 @@ Load user settings if the file is available. Put all your personal modifications
  indicate-buffer-boundaries 'left             ;fringe markers
  split-height-threshold 110                   ;more readily split horziontally
  enable-recursive-minibuffers t
+ custom-unlispify-menu-entries nil      ;M-x customize should not cripple menu entries
+ custom-unlispify-tag-names nil         ;M-x customize should not cripple tags
  )
 
 (put 'narrow-to-region 'disabled nil)   ;narrow to region should be enabled by default
