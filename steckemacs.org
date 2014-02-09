@@ -221,6 +221,7 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         company
         company-cider
         csv-mode
+        dedicated
         deft
         dired+
         discover
@@ -432,6 +433,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | <M-down>          | Windows   | Move the current buffer window down                       | 'buf-move-down                                              |
 | <M-left>          | Windows   | Move the current buffer window left                       | 'buf-move-left                                              |
 | <M-right>         | Windows   | Move the current buffer window right                      | 'buf-move-right                                             |
+| C-h C-8           | Windows   | Enable/disable dedicated minor-mode for current window    | 'dedicated-mode                                             |
 | vg                | Find/Grep | VC git grep                                               | 'vc-git-grep                                                |
 | C-h C-f           | Find/Grep | Grep find                                                 | 'grep-find                                                  |
 | C-h C-o           | Find/Grep | list matching regexp                                      | 'occur                                                      |
@@ -932,6 +934,17 @@ I started using =company= because =auto-complete= seemed to be buggy and slow. S
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.tks\\'" . org-mode))
+#+END_SRC
+
+*** dedicated
+#+BEGIN_QUOTE
+This minor mode allows you to toggle a window's "dedicated" flag. When a window is "dedicated", Emacs will not select files into that window. This can be quite handy since many commands will use another window to show results (e.g., compilation mode, starting info, etc.) A dedicated window won't be used for such a purpose.
+#+END_QUOTE
+
+Github: https://github.com/emacsmirror/dedicated
+
+#+BEGIN_SRC emacs-lisp
+(require 'dedicated)
 #+END_SRC
 
 *** deft
