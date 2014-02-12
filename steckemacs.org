@@ -811,6 +811,14 @@ Now get ready for setting up all the modes I use...
 
 *** auctex-mode
 
+#+BEGIN_QUOTE
+AUCTEX is an extensible package for writing and formatting TEX files in GNU Emacs and XEmacs. It supports many different TEX macro packages, including AMS-TEX, LATEX, Texinfo, ConTEXt, and docTEX (dtx files).
+#+END_QUOTE
+
+https://www.gnu.org/software/auctex/img/preview-screenshot.png
+
+Homepage: https://www.gnu.org/software/auctex/
+
 #+BEGIN_SRC emacs-lisp
 (setq TeX-PDF-mode t)
 (setq TeX-parse-self t)
@@ -825,7 +833,7 @@ Now get ready for setting up all the modes I use...
                  (TeX-command-menu "LaTeX")))))
 #+END_SRC
 
-When I do LaTeX I want to have sane a sane config. I install =auctex= only when I really need it.
+When I do LaTeX I want to have a sane config. I install =auctex= only when I really need it.
 
 *** auto-save-buffers-enhanced
 
@@ -873,6 +881,8 @@ https://raw.github.com/rolandwalker/back-button/master/back_button_example.png
 #+BEGIN_QUOTE
 CIDER is Clojure IDE and REPL for Emacs, built on top of nREPL, the Clojure networked REPL server. It's a great alternative to the now deprecated combination of SLIME + swank-clojure.
 #+END_QUOTE
+
+https://raw.github.com/clojure-emacs/cider/master/logo/cider-logo-w480.png
 
 It was formerly called =nrepl.el= and is written by Bozhidar Batsov.
 
@@ -1003,6 +1013,8 @@ Dired is nice way to browse the directory tree. I have added =dired+= which
 #+BEGIN_QUOTE
 extends functionalities provided by standard GNU Emacs libraries dired.el, dired-aux.el, and dired-x.el. The standard functions are all available, plus many more.
 #+END_QUOTE
+
+http://www.emacswiki.org/pics/static/DrewsEmacsDiredLine.jpg
 
 See the [[http://www.emacswiki.org/emacs/DiredPlus][EmacsWiki]] for detailed information on =dired+=.
 
@@ -1271,6 +1283,7 @@ Automatic and manual symbol highlighting for Emacs
 
 Highlights the word/symbol at point and any other occurrences in view. Also allows to jump to the next or previous occurrence.
 
+Homepage: http://nschum.de/src/emacs/highlight-symbol/
 Github: https://github.com/nschum/highlight-symbol.el
 
 http://nschum.de/src/emacs/highlight-symbol/highlight-symbol.png
