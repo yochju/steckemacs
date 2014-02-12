@@ -271,6 +271,7 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         robe
         restclient
         sequential-command
+        shell-switcher
         skewer-mode
         smart-mode-line
         smartparens
@@ -1895,6 +1896,19 @@ EmacsWiki: http://www.emacswiki.org/emacs/sequential-command.el
 
 Pressing =C-a= once goes back to the indentation, pressing it twice goes the beginning of the line.
 Pressing =C-e= once goes back to the end of the line, pressing it twice advances to the next line's indentation.
+
+*** shell-switcher
+#+BEGIN_QUOTE
+An emacs minor mode to easily switch between shell buffers (like with alt+tab)
+#+END_QUOTE
+
+Github: https://github.com/DamienCassou/shell-switcher
+
+#+BEGIN_SRC emacs-lisp
+(setq shell-switcher-new-shell-function 'shell-switcher-make-ansi-term)
+(setq shell-switcher-mode t)
+(require 'shell-switcher)
+#+END_SRC
 
 *** skewer
 
