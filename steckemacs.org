@@ -1845,10 +1845,8 @@ Code navigation, documentation lookup and completion for Ruby
 Github: https://github.com/dgutov/robe
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (robe-mode 1)
-            (push 'company-robe company-backends)))
+(push 'company-robe company-backends)
+(add-hook 'ruby-mode-hook 'robe-mode)
 #+END_SRC
 
 Enable =robe= for ruby buffers and since I'm using =company= I'm adding the backend here.
@@ -1949,10 +1947,6 @@ Github: https://github.com/Bruce-Connor/smart-mode-line
 (setq sml/vc-mode-show-backend t)
 (sml/setup)
 (sml/apply-theme 'respectful)
-(set-face-attribute 'sml/prefix nil :foreground "#dcf692")
-(set-face-attribute 'sml/folder nil :foreground "#f09fff")
-(set-face-attribute 'sml/filename nil :foreground "#f6df92")
-(set-face-attribute 'sml/vc-edited nil :foreground "#ff5f87")
 #+END_SRC
 
 Show the encoding and add VC information to the mode-line. Respect the theme-colors and customize some of the =sml= colors.
