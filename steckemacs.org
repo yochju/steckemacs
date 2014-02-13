@@ -267,6 +267,7 @@ To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-m
         php-mode
         popup
         pos-tip
+        projectile
         rainbow-mode
         robe
         restclient
