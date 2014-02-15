@@ -116,11 +116,6 @@ To get the latest org-mode I set =package-archives= to contain [[http://orgmode.
     (eval-buffer)))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp :tangle no
-(setq my-packages
-
-#+END_SRC
-
 ** Key Bindings
 
 #+BEGIN_SRC emacs-lisp
