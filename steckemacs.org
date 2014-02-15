@@ -101,200 +101,25 @@ The variable =load-path= lists all the directories where Emacs should look for E
 
 Here we create the directory =~/.emacs.d/elisp= if it does not exist, add it to the =load-path=. Doing that any =.el= or =.elc= files in this directory can be required from *emacs*.
 
-** Online Check
-
-#+BEGIN_SRC emacs-lisp
-(setq my-onlinep nil)
-(unless
-    (condition-case nil
-        (delete-process
-         (make-network-process
-          :name "my-check-internet"
-          :host "elpa.gnu.org"
-          :service 80))
-      (error t))
-  (setq my-onlinep t))
-#+END_SRC
-
-Try to open a connection to =elpa.gnu.org= and if it succeeds set =my-onlinep= to true. We use this flag later for network related operations.
-
-** El-Get
-
-#+CAPTION: El-Get Logo
-#+NAME: el-get-logo
-[[https://raw.github.com/dimitri/el-get/master/logo/el-get.png]]
-
-#+BEGIN_QUOTE
-El-Get is designed to simplify this process and allow access to all the various methods of obtaining packages from a single interface. Every package has a recipe that allows you to locate the original source, and that can be updated if the package is moved.
-#+END_QUOTE
-
-#+CAPTION: Dimitri Fontaine
-#+NAME: fig:dimitri
-[[http://tapoueh.org/images/dim.jpeg]]
-
-Dimitri (on the image above, [[fig:dimitri]]) is the clever guy that brougth us El-Get. The code is hosted [[https://github.com/dimitri/el-get][on Github]].
-
-#+BEGIN_SRC emacs-lisp -n -r
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-(setq el-get-install-skip-emacswiki-recipes t) (ref:wiki)
-(unless (require 'el-get nil 'noerror)
-  (if my-onlinep
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-      (goto-char (point-max))
-      (eval-print-last-sexp))
-    (error "El-Get is not installed and we are unable to download it without an internet connection: cannot continue")
-    ))
-#+END_SRC
-
-This sets up the load path and fetches and evaluates the stable El-Get branch if not already loaded (as described [[https://github.com/dimitri/el-get#basic-setup][on Github]]). In line [[(wiki)]] we make sure El-Get doesn't load all the Wiki recipes as we don't use them.
-
-#+BEGIN_SRC emacs-lisp :results silent
-(setq el-get-sources
-      '(
-        (:name eval-sexp-fu
-               :type http
-               :url "http://www.emacswiki.org/emacs/download/eval-sexp-fu.el")
-        (:name helm-google
-               :type git
-               :url "https://github.com/steckerhalter/helm-google")
-        (:name magit-filenotify
-               :type git
-               :url "https://github.com/magit/magit-filenotify")
-        (:name ob-php
-               :type git
-               :url "https://github.com/steckerhalter/ob-php"
-               :prepare (progn
-                          (add-to-list 'org-babel-load-languages '(php . t))
-                          (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)))
-        (:name php-align
-               :type git
-               :url "https://github.com/tetsujin/emacs-php-align")
-        (:name php-boris-minor-mode
-               :type git
-               :url "https://github.com/steckerhalter/php-boris-minor-mode")
-        (:name php-documentor
-               :type http
-               :url "https://raw.github.com/wenbinye/dot-emacs/master/site-lisp/contrib/php-documentor.el")
-        ))
-#+END_SRC
-
-These are simple El-Get recipes that will either fetch single Elisp files or clone a Git repo. The =ob-php= recipe uses a neat El-Get feature that allows to do some preparation after the installation.
-
-#+BEGIN_SRC emacs-lisp
-(setq my-el-get-packages
-      (append
-       '()
-       (mapcar 'el-get-source-name el-get-sources)))
-
-(el-get 'sync my-el-get-packages)
-#+END_SRC
-
-The sync function expects the package names which are extracted from =el-get-sources=. El-Get does the magic and gets the packages specified in =el-get-sources=.
-
 ** Packages
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(setq package-archives '(("org" . "http://orgmode.org/elpa/")))
 #+END_SRC
 
-This adds two remote package repositories. The repo from the FSF is already included in Emacs 24 (see http://elpa.gnu.org/).
-
-The best repository by far is [[http://melpa.milkbox.net/][MELPA]]. It builds packages directly from upstream source code. There's a nice [[https://twitter.com/melpa_emacs][Twitter Feed]] showing the packages that have been updated, which is great to discover new modes.
-
-To get the latest org-mode I also add the repo from [[http://orgmode.org/][org-mode.org]].
+To get the latest org-mode I set =package-archives= to contain [[http://orgmode.org/][org-mode.org]] archive. The built-in GNU ELPA is overwritten with tha because it often timed out and annoyed me.
 
 #+BEGIN_SRC emacs-lisp
+(unless (require 'quelpa nil t)
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+    (eval-buffer)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle no
 (setq my-packages
 
-      '(ack-and-a-half
-        ag
-        apache-mode
-        auto-save-buffers-enhanced
-        back-button
-        buffer-move
-        cider
-        creole-mode
-        clojure-mode
-        company
-        company-cider
-        csv-mode
-        dedicated
-        deft
-        dired+
-        discover
-        diff-hl
-        elpy
-        erc-hl-nicks
-        expand-region
-        fasd
-        fixmee
-        flycheck
-        flx-ido
-        geben
-        gist
-        grandshell-theme
-        grizzl
-        haskell-mode
-        hide-comnt
-        highlight
-        helm
-        helm-descbinds
-        helm-gtags
-        helm-git
-        helm-projectile
-        helm-swoop
-        highlight-symbol
-        htmlize
-        iedit
-        js2-mode
-        json-mode
-        key-chord
-        magit
-        markdown-mode+
-        melpa-upstream-visit
-        mmm-mode
-        move-text
-        multi-term
-        multiple-cursors
-        nrepl-eval-sexp-fu
-        org
-        org-mobile-sync
-        php-boris
-        php-eldoc
-        php-mode
-        popup
-        pos-tip
-        projectile
-        rainbow-mode
-        robe
-        restclient
-        sequential-command
-        shell-switcher
-        skewer-mode
-        smart-mode-line
-        smartparens
-        visual-regexp
-        vlf
-        volatile-highlights
-        web-mode
-        yaml-mode
-        yari))
 #+END_SRC
-
-Quite a big list of packages. When Emacs starts up the first time it takes quite a while to install all of them.
-
-#+BEGIN_SRC emacs-lisp
-(when my-onlinep
-  (package-refresh-contents)
-  (cl-loop for p in my-packages
-           unless (package-installed-p p)
-           do (package-install p)))
-#+END_SRC
-
-This part first checks if there is an internet connection. If true it refreshes the package archive cache and goes on to install all the packages that are not yet installed.
 
 ** Key Bindings
 
@@ -305,6 +130,7 @@ This part first checks if there is an internet connection. If true it refreshes 
 This is a custom keymap. It is used for a [[my-keys-minor-mode][minor mode that is activated at the end]]. This is the only way I know of to protect special combos (like =C-<return>=) from being overridden by other modes.
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(key-chord :fetcher wiki))
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay 0.03)
 #+END_SRC
@@ -584,10 +410,11 @@ Also Emacs should be able to kill processes without asking which is achieved in 
 ** Theme, Faces, Frame
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(grandshell-theme :repo "steckerhalter/grandshell-theme" :fetcher github))
 (load-theme 'grandshell t)
 #+END_SRC
 
-Loading my very own [[https://github.com/steckerhalter/grandshell-theme][Grand Shell Theme]] here. It can be installed via [[http://melpa.milkbox.net/#grandshell-theme][MELPA]]. It looks like this:
+Loading my very own [[https://github.com/steckerhalter/grandshell-theme][Grand Shell Theme]] here. It can be installed via [[http://melpa.milkbox.net/#grandshell-theme][MELPA]] too. It looks like this:
 
 #+CAPTION: Grand Shell Theme
 #+NAME: grand-shell-theme
@@ -669,6 +496,10 @@ Indent the whole buffer with one command. Bound to =C-h TAB=.
 *** my-show-help
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(pos-tip
+          :repo "syohex/pos-tip"
+          :fetcher github
+          :files ("pos-tip.el")))
 (require 'pos-tip)
 (defun my-show-help (doc-function)
   "Show docs for symbol at point or at beginning of list if not on a symbol.
@@ -681,10 +512,9 @@ Pass symbol-name to the function DOC-FUNCTION."
                          (forward-char)
                          (symbol-at-point)))))))
     (let ((doc-string (funcall doc-function s)))
-      (when doc-string
-          (pos-tip-show doc-string 'popup-tip-face (point) nil -1 60))
-        (message "No documentation for %s" s)
-        )))
+      (if doc-string
+          (pos-tip-show doc-string 'popup-tip-face (point) nil -1 60)
+        (message "No documentation for %s" s)))))
 (define-key lisp-mode-shared-map (kbd "C-c C-d")
   (lambda ()
     (interactive)
@@ -837,6 +667,18 @@ Homepage: https://www.gnu.org/software/auctex/
 
 When I do LaTeX I want to have a sane config. I install =auctex= only when I really need it.
 
+*** ag
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(ag :repo "Wilfred/ag.el" :fetcher github))
+#+END_SRC
+
+*** apache-mode
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(apache-mode :fetcher wiki))
+#+END_SRC
+
 *** auto-save-buffers-enhanced
 
 #+BEGIN_QUOTE
@@ -847,7 +689,8 @@ I forgot that I even have this. I hope it doesn't blow me Emacs up.
 
 Github: https://github.com/kentaro/auto-save-buffers-enhanced
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
+(quelpa '(auto-save-buffers-enhanced :repo "kentaro/auto-save-buffers-enhanced" :fetcher github))
 (require 'auto-save-buffers-enhanced)
 (auto-save-buffers-enhanced-include-only-checkout-path t)
 (auto-save-buffers-enhanced t)
@@ -873,9 +716,16 @@ https://raw.github.com/rolandwalker/back-button/master/back_button_example.png
 =back-button= is written by Roland Walker. For more information see the [[https://github.com/rolandwalker/back-button][Github page]].
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(back-button :repo rolandwalker/back-button :fetcher github))
 (setq back-button-local-keystrokes nil) ;don't overwrite C-x SPC binding
 (require 'back-button)
 (back-button-mode 1)
+#+END_SRC
+
+*** buffer-move
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(buffer-move :fetcher wiki))
 #+END_SRC
 
 *** cider
@@ -893,6 +743,7 @@ Github: https://github.com/clojure-emacs/cider
 I wrote a company-backend for Cider which is living at https://github.com/clojure-emacs/company-cider.
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(cider :fetcher github :repo clojure-emacs/cider :old-names (nrepl)))
 (setq cider-popup-stacktraces nil)
 #+END_SRC
 
@@ -910,6 +761,8 @@ It comes with several back-ends such as Elisp, Clang, Semantic, Eclim, Ropemacs,
 http://company-mode.github.io/images/company-semantic.png
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(company :repo company-mode/company-mode :fetcher github))
+(quelpa '(company-cider :fetcher github :repo clojure-emacs/company-cider))
 (require 'company)
 (setq company-idle-delay 0.3)
 (setq company-tooltip-limit 20)
@@ -949,6 +802,7 @@ Github: https://github.com/emacsmirror/dedicated
 
 #+BEGIN_SRC emacs-lisp
 (require 'dedicated)
+(quelpa '(dedicated :fetcher github :repo emacsmirror/dedicated))
 #+END_SRC
 
 I'm quite fond of =dedicated=. Now when a buffer is supposed to be left alone, I can dedicate it!
@@ -966,6 +820,7 @@ Homepage: http://jblevins.org/projects/deft/
 http://jblevins.org/projects/deft/browser.png
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(deft :url git://jblevins.org/git/deft.git :fetcher git))
 (setq
  deft-extension "org"
  deft-directory "~/deft"
@@ -990,6 +845,7 @@ Github: https://github.com/dgutov/diff-hl
 https://raw.github.com/dgutov/diff-hl/master/screenshot.png
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(diff-hl :fetcher github :repo "dgutov/diff-hl"))
 (global-diff-hl-mode)
 
 (defadvice git-commit-commit (after git-commit-commit-after activate)
@@ -1025,6 +881,7 @@ Being in a dired buffer it is possible to make the buffer writable and thus rena
 I often use =dired-jump= (mapped to =C-h C-d=) which jumps to Dired buffer corresponding to current buffer.
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(dired+ :fetcher wiki))
 (setq dired-auto-revert-buffer t)
 (toggle-diredp-find-file-reuse-dir 1)
 (setq diredp-hide-details-initially-flag nil)
@@ -1040,6 +897,11 @@ Elpy makes setting up a great Python IDE a breeze. It's written by [[http://www.
 Github: https://github.com/jorgenschaefer/elpy
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(elpy 
+          :fetcher github 
+          :repo jorgenschaefer/elpy 
+          :branch release 
+          :files (elpy.el elpy-refactor.el elpy-pkg.el.in snippets)))
 (elpy-enable)
 (delq 'flymake-mode elpy-default-minor-modes)
 #+END_SRC
@@ -1051,6 +913,7 @@ I'm using =flycheck= so please don't use =flymake= (which is old and bugly).
 Flash some lights when evaluating expressions. See the EmacsWiki for some more info: http://www.emacswiki.org/emacs/EvalSexpFu
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(eval-sexp-fu :fetcher wiki :files ("eval-sexp-fu.el")))
 (require 'eval-sexp-fu)
 (setq eval-sexp-fu-flash-duration 0.4)
 (turn-on-eval-sexp-fu-flash-mode)
@@ -1071,6 +934,7 @@ I tried several IRC clients for Emacs but ERC is still my favorite.
 EmacsWiki: http://www.emacswiki.org/emacs/ERC
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(erc-hl-nicks :fetcher github :repo leathekd/erc-hl-nicks))
 (add-hook 'erc-mode-hook (lambda ()
                            (erc-truncate-mode t)
                            (erc-fill-disable)
@@ -1140,6 +1004,12 @@ Using [[https://startpage.com][startpage.com]] mobile view here as default searc
     (eww arg)))
 #+END_SRC
 
+*** expand-region
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(expand-region :repo magnars/expand-region.el :fetcher github))
+#+END_SRC
+
 *** fasd
 
 #+BEGIN_QUOTE
@@ -1155,6 +1025,7 @@ The =global-fasd-mode= was written by myself. It's purpose is to make the quick 
 Github: https://github.com/steckerhalter/emacs-fasd
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(fasd :repo steckerhalter/emacs-fasd :fetcher github))
 (global-fasd-mode 1)
 #+END_SRC
 
@@ -1168,6 +1039,7 @@ A distinguishing feature of this library is that it tracks the urgency of each n
 =fixmee= was written by Roland Walker and lives on Github: https://github.com/rolandwalker/fixmee
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(fixmee :repo rolandwalker/fixmee :fetcher github))
 (global-fixmee-mode 1)
 #+END_SRC
 
@@ -1187,6 +1059,7 @@ Github: https://github.com/flycheck/flycheck
 https://raw.github.com/flycheck/flycheck/master/doc/images/screenshot.png
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(flycheck :repo flycheck/flycheck :fetcher github))
 (add-hook 'php-mode-hook 'flycheck-mode)
 (add-hook 'sh-mode-hook 'flycheck-mode)
 (add-hook 'json-mode-hook 'flycheck-mode)
@@ -1213,6 +1086,7 @@ http://i.imgur.com/n3EweV3.png
 Currently it is used by [[https://github.com/bbatsov/projectile][Projectile]] in my config. I quite like Grizzl. It offers some benefits for when entries are longer. For most cases =IDO= is better suited though.
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(grizzl :repo d11wtq/grizzl :fetcher github))
 (setq *grizzl-read-max-results* 30)
 #+END_SRC
 
@@ -1223,6 +1097,7 @@ I would like to see more than just the default results of 10.
 Github: https://github.com/haskell/haskell-mode
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(haskell-mode :repo haskell/haskell-mode :fetcher github :files (*.el haskell-mode.texi NEWS logo.svg)))
 (require 'haskell-mode)
 (setq haskell-indent-thenelse 3)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
@@ -1244,6 +1119,11 @@ The Helm source code can be found [[https://github.com/emacs-helm/helm][at Githu
 You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm Wiki]] for detailed instructions on how Helm works.
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(helm :repo emacs-helm/helm :fetcher github :files (*.el emacs-helm.sh)))
+(quelpa '(helm-descbinds :repo emacs-helm/helm-descbinds :fetcher github))
+(quelpa '(helm-gtags :repo syohex/emacs-helm-gtags :fetcher github :files (helm-gtags.el)))
+(quelpa '(helm-git :repo maio/helm-git :fetcher github))
+(quelpa '(helm-projectile :repo bbatsov/projectile :fetcher github :files (helm-projectile.el)))
 (require 'helm-config)
 (setq helm-mode-handle-completion-in-region nil) ; don't use helm for `completion-at-point'
 (helm-mode 1)
@@ -1263,6 +1143,12 @@ I'm not using [[https://github.com/emacs-helm/helm/wiki#6-helm-find-files][Helm 
 
 I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also the separate [[https://github.com/emacs-helm/helm-descbinds][Helm Descbinds]] (=C-h b=) to get a quick key bindings overview.
 
+*** helm-google
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(helm-google :fetcher github :repo "steckerhalter/helm-google"))
+#+END_SRC
+
 *** helm-swoop
 
 =helm-swoop= is a great Helm powered buffer search/occur interface:
@@ -1274,6 +1160,7 @@ https://raw.github.com/ShingoFukuyama/images/master/helm-multi-swoop.gif
 Github: https://github.com/ShingoFukuyama/helm-swoop
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(helm-swoop :repo ShingoFukuyama/helm-swoop :fetcher github))
 (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
 #+END_SRC
 
@@ -1291,6 +1178,7 @@ Github: https://github.com/nschum/highlight-symbol.el
 http://nschum.de/src/emacs/highlight-symbol/highlight-symbol.png
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(highlight-symbol :fetcher github :repo nschum/highlight-symbol.el))
 (setq highlight-symbol-on-navigation-p t)
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 #+END_SRC
@@ -1319,6 +1207,7 @@ Use =C-j= if you want to create a file with what you have entered (and not the m
       ido-use-filename-at-point 'guess
       )
 (ido-mode 1)
+(quelpa '(flx-ido :repo lewang/flx :fetcher github :files (flx-ido.el)))
 (flx-ido-mode 1)
 (setq ido-use-faces nil)
 #+END_SRC
@@ -1336,6 +1225,7 @@ Iedit allows you to edit one occurrence of some text in a buffer (possibly narro
 Github: https://github.com/victorhge/iedit
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(iedit :repo victorhge/iedit :fetcher github))
 (require 'iedit)
 (setq iedit-unmatched-lines-invisible-default t)
 #+END_SRC
@@ -1365,6 +1255,7 @@ Improved JavaScript editing mode for GNU Emacs
 Github: https://github.com/mooz/js2-mode
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(js2-mode :repo mooz/js2-mode :fetcher github))
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (add-hook 'js2-mode-hook 'flycheck-mode)
 #+END_SRC
@@ -1379,6 +1270,7 @@ Extends the builtin js-mode to add better syntax highlighting for JSON.
 Github: https://github.com/joshwnj/json-mode
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(json-mode :fetcher github :repo joshwnj/json-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 #+END_SRC
 
@@ -1409,7 +1301,9 @@ I have bound =magit-status= to =C-c g= and =magit-log= to =C-c l=.
 See the [[http://magit.github.io/magit/magit.html][Magit manual]] for more information.
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(magit :fetcher github :repo magit/magit :files (magit.el magit-bisect.el magit-blame.el magit-key-mode.el magit-popup.el magit-wip.el magit.texi AUTHORS.md README.md)))
 (when (fboundp 'file-notify-add-watch)
+  (quelpa '(magit-filenotify :fetcher github :repo "magit/magit-filenotify"))
   (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
 (setq magit-save-some-buffers nil) ;don't ask to save buffers
 (setq magit-set-upstream-on-push t) ;ask to set upstream
@@ -1426,11 +1320,12 @@ When Emacs has been compiled with inotiy support...
 
 ...the function =file-notify-add-watch= is bound and we add =magit-filenotify-mode= to the hook so that file updates get reflected automatically in magit status.
 
-*** markdown
+*** markdown-mode
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(quelpa '(markdown-mode :url "git://jblevins.org/git/markdown-mode.git" :fetcher git))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
 #+END_SRC
 
 Enable markdown-mode when the file suffixes match.
@@ -1448,6 +1343,7 @@ Adds a button to the package info page to visit the repository homepage.
 Allows to move the current line or region up/down. The source code is on the Wiki: http://www.emacswiki.org/emacs/move-text.el
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(move-text :fetcher wiki))
 (require 'move-text)
 #+END_SRC
 
@@ -1506,6 +1402,7 @@ A package for creating and managing multiple terminal buffers in Emacs
 The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki]]
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(multi-term :fetcher wiki))
 (setq multi-term-dedicated-select-after-open-p t) ;select the buffer!
 
 (defun my-term-toggle-char-line-mode ()
@@ -1534,13 +1431,27 @@ The source code is on [[http://www.emacswiki.org/emacs//multi-term.el][EmacsWiki
 
 I'd like to have the terminal respect the default keys of the shell as much as possible hence I remap the non-standard bindings to the defaults. Furthermore I want to switch between Emacs-style navigation (term-line-mode) and raw terminal input (term-char-mode) quickly.
 
+*** multiple-cursors
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(multiple-cursors :fetcher github :repo magnars/multiple-cursors.el))
+#+END_SRC
+
 *** nrepl-eval-sexp-fu
 
 Flashes the evaluated expression (visual feedback)
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(nrepl-eval-sexp-fu :fetcher github :repo samaaron/nrepl-eval-sexp-fu))
 (require 'nrepl-eval-sexp-fu)
 (setq nrepl-eval-sexp-fu-flash-duration 0.4)
+#+END_SRC
+
+*** ob-php
+#+BEGIN_SRC emacs-lisp :tangle no
+(quelpa '(ob-php :fetcher github :repo "steckerhalter/ob-php"))
+(add-to-list 'org-babel-load-languages '(php . t))
+(org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
 #+END_SRC
 
 *** org-mode
@@ -1690,6 +1601,7 @@ Don't forget to set =org-mode-blog-publishing-directory= to the desired export l
 **** org-mobile-sync-mode
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(org-mobile-sync :repo steckerhalter/org-mobile-sync :fetcher github))
 (when (boundp 'org-mobile-directory)
   (setq org-mobile-inbox-for-pull (concat org-directory "/notes.org"))
   (org-mobile-sync-mode 1))
@@ -1718,6 +1630,13 @@ The well maintained version of PHP mode by Eric James Michael Ritz or =ejmr=
 Github: https://github.com/ejmr/php-mode
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(geben :fetcher svn :url http://geben-on-emacs.googlecode.com/svn/trunk/))
+(quelpa '(php-align :fetcher github :repo "tetsujin/emacs-php-align"))
+(quelpa '(php-boris :repo tomterl/php-boris :fetcher github))
+(quelpa '(php-boris-minor-mode :fetcher github :repo "steckerhalter/php-boris-minor-mode"))
+(quelpa '(php-eldoc :repo sabof/php-eldoc :fetcher github :files (*.el *.php)))
+(quelpa '(php-mode :repo ejmr/php-mode :fetcher github))
+
 (require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
 (setq php-mode-coding-style "Symfony2")
@@ -1728,9 +1647,6 @@ Github: https://github.com/ejmr/php-mode
     (setq php-manual-path manual)))
 
 (defun setup-php-mode ()
-  (require 'tempo nil t) ;needed by php-documentor
-  (require 'php-documentor nil t)
-  (local-set-key (kbd "C-c p") 'php-documentor-dwim)
   (require 'php-align nil t)
   (php-align-setup)
   (php-eldoc-enable))
@@ -1801,6 +1717,7 @@ Github: https://github.com/bbatsov/projectile
 https://raw.github.com/bbatsov/projectile/master/screenshots/projectile.png
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(projectile :repo bbatsov/projectile :fetcher github :files (projectile.el)))
 (require 'projectile nil t)
 (setq projectile-completion-system 'grizzl)
 #+END_SRC
@@ -1816,6 +1733,12 @@ http://julien.danjou.info/media/images/rainbow-mode/rainbow-mode.png
 Homepage: http://julien.danjou.info/projects/emacs-packages#rainbow-mode
 
 #+BEGIN_SRC emacs-lisp
+(unless (require 'rainbow-mode nil t)
+  (with-temp-buffer
+    (url-insert-file-contents 
+     "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el")
+    (package-install-from-buffer)))
+
 (dolist (hook '(css-mode-hook
                 html-mode-hook
                 js-mode-hook
@@ -1846,6 +1769,7 @@ Code navigation, documentation lookup and completion for Ruby
 Github: https://github.com/dgutov/robe
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(robe :repo dgutov/robe :fetcher github :files (robe*.el lib)))
 (push 'company-robe company-backends)
 (add-hook 'ruby-mode-hook 'robe-mode)
 #+END_SRC
@@ -1886,6 +1810,7 @@ Do different things on repeated keypresses.
 EmacsWiki: http://www.emacswiki.org/emacs/sequential-command.el
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(sequential-command :fetcher wiki :files (sequential-command.el sequential-command-config.el)))
 (require 'sequential-command)
 (define-sequential-command my-beg back-to-indentation beginning-of-line)
 (global-set-key "\C-a" 'my-beg)
@@ -1904,6 +1829,7 @@ An emacs minor mode to easily switch between shell buffers (like with alt+tab)
 Github: https://github.com/DamienCassou/shell-switcher
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(shell-switcher :fetcher github :repo DamienCassou/shell-switcher :files (rswitcher.el shell-switcher.el)))
 (setq shell-switcher-new-shell-function 'shell-switcher-make-ansi-term)
 (setq shell-switcher-mode t)
 (require 'shell-switcher)
@@ -1929,6 +1855,7 @@ javascript:(function) {
 Instructions and the source code can be found [[https://github.com/skeeto/skewer-mode][on Github]].
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(skewer-mode :repo skeeto/skewer-mode :fetcher github :files (*.html *.js *.el)))
 (skewer-setup)
 #+END_SRC
 
@@ -1945,6 +1872,7 @@ It is written by Artur Bruce-Connor. The default Emacs mode-line has some shortc
 Github: https://github.com/Bruce-Connor/smart-mode-line
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(smart-mode-line :repo Bruce-Connor/smart-mode-line :fetcher github))
 (setq sml/vc-mode-show-backend t)
 (sml/setup)
 (sml/apply-theme 'respectful)
@@ -1961,6 +1889,7 @@ Smartparens is minor mode for Emacs that deals with parens pairs and tries to be
 Github: https://github.com/Fuco1/smartparens
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(smartparens :fetcher github :repo Fuco1/smartparens))
 (require 'smartparens-config)
 (smartparens-global-mode t)
 (sp-use-smartparens-bindings)
@@ -2014,6 +1943,7 @@ Emacs minor mode that allows viewing, editing, searching and comparing large fil
 Github: https://github.com/m00natic/vlfi
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(vlf :repo m00natic/vlfi :fetcher github :old-names (vlfi)))
 (setq vlf-application 'dont-ask)        ; just do it
 (setq vlf-batch-size 8192)              ; a bit more text per batch please
 (require 'vlf-integrate)                ; just do it for real
@@ -2032,6 +1962,7 @@ Homepage: http://web-mode.org/
 Github: https://github.com/fxbois/web-mode
 
 #+BEGIN_SRC emacs-lisp
+(quelpa '(web-mode :repo fxbois/web-mode :fetcher github))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 #+END_SRC
 
