@@ -105,6 +105,7 @@ Here we create the directory =~/.emacs.d/elisp= if it does not exist, add it to 
 
 #+BEGIN_SRC emacs-lisp
 (setq package-archives '(("org" . "http://orgmode.org/elpa/")))
+(package-refresh-contents)
 #+END_SRC
 
 To get the latest org-mode I set =package-archives= to contain [[http://orgmode.org/][org-mode.org]] archive. The built-in GNU ELPA is overwritten with tha because it often timed out and annoyed me.
@@ -796,8 +797,8 @@ This minor mode allows you to toggle a window's "dedicated" flag. When a window 
 Github: https://github.com/emacsmirror/dedicated
 
 #+BEGIN_SRC emacs-lisp
-(require 'dedicated)
 (quelpa '(dedicated :fetcher github :repo emacsmirror/dedicated))
+(require 'dedicated)
 #+END_SRC
 
 I'm quite fond of =dedicated=. Now when a buffer is supposed to be left alone, I can dedicate it!
@@ -815,7 +816,7 @@ Homepage: http://jblevins.org/projects/deft/
 http://jblevins.org/projects/deft/browser.png
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(deft :url git://jblevins.org/git/deft.git :fetcher git))
+(quelpa '(deft :url "git://jblevins.org/git/deft.git" :fetcher git))
 (setq
  deft-extension "org"
  deft-directory "~/deft"
@@ -892,11 +893,11 @@ Elpy makes setting up a great Python IDE a breeze. It's written by [[http://www.
 Github: https://github.com/jorgenschaefer/elpy
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(elpy 
-          :fetcher github 
-          :repo jorgenschaefer/elpy 
-          :branch release 
-          :files (elpy.el elpy-refactor.el elpy-pkg.el.in snippets)))
+(quelpa '(elpy
+          :fetcher github
+          :repo jorgenschaefer/elpy
+          :branch "release"
+          :files ("elpy.el" "elpy-refactor.el" "elpy-pkg.el.in" "snippets")))
 (elpy-enable)
 (delq 'flymake-mode elpy-default-minor-modes)
 #+END_SRC
@@ -1033,7 +1034,7 @@ A distinguishing feature of this library is that it tracks the urgency of each n
 
 =fixmee= was written by Roland Walker and lives on Github: https://github.com/rolandwalker/fixmee
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (quelpa '(fixmee :repo rolandwalker/fixmee :fetcher github))
 (global-fixmee-mode 1)
 #+END_SRC
@@ -1092,7 +1093,7 @@ I would like to see more than just the default results of 10.
 Github: https://github.com/haskell/haskell-mode
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(haskell-mode :repo haskell/haskell-mode :fetcher github :files (*.el haskell-mode.texi NEWS logo.svg)))
+(quelpa '(haskell-mode :repo haskell/haskell-mode :fetcher github :files ("*.el" "haskell-mode.texi" "NEWS" "logo.svg")))
 (require 'haskell-mode)
 (setq haskell-indent-thenelse 3)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
@@ -1114,11 +1115,10 @@ The Helm source code can be found [[https://github.com/emacs-helm/helm][at Githu
 You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm Wiki]] for detailed instructions on how Helm works.
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(helm :repo emacs-helm/helm :fetcher github :files (*.el emacs-helm.sh)))
+(quelpa '(helm :repo emacs-helm/helm :fetcher github :files ("*.el" "emacs-helm.sh")))
 (quelpa '(helm-descbinds :repo emacs-helm/helm-descbinds :fetcher github))
-(quelpa '(helm-gtags :repo syohex/emacs-helm-gtags :fetcher github :files (helm-gtags.el)))
-(quelpa '(helm-git :repo maio/helm-git :fetcher github))
-(quelpa '(helm-projectile :repo bbatsov/projectile :fetcher github :files (helm-projectile.el)))
+(quelpa '(helm-gtags :repo syohex/emacs-helm-gtags :fetcher github :files ("helm-gtags.el")))
+(quelpa '(helm-projectile :repo bbatsov/projectile :fetcher github :files ("helm-projectile.el")))
 (require 'helm-config)
 (setq helm-mode-handle-completion-in-region nil) ; don't use helm for `completion-at-point'
 (helm-mode 1)
@@ -1131,7 +1131,6 @@ You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm W
 (setq helm-buffer-details-flag nil)
 (add-to-list 'helm-completing-read-handlers-alist '(org-refile)) ; helm-mode does not do org-refile well
 (add-to-list 'helm-completing-read-handlers-alist '(org-agenda-refile)) ; same goes for org-agenda-refile
-(require 'helm-git)
 #+END_SRC
 
 I'm not using [[https://github.com/emacs-helm/helm/wiki#6-helm-find-files][Helm Find Files]] to browse files anymore. I tried using it but gave up after a while. I found it to be more cumbersome than [[*ido-mode][ido-mode]]. But in general I really like to have Helm around especially for buffer-switching. But it is also very useful to look up Elisp variable/function documentation and for finding stuff in the Info Manuals (e.g. =helm-info-elisp= or =helm-info-emacs=).
@@ -1202,7 +1201,7 @@ Use =C-j= if you want to create a file with what you have entered (and not the m
       ido-use-filename-at-point 'guess
       )
 (ido-mode 1)
-(quelpa '(flx-ido :repo lewang/flx :fetcher github :files (flx-ido.el)))
+(quelpa '(flx-ido :repo lewang/flx :fetcher github :files ("flx-ido.el")))
 (flx-ido-mode 1)
 (setq ido-use-faces nil)
 #+END_SRC
@@ -1296,7 +1295,11 @@ I have bound =magit-status= to =C-c g= and =magit-log= to =C-c l=.
 See the [[http://magit.github.io/magit/magit.html][Magit manual]] for more information.
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(magit :fetcher github :repo magit/magit :files (magit.el magit-bisect.el magit-blame.el magit-key-mode.el magit-popup.el magit-wip.el magit.texi AUTHORS.md README.md)))
+(quelpa '(magit :fetcher github
+                :repo magit/magit
+                :files ("magit.el" "magit-bisect.el" "magit-blame.el" "magit-key-mode.el" "magit-popup.el" "magit-wip.el" "magit.texi" "AUTHORS.md" "README.md")))
+(quelpa '(helm-git :repo maio/helm-git :fetcher github)) ; helm-git needs magit
+(require 'helm-git)
 (when (fboundp 'file-notify-add-watch)
   (quelpa '(magit-filenotify :fetcher github :repo "magit/magit-filenotify"))
   (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
@@ -1324,14 +1327,6 @@ When Emacs has been compiled with inotiy support...
 #+END_SRC
 
 Enable markdown-mode when the file suffixes match.
-
-*** melpa-upstream-visit
-
-Adds a button to the package info page to visit the repository homepage.
-
-#+BEGIN_SRC emacs-lisp
-(require 'melpa-upstream-visit)
-#+END_SRC
 
 *** move-text
 
@@ -1436,7 +1431,7 @@ I'd like to have the terminal respect the default keys of the shell as much as p
 
 Flashes the evaluated expression (visual feedback)
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (quelpa '(nrepl-eval-sexp-fu :fetcher github :repo samaaron/nrepl-eval-sexp-fu))
 (require 'nrepl-eval-sexp-fu)
 (setq nrepl-eval-sexp-fu-flash-duration 0.4)
@@ -1625,11 +1620,11 @@ The well maintained version of PHP mode by Eric James Michael Ritz or =ejmr=
 Github: https://github.com/ejmr/php-mode
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(geben :fetcher svn :url http://geben-on-emacs.googlecode.com/svn/trunk/))
+(quelpa '(geben :fetcher svn :url "http://geben-on-emacs.googlecode.com/svn/trunk/"))
 (quelpa '(php-align :fetcher github :repo "tetsujin/emacs-php-align"))
 (quelpa '(php-boris :repo tomterl/php-boris :fetcher github))
 (quelpa '(php-boris-minor-mode :fetcher github :repo "steckerhalter/php-boris-minor-mode"))
-(quelpa '(php-eldoc :repo sabof/php-eldoc :fetcher github :files (*.el *.php)))
+(quelpa '(php-eldoc :repo sabof/php-eldoc :fetcher github :files ("*.el" "*.php")))
 (quelpa '(php-mode :repo ejmr/php-mode :fetcher github))
 
 (require 'php-mode)
@@ -1712,7 +1707,7 @@ Github: https://github.com/bbatsov/projectile
 https://raw.github.com/bbatsov/projectile/master/screenshots/projectile.png
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(projectile :repo bbatsov/projectile :fetcher github :files (projectile.el)))
+(quelpa '(projectile :repo bbatsov/projectile :fetcher github :files ("projectile.el")))
 (require 'projectile nil t)
 (setq projectile-completion-system 'grizzl)
 #+END_SRC
@@ -1730,7 +1725,7 @@ Homepage: http://julien.danjou.info/projects/emacs-packages#rainbow-mode
 #+BEGIN_SRC emacs-lisp
 (unless (require 'rainbow-mode nil t)
   (with-temp-buffer
-    (url-insert-file-contents 
+    (url-insert-file-contents
      "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el")
     (package-install-from-buffer)))
 
@@ -1764,7 +1759,7 @@ Code navigation, documentation lookup and completion for Ruby
 Github: https://github.com/dgutov/robe
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(robe :repo dgutov/robe :fetcher github :files (robe*.el lib)))
+(quelpa '(robe :repo dgutov/robe :fetcher github :files ("robe*.el" "lib")))
 (push 'company-robe company-backends)
 (add-hook 'ruby-mode-hook 'robe-mode)
 #+END_SRC
@@ -1805,7 +1800,7 @@ Do different things on repeated keypresses.
 EmacsWiki: http://www.emacswiki.org/emacs/sequential-command.el
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(sequential-command :fetcher wiki :files (sequential-command.el sequential-command-config.el)))
+(quelpa '(sequential-command :fetcher wiki :files ("sequential-command.el" "sequential-command-config.el")))
 (require 'sequential-command)
 (define-sequential-command my-beg back-to-indentation beginning-of-line)
 (global-set-key "\C-a" 'my-beg)
@@ -1824,7 +1819,7 @@ An emacs minor mode to easily switch between shell buffers (like with alt+tab)
 Github: https://github.com/DamienCassou/shell-switcher
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(shell-switcher :fetcher github :repo DamienCassou/shell-switcher :files (rswitcher.el shell-switcher.el)))
+(quelpa '(shell-switcher :fetcher github :repo DamienCassou/shell-switcher :files ("rswitcher.el" "shell-switcher.el")))
 (setq shell-switcher-new-shell-function 'shell-switcher-make-ansi-term)
 (setq shell-switcher-mode t)
 (require 'shell-switcher)
@@ -1850,7 +1845,7 @@ javascript:(function) {
 Instructions and the source code can be found [[https://github.com/skeeto/skewer-mode][on Github]].
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(skewer-mode :repo skeeto/skewer-mode :fetcher github :files (*.html *.js *.el)))
+(quelpa '(skewer-mode :repo skeeto/skewer-mode :fetcher github :files ("*.html" "*.js" "*.el")))
 (skewer-setup)
 #+END_SRC
 
