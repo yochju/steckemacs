@@ -675,27 +675,6 @@ When I do LaTeX I want to have a sane config. I install =auctex= only when I rea
 (quelpa '(apache-mode :fetcher wiki))
 #+END_SRC
 
-*** auto-save-buffers-enhanced
-
-#+BEGIN_QUOTE
-Enables auto-saving along with VCS
-#+END_QUOTE
-
-I forgot that I even have this. I hope it doesn't blow me Emacs up.
-
-Github: https://github.com/kentaro/auto-save-buffers-enhanced
-
-#+BEGIN_SRC emacs-lisp
-(quelpa '(auto-save-buffers-enhanced :repo "kentaro/auto-save-buffers-enhanced" :fetcher github))
-(require 'auto-save-buffers-enhanced)
-(auto-save-buffers-enhanced-include-only-checkout-path t)
-(auto-save-buffers-enhanced t)
-(setq auto-save-buffers-enhanced-interval 1.5)
-(setq auto-save-buffers-enhanced-quiet-save-p t)
-#+END_SRC
-
-So yeah, looks like the defaults pretty much. It can't hurt.
-
 *** back-button
 
 #+BEGIN_QUOTE
@@ -1431,6 +1410,8 @@ I'd like to have the terminal respect the default keys of the shell as much as p
 
 Flashes the evaluated expression (visual feedback)
 
+**** TODO fix bug to enable: https://github.com/quelpa/quelpa/issues/11
+
 #+BEGIN_SRC emacs-lisp :tangle no
 (quelpa '(nrepl-eval-sexp-fu :fetcher github :repo samaaron/nrepl-eval-sexp-fu))
 (require 'nrepl-eval-sexp-fu)
@@ -1438,7 +1419,7 @@ Flashes the evaluated expression (visual feedback)
 #+END_SRC
 
 *** ob-php
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
 (quelpa '(ob-php :fetcher github :repo "steckerhalter/ob-php"))
 (add-to-list 'org-babel-load-languages '(php . t))
 (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
