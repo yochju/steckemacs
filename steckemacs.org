@@ -101,14 +101,26 @@ The variable =load-path= lists all the directories where Emacs should look for E
 
 Here we create the directory =~/.emacs.d/elisp= if it does not exist, add it to the =load-path=. Doing that any =.el= or =.elc= files in this directory can be required from *emacs*.
 
-** Packages
+** Package Archives
 
 #+BEGIN_SRC emacs-lisp
 (setq package-archives '(("org" . "http://orgmode.org/elpa/")))
 (package-refresh-contents)
 #+END_SRC
 
-To get the latest org-mode I set =package-archives= to contain [[http://orgmode.org/][org-mode.org]] archive. The built-in GNU ELPA is overwritten with tha because it often timed out and annoyed me.
+To get the latest org-mode I set =package-archives= to contain [[http://orgmode.org/][org-mode.org]] archive. The built-in GNU ELPA is overwritten with this because it often timed out and annoyed me.
+
+** Quelpa
+
+#+BEGIN_QUOTE
+Quelpa is your personal local Emacs Lisp Package Archive (ELPA) with packages built on-the-fly directly from source.
+#+END_QUOTE
+
+All the packaging solutions that existed annoyed me so I wrote my own and called it =quelpa=.
+
+Given a recipe in [[https://github.com/milkypostman/melpa#recipe-format][melpa's format]], it gets the package source code, builds an elpa compatible package and installs that to the local package archive. Packages can be managed with =list-packages=.
+
+Github: https://github.com/quelpa/quelpa
 
 #+BEGIN_SRC emacs-lisp
 (unless (require 'quelpa nil t)
@@ -116,6 +128,8 @@ To get the latest org-mode I set =package-archives= to contain [[http://orgmode.
     (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
     (eval-buffer)))
 #+END_SRC
+
+Bootstrapping =quelpa= here. The =quelpa= command is used throughout this config to install all the packages. The only other package-archive I tolerate is the one from org-mode :)
 
 ** Key Bindings
 
