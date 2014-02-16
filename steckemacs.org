@@ -879,6 +879,19 @@ I often use =dired-jump= (mapped to =C-h C-d=) which jumps to Dired buffer corre
 
 It seems that both flags are necessary to make dired+ not hide the details. =toggle-diredp-find-file-reuse-dir= will make sure that there is only one buffer kept around for =dired=. Normally =dired= creates a buffer for every opened directory.
 
+*** discover-my-major
+#+BEGIN_QUOTE
+Discover key bindings and their meaning for the current Emacs major mode.
+
+The command is inspired by discover.el and also uses the makey library. I thought, "Hey! Why not parse the information about the major mode bindings somehow and display that like discover.el does..."
+#+END_QUOTE
+
+Github: https://github.com/steckerhalter/discover-my-major
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(discover-my-major :fetcher github :repo "steckerhalter/discover-my-major"))
+#+END_SRC
+
 *** elpy
 
 Elpy makes setting up a great Python IDE a breeze. It's written by [[http://www.jorgenschaefer.de/][Jorgen Schäfer]] also known as =forcer=.
