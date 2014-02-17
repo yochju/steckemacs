@@ -14,7 +14,7 @@
 
 * Usage
 
-*steckemacs* is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very useful and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
+*steckemacs* is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very usable and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are retrieved from the Emacs package repositories on the internet on the first startup.
 
 The source code is hosted on Github: [[https://github.com/steckerhalter/steckemacs]]
 
