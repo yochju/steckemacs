@@ -1827,7 +1827,7 @@ An emacs minor mode to easily switch between shell buffers (like with alt+tab)
 Github: https://github.com/DamienCassou/shell-switcher
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(shell-switcher :fetcher github :repo steckerhalter/shell-switcher :files ("rswitcher.el" "shell-switcher.el")))
+(quelpa '(shell-switcher :fetcher github :repo DamienCassou/shell-switcher :files ("rswitcher.el" "shell-switcher.el")))
 (setq shell-switcher-new-shell-function 'shell-switcher-make-ansi-term)
 (setq shell-switcher-mode t)
 (require 'shell-switcher)
