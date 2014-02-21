@@ -1465,6 +1465,8 @@ Homepage: http://orgmode.org/
 **** General settings
 
 #+BEGIN_SRC emacs-lisp
+;; html fontification of src blocks needs `htmlize'
+(quelpa '(htmlize :url "http://fly.srk.fer.hr/~hniksic/emacs/htmlize.git" :fetcher git))
 (require 'org)
 (require 'ox-org)
 (require 'ox-md)
