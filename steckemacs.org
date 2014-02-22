@@ -128,6 +128,7 @@ Github: https://github.com/quelpa/quelpa
   (with-temp-buffer
     (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
     (eval-buffer)))
+(setq quelpa-upgrade-p t)
 #+END_SRC
 
 Bootstrapping =quelpa= here. The =quelpa= command is used throughout this config to install all the packages. The only other package-archive I tolerate is the one from org-mode :)
