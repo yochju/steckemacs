@@ -202,8 +202,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-p           | General   | Open file                                                 | 'find-file                                                  |
 | cg                | General   | Customize group                                           | 'customize-group                                            |
 | C-c m             | Interface | Toggle the menu bar                                       | 'menu-bar-mode                                              |
-| C--               | Interface | Decrease the font size                                    | 'text-scale-decrease                                        |
-| C-=               | Interface | Increase the font size                                    | 'text-scale-increase                                        |
 | <C-mouse-5>       | Interface | Decrease the font size                                    | 'text-scale-decrease                                        |
 | <C-mouse-4>       | Interface | Increase the font size                                    | 'text-scale-increase                                        |
 | ln                | Interface | Show/hide the line numbers                                | 'linum-mode                                                 |
@@ -1894,12 +1892,41 @@ Github: https://github.com/Fuco1/smartparens
 (quelpa '(smartparens :fetcher github :repo Fuco1/smartparens))
 (require 'smartparens-config)
 (smartparens-global-mode t)
-(sp-use-smartparens-bindings)
 ;; "fix"" highlight issue in scratch buffer
 (custom-set-faces '(sp-pair-overlay-face ((t ()))))
+(define-key sp-keymap (kbd "C--") 'sp-forward-sexp)
+(define-key sp-keymap (kbd "C-=") 'sp-backward-sexp)
+(define-key sp-keymap (kbd "C-.") 'sp-down-sexp)
+(define-key sp-keymap (kbd "C-,") 'sp-backward-down-sexp)
+(define-key sp-keymap (kbd "C-S-a") 'sp-beginning-of-sexp)
+(define-key sp-keymap (kbd "C-S-e") 'sp-end-of-sexp)
+(define-key sp-keymap (kbd "C-M-e") 'sp-up-sexp)
+(define-key sp-keymap (kbd "C-M-u") 'sp-backward-up-sexp)
+(define-key sp-keymap (kbd "C-M-n") 'sp-next-sexp)
+(define-key sp-keymap (kbd "C-M-p") 'sp-previous-sexp)
+(define-key sp-keymap (kbd "C-S-k") 'sp-kill-sexp)
+(define-key sp-keymap (kbd "C-S-w") 'sp-copy-sexp)
+(define-key sp-keymap (kbd "M-S-<backspace>") 'sp-unwrap-sexp)
+(define-key sp-keymap (kbd "M-<backspace>") 'sp-backward-unwrap-sexp)
+(define-key sp-keymap (kbd "C-)") 'sp-forward-slurp-sexp)
+(define-key sp-keymap (kbd "C-}") 'sp-forward-barf-sexp)
+(define-key sp-keymap (kbd "C-(") 'sp-backward-slurp-sexp)
+(define-key sp-keymap (kbd "C-{") 'sp-backward-barf-sexp)
+(define-key sp-keymap (kbd "M-D") 'sp-splice-sexp)
+(define-key sp-keymap (kbd "C-S-<backspace>") 'sp-splice-sexp-killing-forward)
+(define-key sp-keymap (kbd "C-M-<backspace>") 'sp-splice-sexp-killing-backward)
+(define-key sp-keymap (kbd "C-S-f") 'sp-select-next-thing)
+(define-key sp-keymap (kbd "C-S-b") 'sp-select-previous-thing)
+(define-key sp-keymap (kbd "C-]") 'sp-select-next-thing-exchange)
+(define-key sp-keymap (kbd "C-\\") 'sp-select-previous-thing-exchange)
+(define-key sp-keymap (kbd "C-M-]") 'sp-select-next-thing)
+(define-key sp-keymap (kbd "M-F") 'sp-forward-symbol)
+(define-key sp-keymap (kbd "M-B") 'sp-backward-symbol)
+(define-key sp-keymap (kbd "M-S") 'sp-split-sexp)
+(define-key sp-keymap (kbd "M-r") 'sp-splice-sexp-killing-around)
 #+END_SRC
 
-I have finally started learning the =smartparens-bindings=. I also discovered a very interesting alternative called =lispy= (https://github.com/abo-abo/lispy). Let's see who can win me over :)
+I have finally started learning the =smartparens-bindings= and already customized the =sp-smartparens-bindings= a bit.
 
 *** sgml
 
