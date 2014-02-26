@@ -113,7 +113,7 @@ To get the latest org-mode I set =package-archives= to contain [[http://orgmode.
 ** Quelpa
 
 #+BEGIN_QUOTE
-Quelpa is your personal local Emacs Lisp Package Archive (ELPA) with packages built on-the-fly directly from source.
+Build and install your Emacs Lisp packages on-the-fly directly from source
 #+END_QUOTE
 
 All the packaging solutions that existed annoyed me so I wrote my own and called it =quelpa=.
