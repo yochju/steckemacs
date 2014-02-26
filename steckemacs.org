@@ -118,7 +118,7 @@ Quelpa is your personal local Emacs Lisp Package Archive (ELPA) with packages bu
 
 All the packaging solutions that existed annoyed me so I wrote my own and called it =quelpa=.
 
-Given a recipe in [[https://github.com/milkypostman/melpa#recipe-format][melpa's format]], it gets the package source code, builds an elpa compatible package and installs that to the local package archive. Packages can be managed with =list-packages=.
+Given a recipe in [[https://github.com/milkypostman/melpa#recipe-format][melpa's format]], it gets the package source code, builds an elpa compatible package and installs that. Packages can be managed in the usual way with =list-packages=.
 
 Github: https://github.com/quelpa/quelpa
 
@@ -128,7 +128,6 @@ Github: https://github.com/quelpa/quelpa
   (with-temp-buffer
     (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
     (eval-buffer)))
-(setq quelpa-upgrade-p t)
 #+END_SRC
 
 Bootstrapping =quelpa= here. The =quelpa= command is used throughout this config to install all the packages. The only other package-archive I tolerate is the one from org-mode :)
