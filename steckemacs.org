@@ -1580,6 +1580,7 @@ Homepage: http://orgmode.org/
 (setq org-clock-idle-time 15)
 (setq org-clock-in-resume t)
 (setq org-clock-persist t)
+(setq org-clock-persist-query-resume nil)
 (org-clock-persistence-insinuate)
 (setq org-clock-frame-title-format (append '((t org-mode-line-string)) '(" ") frame-title-format))
 (setq org-clock-clocked-in-display 'both)
@@ -1648,6 +1649,7 @@ Github: https://github.com/ejmr/php-mode
 (defun setup-php-mode ()
   (require 'php-align nil t)
   (php-align-setup)
+  (set (make-local-variable 'electric-indent-mode) nil)
   (php-eldoc-enable))
 (add-hook 'php-mode-hook 'setup-php-mode)
 #+END_SRC
