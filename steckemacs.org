@@ -1581,6 +1581,8 @@ Homepage: http://orgmode.org/
 (setq org-clock-in-resume t)
 (setq org-clock-persist t)
 (setq org-clock-persist-query-resume nil)
+(when (executable-find "xprintidle")
+  (setq org-clock-x11idle-program-name "xprintidle"))
 (org-clock-persistence-insinuate)
 (setq org-clock-frame-title-format (append '((t org-mode-line-string)) '(" ") frame-title-format))
 (setq org-clock-clocked-in-display 'both)
