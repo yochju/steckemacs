@@ -1928,6 +1928,10 @@ Github: https://github.com/slime/slime
 
 *** term-mode
 
+#+BEGIN_QUOTE
+The =Emacs Terminal Emulator= uses Term mode, which has two input modes.  In line mode, Term basically acts like Shell mode.  In char mode, each character is sent directly to the subshell, except for the Term escape character, normally ‘C-c’.
+#+END_QUOTE
+
 #+BEGIN_SRC emacs-lisp
 (defun my-term-toggle-char-line-mode ()
   "Toggle between `term-char-mode' and `term-line-mode'."
