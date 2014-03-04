@@ -294,6 +294,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-<return>    | Open      | Emacs Web Wowser (internal Webbrowser)                    | 'eww                                                        |
 | C-h M-RET         | Open      | Emacs Web Wowser do what I mean                           | 'my-eww-browse-dwim                                         |
 | C-h C--           | Open      | Helm: Google                                              | 'helm-google                                                |
+| C-h C-4           | Open      | Google translate                                          | 'google-translate-query-translate                           |
 | C-h o             | Org       | Helm: Org info manual                                     | 'helm-info-org                                              |
 | C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))              |
 | C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
@@ -871,6 +872,7 @@ I often use =dired-jump= (mapped to =C-h C-d=) which jumps to Dired buffer corre
 #+BEGIN_SRC emacs-lisp
 (quelpa '(dired+ :fetcher wiki))
 (setq dired-auto-revert-buffer t)
+(setq wdired-allow-to-change-permissions t) ; allow changing of file permissions
 (toggle-diredp-find-file-reuse-dir 1)
 (setq diredp-hide-details-initially-flag nil)
 (setq diredp-hide-details-propagate-flag nil)
@@ -1093,6 +1095,12 @@ Currently it is used by [[https://github.com/bbatsov/projectile][Projectile]] in
 
 I would like to see more than just the default results of 10.
 
+*** google-translate
+#+BEGIN_SRC emacs-lisp
+(quelpa '(google-translate :fetcher github :repo "atykhonov/google-translate"))
+(setq google-translate-default-source-language "de")
+(setq google-translate-default-target-language "en")
+#+END_SRC
 *** haskell-mode
 
 Github: https://github.com/haskell/haskell-mode
