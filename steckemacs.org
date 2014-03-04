@@ -279,7 +279,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-z           | Find/Grep | Projectile find file                                      | 'projectile-find-file                                       |
 | C-h g             | Find/Grep | Projectile grep                                           | 'projectile-grep                                            |
 | C-h z             | Find/Grep | Projectile ack                                            | 'projectile-ack                                             |
-| M-0               | Find/Grep | Helm find files with Git                                  | 'helm-git-find-files                                        |
 | C-c g             | VCS       | Magit status - manual: http://magit.github.io/magit/      | 'magit-status                                               |
 | C-c l             | VCS       | Magit log                                                 | 'magit-log                                                  |
 | bm                | VCS       | Magit blame mode                                          | 'magit-blame-mode                                           |
