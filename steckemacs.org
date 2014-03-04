@@ -272,6 +272,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-8           | Windows   | Enable/disable dedicated minor-mode for current window    | 'dedicated-mode                                             |
 | vg                | Find/Grep | VC git grep                                               | 'vc-git-grep                                                |
 | C-h C-f           | Find/Grep | Grep find                                                 | 'grep-find                                                  |
+| C-S-h C-S-f       | Find/Grep | Find files in dired                                       | 'find-grep-dired                                            |
 | C-h C-o           | Find/Grep | list matching regexp                                      | 'occur                                                      |
 | C-h C-g           | Find/Grep | Use the ag cli tool to grep project                       | 'ag-project                                                 |
 | C-h C-l           | Find/Grep | Helm locate                                               | 'helm-locate                                                |
