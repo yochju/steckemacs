@@ -734,6 +734,8 @@ I wrote a company-backend for Cider which is living at https://github.com/clojur
 #+BEGIN_SRC emacs-lisp
 (quelpa '(cider :fetcher github :repo clojure-emacs/cider :old-names (nrepl)))
 (setq cider-popup-stacktraces nil)
+(setq cider-repl-popup-stacktraces nil)
+(setq cider-repl-pop-to-buffer-on-connect nil)
 #+END_SRC
 
 Don't popup nasty stacktraces all over the place, please.
