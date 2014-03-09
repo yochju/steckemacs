@@ -705,7 +705,7 @@ https://raw.github.com/rolandwalker/back-button/master/back_button_example.png
 =back-button= is written by Roland Walker. For more information see the [[https://github.com/rolandwalker/back-button][Github page]].
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(back-button :repo rolandwalker/back-button :fetcher github))
+(quelpa '(back-button :repo "rolandwalker/back-button" :fetcher github))
 (setq back-button-local-keystrokes nil) ;don't overwrite C-x SPC binding
 (require 'back-button)
 (back-button-mode 1)
@@ -732,7 +732,7 @@ Github: https://github.com/clojure-emacs/cider
 I wrote a company-backend for Cider which is living at https://github.com/clojure-emacs/company-cider.
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(cider :fetcher github :repo clojure-emacs/cider :old-names (nrepl)))
+(quelpa '(cider :fetcher github :repo "clojure-emacs/cider" :old-names (nrepl)))
 (setq cider-popup-stacktraces nil)
 (setq cider-repl-popup-stacktraces nil)
 (setq cider-repl-pop-to-buffer-on-connect nil)
@@ -752,8 +752,8 @@ It comes with several back-ends such as Elisp, Clang, Semantic, Eclim, Ropemacs,
 http://company-mode.github.io/images/company-semantic.png
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(company :repo company-mode/company-mode :fetcher github))
-(quelpa '(company-cider :fetcher github :repo clojure-emacs/company-cider))
+(quelpa '(company :repo "company-mode/company-mode" :fetcher github))
+(quelpa '(company-cider :fetcher github :repo "clojure-emacs/company-cider"))
 (require 'company)
 (setq company-idle-delay 0.3)
 (setq company-tooltip-limit 20)
@@ -792,7 +792,7 @@ This minor mode allows you to toggle a window's "dedicated" flag. When a window 
 Github: https://github.com/emacsmirror/dedicated
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(dedicated :fetcher github :repo emacsmirror/dedicated))
+(quelpa '(dedicated :fetcher github :repo "emacsmirror/dedicated"))
 (require 'dedicated)
 #+END_SRC
 
@@ -904,7 +904,7 @@ Github: https://github.com/jorgenschaefer/elpy
 #+BEGIN_SRC emacs-lisp
 (quelpa '(elpy
           :fetcher github
-          :repo jorgenschaefer/elpy
+          :repo "jorgenschaefer/elpy"
           :branch "release"
           :files ("elpy.el" "elpy-refactor.el" "elpy-pkg.el.in" "snippets")))
 (elpy-enable)
@@ -939,7 +939,7 @@ I tried several IRC clients for Emacs but ERC is still my favorite.
 EmacsWiki: http://www.emacswiki.org/emacs/ERC
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(erc-hl-nicks :fetcher github :repo leathekd/erc-hl-nicks))
+(quelpa '(erc-hl-nicks :fetcher github :repo "leathekd/erc-hl-nicks"))
 (add-hook 'erc-mode-hook (lambda ()
                            (erc-truncate-mode t)
                            (erc-fill-disable)
@@ -1012,7 +1012,7 @@ Using [[https://startpage.com][startpage.com]] mobile view here as default searc
 *** expand-region
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(expand-region :repo magnars/expand-region.el :fetcher github))
+(quelpa '(expand-region :repo "magnars/expand-region.el" :fetcher github))
 #+END_SRC
 
 *** fasd
@@ -1030,7 +1030,7 @@ The =global-fasd-mode= was written by myself. It's purpose is to make the quick 
 Github: https://github.com/steckerhalter/emacs-fasd
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(fasd :repo steckerhalter/emacs-fasd :fetcher github))
+(quelpa '(fasd :repo "steckerhalter/emacs-fasd" :fetcher github))
 (global-fasd-mode 1)
 #+END_SRC
 
@@ -1044,7 +1044,7 @@ A distinguishing feature of this library is that it tracks the urgency of each n
 =fixmee= was written by Roland Walker and lives on Github: https://github.com/rolandwalker/fixmee
 
 #+BEGIN_SRC emacs-lisp :tangle no
-(quelpa '(fixmee :repo rolandwalker/fixmee :fetcher github))
+(quelpa '(fixmee :repo "rolandwalker/fixmee" :fetcher github))
 (global-fixmee-mode 1)
 #+END_SRC
 
@@ -1064,7 +1064,7 @@ Github: https://github.com/flycheck/flycheck
 https://raw.github.com/flycheck/flycheck/master/doc/images/screenshot.png
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(flycheck :repo flycheck/flycheck :fetcher github))
+(quelpa '(flycheck :repo "flycheck/flycheck" :fetcher github))
 (add-hook 'php-mode-hook 'flycheck-mode)
 (add-hook 'sh-mode-hook 'flycheck-mode)
 (add-hook 'json-mode-hook 'flycheck-mode)
@@ -1091,7 +1091,7 @@ http://i.imgur.com/n3EweV3.png
 Currently it is used by [[https://github.com/bbatsov/projectile][Projectile]] in my config. I quite like Grizzl. It offers some benefits for when entries are longer. For most cases =IDO= is better suited though.
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(grizzl :repo d11wtq/grizzl :fetcher github))
+(quelpa '(grizzl :repo "d11wtq/grizzl" :fetcher github))
 (setq *grizzl-read-max-results* 30)
 #+END_SRC
 
@@ -1108,7 +1108,7 @@ I would like to see more than just the default results of 10.
 Github: https://github.com/haskell/haskell-mode
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(haskell-mode :repo haskell/haskell-mode :fetcher github :files ("*.el" "haskell-mode.texi" "NEWS" "logo.svg")))
+(quelpa '(haskell-mode :repo "haskell/haskell-mode" :fetcher github :files ("*.el" "haskell-mode.texi" "NEWS" "logo.svg")))
 (require 'haskell-mode)
 (setq haskell-indent-thenelse 3)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
@@ -1130,10 +1130,10 @@ The Helm source code can be found [[https://github.com/emacs-helm/helm][at Githu
 You might want to checkout the [[https://github.com/emacs-helm/helm/wiki][Helm Wiki]] for detailed instructions on how Helm works.
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(helm :repo emacs-helm/helm :fetcher github :files ("*.el" "emacs-helm.sh")))
-(quelpa '(helm-descbinds :repo emacs-helm/helm-descbinds :fetcher github))
-(quelpa '(helm-gtags :repo syohex/emacs-helm-gtags :fetcher github :files ("helm-gtags.el")))
-(quelpa '(helm-projectile :repo bbatsov/projectile :fetcher github :files ("helm-projectile.el")))
+(quelpa '(helm :repo "emacs-helm/helm" :fetcher github :files ("*.el" "emacs-helm.sh")))
+(quelpa '(helm-descbinds :repo "emacs-helm/helm-descbinds" :fetcher github))
+(quelpa '(helm-gtags :repo "syohex/emacs-helm-gtags" :fetcher github :files ("helm-gtags.el")))
+(quelpa '(helm-projectile :repo "bbatsov/projectile" :fetcher github :files ("helm-projectile.el")))
 (require 'helm-config)
 (setq helm-mode-handle-completion-in-region nil) ; don't use helm for `completion-at-point'
 (helm-mode 1)
@@ -1169,7 +1169,7 @@ https://raw.github.com/ShingoFukuyama/images/master/helm-multi-swoop.gif
 Github: https://github.com/ShingoFukuyama/helm-swoop
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(helm-swoop :repo ShingoFukuyama/helm-swoop :fetcher github))
+(quelpa '(helm-swoop :repo "ShingoFukuyama/helm-swoop" :fetcher github))
 (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
 #+END_SRC
 
@@ -1187,7 +1187,7 @@ Github: https://github.com/nschum/highlight-symbol.el
 http://nschum.de/src/emacs/highlight-symbol/highlight-symbol.png
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(highlight-symbol :fetcher github :repo nschum/highlight-symbol.el))
+(quelpa '(highlight-symbol :fetcher github :repo "nschum/highlight-symbol.el"))
 (setq highlight-symbol-on-navigation-p t)
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 #+END_SRC
@@ -1216,7 +1216,7 @@ Use =C-j= if you want to create a file with what you have entered (and not the m
       ido-use-filename-at-point 'guess
       )
 (ido-mode 1)
-(quelpa '(flx-ido :repo lewang/flx :fetcher github :files ("flx-ido.el")))
+(quelpa '(flx-ido :repo "lewang/flx" :fetcher github :files ("flx-ido.el")))
 (flx-ido-mode 1)
 (setq ido-use-faces nil)
 #+END_SRC
@@ -1234,7 +1234,7 @@ Iedit allows you to edit one occurrence of some text in a buffer (possibly narro
 Github: https://github.com/victorhge/iedit
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(iedit :repo victorhge/iedit :fetcher github))
+(quelpa '(iedit :repo "victorhge/iedit" :fetcher github))
 (require 'iedit)
 (setq iedit-unmatched-lines-invisible-default t)
 #+END_SRC
@@ -1264,7 +1264,7 @@ Improved JavaScript editing mode for GNU Emacs
 Github: https://github.com/mooz/js2-mode
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(js2-mode :repo mooz/js2-mode :fetcher github))
+(quelpa '(js2-mode :repo "mooz/js2-mode" :fetcher github))
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (add-hook 'js2-mode-hook 'flycheck-mode)
 #+END_SRC
@@ -1279,7 +1279,7 @@ Extends the builtin js-mode to add better syntax highlighting for JSON.
 Github: https://github.com/joshwnj/json-mode
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(json-mode :fetcher github :repo joshwnj/json-mode))
+(quelpa '(json-mode :fetcher github :repo "joshwnj/json-mode"))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 #+END_SRC
 
@@ -1311,9 +1311,9 @@ See the [[http://magit.github.io/magit/magit.html][Magit manual]] for more infor
 
 #+BEGIN_SRC emacs-lisp
 (quelpa '(magit :fetcher github
-                :repo magit/magit
+                :repo "magit/magit"
                 :files ("magit.el" "magit-bisect.el" "magit-blame.el" "magit-key-mode.el" "magit-popup.el" "magit-wip.el" "magit.texi" "AUTHORS.md" "README.md")))
-(quelpa '(helm-git :repo maio/helm-git :fetcher github)) ; helm-git needs magit
+(quelpa '(helm-git :repo "maio/helm-git" :fetcher github)) ; helm-git needs magit
 (require 'helm-git)
 (when (fboundp 'file-notify-add-watch)
   (quelpa '(magit-filenotify :fetcher github :repo "magit/magit-filenotify"))
@@ -1401,7 +1401,7 @@ http://www.djcbsoftware.nl/code/mu/mu4e-splitview.png
 *** multiple-cursors
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(multiple-cursors :fetcher github :repo magnars/multiple-cursors.el))
+(quelpa '(multiple-cursors :fetcher github :repo "magnars/multiple-cursors.el"))
 #+END_SRC
 
 *** nrepl-eval-sexp-fu
@@ -1411,7 +1411,7 @@ Flashes the evaluated expression (visual feedback)
 **** TODO fix bug to enable: https://github.com/quelpa/quelpa/issues/11
 
 #+BEGIN_SRC emacs-lisp :tangle no
-(quelpa '(nrepl-eval-sexp-fu :fetcher github :repo samaaron/nrepl-eval-sexp-fu))
+(quelpa '(nrepl-eval-sexp-fu :fetcher github :repo "samaaron/nrepl-eval-sexp-fu"))
 (require 'nrepl-eval-sexp-fu)
 (setq nrepl-eval-sexp-fu-flash-duration 0.4)
 #+END_SRC
@@ -1577,7 +1577,7 @@ Don't forget to set =org-mode-blog-publishing-directory= to the desired export l
 
 #+BEGIN_SRC emacs-lisp
 (when (and (boundp 'org-mobile-directory) (version<= "24.3.50" emacs-version))
-  (quelpa '(org-mobile-sync :repo steckerhalter/org-mobile-sync :fetcher github))
+  (quelpa '(org-mobile-sync :repo "steckerhalter/org-mobile-sync" :fetcher github))
   (setq org-mobile-inbox-for-pull (concat org-directory "/notes.org"))
   (org-mobile-sync-mode 1))
 #+END_SRC
@@ -1607,10 +1607,10 @@ Github: https://github.com/ejmr/php-mode
 #+BEGIN_SRC emacs-lisp
 (quelpa '(geben :fetcher svn :url "http://geben-on-emacs.googlecode.com/svn/trunk/"))
 (quelpa '(php-align :fetcher github :repo "tetsujin/emacs-php-align"))
-(quelpa '(php-boris :repo tomterl/php-boris :fetcher github))
+(quelpa '(php-boris :repo "tomterl/php-boris" :fetcher github))
 (quelpa '(php-boris-minor-mode :fetcher github :repo "steckerhalter/php-boris-minor-mode"))
-(quelpa '(php-eldoc :repo sabof/php-eldoc :fetcher github :files ("*.el" "*.php")))
-(quelpa '(php-mode :repo ejmr/php-mode :fetcher github))
+(quelpa '(php-eldoc :repo "sabof/php-eldoc" :fetcher github :files ("*.el" "*.php")))
+(quelpa '(php-mode :repo "ejmr/php-mode" :fetcher github))
 
 (require 'php-mode)
 (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
@@ -1701,7 +1701,7 @@ Github: https://github.com/bbatsov/projectile
 https://raw.github.com/bbatsov/projectile/master/screenshots/projectile.png
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(projectile :repo bbatsov/projectile :fetcher github :files ("projectile.el")))
+(quelpa '(projectile :repo "bbatsov/projectile" :fetcher github :files ("projectile.el")))
 (require 'projectile nil t)
 (setq projectile-completion-system 'grizzl)
 #+END_SRC
@@ -1753,7 +1753,7 @@ Code navigation, documentation lookup and completion for Ruby
 Github: https://github.com/dgutov/robe
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(robe :repo dgutov/robe :fetcher github :files ("robe*.el" "lib")))
+(quelpa '(robe :repo "dgutov/robe" :fetcher github :files ("robe*.el" "lib")))
 (push 'company-robe company-backends)
 (add-hook 'ruby-mode-hook 'robe-mode)
 #+END_SRC
@@ -1813,7 +1813,7 @@ An emacs minor mode to easily switch between shell buffers (like with alt+tab)
 Github: https://github.com/DamienCassou/shell-switcher
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(shell-switcher :fetcher github :repo DamienCassou/shell-switcher :files ("rswitcher.el" "shell-switcher.el")))
+(quelpa '(shell-switcher :fetcher github :repo "DamienCassou/shell-switcher" :files ("rswitcher.el" "shell-switcher.el")))
 (setq shell-switcher-new-shell-function 'shell-switcher-make-ansi-term)
 (setq shell-switcher-mode t)
 (require 'shell-switcher)
@@ -1839,7 +1839,7 @@ javascript:(function) {
 Instructions and the source code can be found [[https://github.com/skeeto/skewer-mode][on Github]].
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(skewer-mode :repo skeeto/skewer-mode :fetcher github :files ("*.html" "*.js" "*.el")))
+(quelpa '(skewer-mode :repo "skeeto/skewer-mode" :fetcher github :files ("*.html" "*.js" "*.el")))
 (skewer-setup)
 #+END_SRC
 
@@ -1856,7 +1856,7 @@ It is written by Artur Bruce-Connor. The default Emacs mode-line has some shortc
 Github: https://github.com/Bruce-Connor/smart-mode-line
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(smart-mode-line :repo Bruce-Connor/smart-mode-line :fetcher github))
+(quelpa '(smart-mode-line :repo "Bruce-Connor/smart-mode-line" :fetcher github))
 (setq sml/vc-mode-show-backend t)
 (sml/setup)
 (sml/apply-theme 'respectful)
@@ -1873,7 +1873,7 @@ Smartparens is minor mode for Emacs that deals with parens pairs and tries to be
 Github: https://github.com/Fuco1/smartparens
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(smartparens :fetcher github :repo Fuco1/smartparens))
+(quelpa '(smartparens :fetcher github :repo "Fuco1/smartparens"))
 (require 'smartparens-config)
 (smartparens-global-mode t)
 ;; "fix"" highlight issue in scratch buffer
@@ -1993,7 +1993,7 @@ Emacs minor mode that allows viewing, editing, searching and comparing large fil
 Github: https://github.com/m00natic/vlfi
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(vlf :repo m00natic/vlfi :fetcher github :old-names (vlfi)))
+(quelpa '(vlf :repo "m00natic/vlfi" :fetcher github :old-names (vlfi)))
 (setq vlf-application 'dont-ask)        ; just do it
 (setq vlf-batch-size 8192)              ; a bit more text per batch please
 (require 'vlf-integrate)                ; just do it for real
@@ -2012,7 +2012,7 @@ Homepage: http://web-mode.org/
 Github: https://github.com/fxbois/web-mode
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(web-mode :repo fxbois/web-mode :fetcher github))
+(quelpa '(web-mode :repo "fxbois/web-mode" :fetcher github))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 #+END_SRC
 
