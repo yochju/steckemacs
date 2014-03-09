@@ -736,6 +736,7 @@ I wrote a company-backend for Cider which is living at https://github.com/clojur
 (setq cider-popup-stacktraces nil)
 (setq cider-repl-popup-stacktraces nil)
 (setq cider-repl-pop-to-buffer-on-connect nil)
+(setq cider-repl-use-clojure-font-lock t)
 #+END_SRC
 
 Don't popup nasty stacktraces all over the place, please.
