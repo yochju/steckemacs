@@ -224,8 +224,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c w             | Editing   | Cleanup whitespaces                                       | 'whitespace-cleanup                                         |
 | C-h C-v           | Editing   | Toggle visual line mode                                   | 'visual-line-mode                                           |
 | C-h TAB           | Editing   | Indent the whole buffer                                   | 'my-indent-whole-buffer                                     |
-| C-?               | Source    | Go to definition of function or variable at point         | 'my-find-function-or-variable-at-point                      |
-| C-h C-f           | Source    | Go to the definition of the function under cursor         | 'find-function-at-point                                     |
 | M-5               | Source    | Helm select etags                                         | 'helm-etags-select                                          |
 | M-6               | Source    | Find tag in a new window                                  | 'find-tag-other-window                                      |
 | C-h C-0           | Source    | Edebug defun at point                                     | 'edebug-defun                                               |
@@ -467,6 +465,8 @@ For the frame title either show a file or a buffer name (if the buffer isn't vis
      ((not (eq var 0)) (find-variable-other-window var))
       (func (find-function-other-window func))
        (t (message "Neither function nor variable found!")))))
+(define-key emacs-lisp-mode-map (kbd "M-.") 'my-find-function-or-variable-at-point)
+(define-key lisp-interaction-mode-map (kbd "M-.") 'my-find-function-or-variable-at-point)
 #+END_SRC
 
 I don't care if is a function or a variable... just go there, Emacs!
