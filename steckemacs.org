@@ -735,7 +735,7 @@ I wrote a company-backend for Cider which is living at https://github.com/clojur
 (quelpa '(cider :fetcher github :repo "clojure-emacs/cider" :old-names (nrepl)))
 (setq cider-popup-stacktraces nil)
 (setq cider-repl-popup-stacktraces nil)
-(setq cider-repl-pop-to-buffer-on-connect nil)
+(setq cider-repl-pop-to-buffer-on-connect t)
 (setq cider-repl-use-clojure-font-lock t)
 #+END_SRC
 
