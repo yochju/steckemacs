@@ -952,6 +952,7 @@ EmacsWiki: http://www.emacswiki.org/emacs/ERC
       erc-insert-timestamp-function 'erc-insert-timestamp-left)
 (setq erc-interpret-mirc-color t)
 (setq erc-kill-buffer-on-part t)
+(setq erc-kill-server-buffer-on-quit t)
 (setq erc-kill-queries-on-quit t)
 (setq erc-kill-server-buffer-on-quit t)
 (setq erc-server-send-ping-interval 45)
