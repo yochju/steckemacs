@@ -1410,8 +1410,6 @@ http://www.djcbsoftware.nl/code/mu/mu4e-splitview.png
 
 Flashes the evaluated expression (visual feedback)
 
-**** TODO fix bug to enable: https://github.com/quelpa/quelpa/issues/11
-
 #+BEGIN_SRC emacs-lisp :tangle no
 (quelpa '(nrepl-eval-sexp-fu :fetcher github :repo "samaaron/nrepl-eval-sexp-fu"))
 (require 'nrepl-eval-sexp-fu)
