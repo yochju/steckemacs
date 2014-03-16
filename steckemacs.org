@@ -1926,6 +1926,8 @@ Github: https://github.com/Fuco1/smartparens
 (define-key sp-keymap (kbd "M-B") 'sp-backward-symbol)
 (define-key sp-keymap (kbd "M-S") 'sp-split-sexp)
 (define-key sp-keymap (kbd "M-r") 'sp-splice-sexp-killing-around)
+(sp-with-modes sp--lisp-modes
+  (sp-local-pair "(" nil :wrap "C-M-9"))
 #+END_SRC
 
 I have finally started learning the =smartparens-bindings= and already customized the =sp-smartparens-bindings= a bit.
@@ -1976,8 +1978,8 @@ The =Emacs Terminal Emulator= uses Term mode, which has two input modes.  In lin
   (define-key term-raw-map (kbd "C-n") 'term-send-raw)
   (define-key term-raw-map (kbd "C-s") 'term-send-raw)
   (define-key term-raw-map (kbd "C-r") 'term-send-raw)
-  (define-key term-raw-map (kbd "M-d") 'term-send-forward-kill-word)
-  (define-key term-raw-map (kbd "<C-backspace>") 'term-send-backward-kill-word)
+  (define-key term-raw-map (kbd "M-d") (lambda () (interactive) (term-send-raw-string "\ed")))
+  (define-key term-raw-map (kbd "<C-backspace>") (lambda () (interactive) (term-send-raw-string "\e\C-?")))
   (define-key term-raw-map (kbd "M-p") (lambda () (interactive) (term-send-raw-string "\ep")))
   (define-key term-raw-map (kbd "M-n") (lambda () (interactive) (term-send-raw-string "\en")))
   (define-key term-raw-map (kbd "M-,") 'term-send-input)
