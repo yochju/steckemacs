@@ -1195,6 +1195,22 @@ http://nschum.de/src/emacs/highlight-symbol/highlight-symbol.png
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 #+END_SRC
 
+*** howdoi
+
+#+BEGIN_QUOTE
+Do you find yourself constantly Googling for how to do basic programing tasks? Suppose you want to know how to format a date in bash. Why open your browser and read through blogs when you can just M-x howdoi-query RET format date bash RET
+
+Howdoi.el is a way to query Stack Overflow directly from the Emacs and get back the most upvoted answer to the first question that comes up for that query.
+#+END_QUOTE
+
+Github: https://github.com/atykhonov/emacs-howdoi
+
+Very useful. Saves a lot of time by not having to go through that boring "emacs -> browser -> search engine -> stackoverflow -> emacs" loop...
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(howdoi :repo "atykhonov/emacs-howdoi" :fetcher github))
+#+END_SRC
+
 *** ido-mode
 
 #+BEGIN_EXAMPLE
