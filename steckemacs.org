@@ -1982,10 +1982,11 @@ The =Emacs Terminal Emulator= uses Term mode, which has two input modes.  In lin
   (define-key term-raw-map (kbd "M-n") (lambda () (interactive) (term-send-raw-string "\en")))
   (define-key term-raw-map (kbd "M-,") 'term-send-input)
   (define-key term-raw-map (kbd "C-c y") 'term-paste)
-  (define-key term-raw-map (kbd "C-7") 'term-paste)
+  (define-key term-raw-map (kbd "C-S-y") 'term-paste)
   (define-key term-raw-map (kbd "C-h") nil) ; unbind C-h
-  (define-key term-raw-map (kbd "C-8") 'my-term-toggle-char-line-mode)
-  (define-key term-mode-map (kbd "C-8") 'my-term-toggle-char-line-mode))
+  (define-key term-raw-map (kbd "M-x") nil) ; unbind M-x
+  (define-key term-raw-map (kbd "C-7") 'my-term-toggle-char-line-mode)
+  (define-key term-mode-map (kbd "C-7") 'my-term-toggle-char-line-mode))
 (add-hook 'term-mode-hook 'my-term-setup t)
 #+END_SRC
 
