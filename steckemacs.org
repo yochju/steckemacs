@@ -437,6 +437,23 @@ Loading my very own [[https://github.com/steckerhalter/grandshell-theme][Grand S
 I put that line into =~/.user.el= which is loaded [[*User%20Settings][in this init file too.]] To avoid getting this line into the config I use =:tangle no= as an option in the org-mode source block header.
 
 #+BEGIN_SRC emacs-lisp
+(defun my-after-make-frame (frame)
+  (when (find-font (font-spec :name "Symbola") frame)
+    (dolist (range '((#x2600 . #x26ff)
+                     (#x1f300 . #x1f5ff)
+                     (#x1f600 . #x1f640)
+                     (#x1f680 . #x1f6ff)))
+      (set-fontset-font "fontset-default" range "Symbola"))))
+(add-to-list 'after-make-frame-functions 'my-after-make-frame)
+#+END_SRC
+
+This will set =Symbola= as fallback-font for Emojis when it is available for the created frame. On Debian the font can be installed like this:
+
+#+BEGIN_SRC shell-script :tangle no
+sudo aptitude install ttf-ancient-fonts
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
