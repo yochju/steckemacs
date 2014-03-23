@@ -101,15 +101,6 @@ The variable =load-path= lists all the directories where Emacs should look for E
 
 Here we create the directory =~/.emacs.d/elisp= if it does not exist, add it to the =load-path=. Doing that any =.el= or =.elc= files in this directory can be required from *emacs*.
 
-** Package Archives
-
-#+BEGIN_SRC emacs-lisp
-(setq package-archives '(("org" . "http://orgmode.org/elpa/")))
-(package-refresh-contents)
-#+END_SRC
-
-To get the latest org-mode I set =package-archives= to contain [[http://orgmode.org/][org-mode.org]] archive. The built-in GNU ELPA is overwritten with this because it often timed out and annoyed me.
-
 ** Quelpa
 
 #+BEGIN_QUOTE
@@ -1472,8 +1463,10 @@ Homepage: http://orgmode.org/
 **** General settings
 
 #+BEGIN_SRC emacs-lisp
-;; html fontification of src blocks needs `htmlize'
-(quelpa '(htmlize :url "http://fly.srk.fer.hr/~hniksic/emacs/htmlize.git" :fetcher git))
+;; we get `org' with contrib, so if the included `htmlize' is not available we need to force an upgrade
+(let ((quelpa-upgrade-p (not (require 'htmlize nil t))))
+  (quelpa '(org :url "git://orgmode.org/org-mode.git" :fetcher git
+                :files ("lisp/*.el" "contrib/lisp/*.el" "doc/dir" "doc/*.texi"))))
 (require 'org)
 (require 'ox-org)
 (require 'ox-md)
