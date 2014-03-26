@@ -101,6 +101,14 @@ The variable =load-path= lists all the directories where Emacs should look for E
 
 Here we create the directory =~/.emacs.d/elisp= if it does not exist, add it to the =load-path=. Doing that any =.el= or =.elc= files in this directory can be required from *emacs*.
 
+** Package Archives
+
+#+BEGIN_SRC emacs-lisp
+(setq package-archives nil)
+#+END_SRC
+
+Remove the default GNU package archive since I use =quelpa= to install packages from source.
+
 ** Quelpa
 
 #+BEGIN_QUOTE
