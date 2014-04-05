@@ -14,11 +14,19 @@
 
 * Usage
 
-*steckemacs* is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very usable and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. The goal is to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are built directly from source code using [[*Quelpa][quelpa]] (my homegrown tool for this purpose).
+*steckemacs* is an Emacs configuration that integrates around 60 modes (packages). Stock Emacs is not very usable and lacks many convenient commands. Over the years I've discovered many good extensions and added them to this setup. I want to keep everything in one file =steckemacs.org= (plus =.emacs= for the initialization) and not as many others to split it over lots of files and directories. Packages are built directly from source code using [[*Quelpa][quelpa]] (my homegrown tool for this purpose).
 
 The source code is hosted on Github: [[https://github.com/steckerhalter/steckemacs]]
 
 *To use this setup please use Emacs 24.3.50 or later (currently that's the development snapshot). Older versions don't work because I use some of the new features of what is to become Emacs 24.4*
+
+I once thought this could become sort of a [[https://github.com/bbatsov/prelude][prelude]] kind of thing but going forward I realized that an Emacs configuration should really just be my (or your) own baby.
+
+#+BEGIN_QUOTE
+hell is other people's .emacs
+#+END_QUOTE
+
+If you want to adapt this setup I suggest that you use it as template and build your own thing out of it :).
 
 ** Installation
 
