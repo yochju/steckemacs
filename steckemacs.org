@@ -260,7 +260,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | M-2               | Occur     | Show all symbols like the one cursor is located at        | 'highlight-symbol-occur                                     |
 | M-3               | Occur     | Previous symbol like the one the cursor is on             | (lambda () (interactive) (highlight-symbol-jump -1))        |
 | M-4               | Occur     | Next symbol like the one the cursor is on                 | (lambda () (interactive) (highlight-symbol-jump 1))         |
-| M-9               | Occur     | Helm search for occurences in open buffers                | 'helm-occur                                                 |
 | 34                | Occur     | Helm imenu                                                | 'helm-imenu                                                 |
 | M-i               | Occur     | Helm swoop                                                | 'helm-swoop                                                 |
 | M-I               | Occur     | Helm swoop back to last point                             | 'helm-swoop-back-to-last-point                              |
@@ -272,6 +271,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | <f4>              | Windows   | Delete current window (not the buffer)                    | 'delete-window                                              |
 | <f5>              | Windows   | Only keep the current window and delete all others        | 'delete-other-windows                                       |
 | <f7>              | Windows   | Toggle arrangement of two windows horizontally/vertically | 'my-toggle-window-split                                     |
+| M-9               | Windows   | Switch to the minibuffer                                  | 'my-switch-to-minibuffer-window                             |
 | <M-up>            | Windows   | Move the current buffer window up                         | 'buf-move-up                                                |
 | <M-down>          | Windows   | Move the current buffer window down                       | 'buf-move-down                                              |
 | <M-left>          | Windows   | Move the current buffer window left                       | 'buf-move-left                                              |
@@ -579,6 +579,18 @@ Call a second time to restore the original window configuration."
 I often use this to get back to the buffer I was editing just before. It has some problems and...
 
 **** TODO I should be improving my-split-window
+
+*** my-switch-to-minibuffer-window
+
+Sometimes the minibuffer loses focus and I almost can get back to it. This function does it quickly.
+
+#+BEGIN_SRC emacs-lisp
+(defun my-switch-to-minibuffer-window ()
+  "Switch to minibuffer window (if active)."
+  (interactive)
+  (when (active-minibuffer-window)
+    (select-window (active-minibuffer-window))))
+#+END_SRC
 
 *** my-tks
 
@@ -1184,6 +1196,14 @@ I use [[https://github.com/emacs-helm/helm/wiki#8-helm-m-x][Helm M-x]] and also 
 
 *** helm-google
 
+#+BEGIN_QUOTE
+Emacs Helm Interface for quick Google searches
+#+END_QUOTE
+
+https://raw.github.com/steckerhalter/helm-google/master/screenshot.png
+
+Not yet perfect but quite handy not having to resort to the browser for searches, just to view the results.
+
 #+BEGIN_SRC emacs-lisp
 (quelpa '(helm-google :fetcher github :repo "steckerhalter/helm-google"))
 #+END_SRC
@@ -1302,6 +1322,14 @@ IELM is short for Inferior Emacs Lisp Mode. It is a REPL for Emacs Lisp that is 
 We need to tweak IELM a bit so we get completion and eldoc hints.
 
 *** ipretty
+
+#+BEGIN_QUOTE
+*ipretty.el* provides interactive functions to pretty-print the result of an expression and a global mode *ipretty-mode* that advices eval-print-last-sexp to pretty print.
+#+END_QUOTE
+
+https://raw.github.com/steckerhalter/ipretty/master/ipretty.png
+
+That's quite useful if you develop elisp.
 
 #+BEGIN_SRC emacs-lisp
 (quelpa '(ipretty :fetcher github :repo "steckerhalter/ipretty"))
