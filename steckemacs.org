@@ -347,13 +347,13 @@ Kind of a sweeping blow to make sure UTF-8 is used everywhere.
  inhibit-startup-message t
  backup-directory-alist `((".*" . ,temporary-file-directory)) ;don't clutter my fs and put backups into tmp
  auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
- require-final-newline t          ;auto add newline at the end of file
- column-number-mode t             ;show the column number
- default-major-mode 'text-mode    ;use text mode per default
- mouse-yank-at-point t     ;middle click with the mouse yanks at point
- history-length 250        ;default is 30
- locale-coding-system 'utf-8          ;utf-8 is default
- tab-always-indent 'complete          ;try to complete before identing
+ require-final-newline t                ;auto add newline at the end of file
+ column-number-mode t                   ;show the column number
+ default-major-mode 'text-mode          ;use text mode per default
+ mouse-yank-at-point t                  ;middle click with the mouse yanks at point
+ history-length 250                     ;default is 30
+ locale-coding-system 'utf-8            ;utf-8 is default
+ tab-always-indent 'complete            ;try to complete before identing
  confirm-nonexistent-file-or-buffer nil ;don't ask to create a buffer
  vc-follow-symlinks t                   ;follow symlinks automatically
  recentf-max-saved-items 5000           ;same up to 5000 recent files
@@ -364,8 +364,8 @@ Kind of a sweeping blow to make sure UTF-8 is used everywhere.
  mark-ring-max 5000                     ;truncate mark ring after 5000 entries
  mouse-autoselect-window -.1            ;window focus follows the mouse pointer
  mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control))) ;make mouse scrolling smooth
- indicate-buffer-boundaries 'left             ;fringe markers
- split-height-threshold 110                   ;more readily split horziontally
+ indicate-buffer-boundaries 'left       ;fringe markers
+ split-height-threshold 110             ;more readily split horziontally
  enable-recursive-minibuffers t
  custom-unlispify-menu-entries nil      ;M-x customize should not cripple menu entries
  custom-unlispify-tag-names nil         ;M-x customize should not cripple tags
