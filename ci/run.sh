@@ -26,4 +26,5 @@ if ! dpkg -l | grep emacs24; then
     sudo apt-get install -qq git mercurial subversion bzr cvs emacs-snapshot-el emacs-snapshot-gtk emacs-snapshot
 fi
 
+mkdir ~/.emacs.d
 emacs-snapshot --batch --load $dir/.emacs
