@@ -1,5 +1,7 @@
 * Steckemacs
 
+[[https://travis-ci.org/steckerhalter/steckemacs][https://travis-ci.org/steckerhalter/steckemacs.svg?branch=master]]
+
 *Steckemacs* is an Emacs configuration that integrates around 60 modes (packages).
 
 It is built with [[http://orgmode.org/worg/org-contrib/babel/][Babel]] and [[http://orgmode.org/][Org mode]].
