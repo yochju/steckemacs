@@ -818,6 +818,17 @@ I started using =company= because =auto-complete= seemed to be buggy and slow. S
 
 This enables company completion for org-mode built-in commands and tags.
 
+#+BEGIN_SRC emacs-lisp
+(defun my-company-elisp-setup ()
+  (set (make-local-variable 'company-backends)
+       '((company-capf :with company-dabbrev-code))))
+
+(dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook))
+  (add-hook hook 'my-company-elisp-setup))
+#+END_SRC
+
+For Elisp add code dabbrev as second company source so that not only interned symbols can be completed, but also what was just written (and not yet evaluated).
+
 *** conf-mode
 
 #+BEGIN_SRC emacs-lisp
