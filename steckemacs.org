@@ -308,7 +308,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))              |
 | C-h t             | Org       | Cpture simple task (todo)                                 | (lambda () (interactive) (org-capture nil "s"))             |
 | C-h T             | Org       | Capture selection (todo)                                  | 'org-capture                                                |
-| C-c i             | Org       | Start the clock on the current item                       | 'org-clock-in                                               |
+| C-c i             | Org       | Start the clock on the current item                       | 'org-clock-in-last                                          |
 | C-c o             | Org       | Stop the clock on the current item                        | 'org-clock-out                                              |
 | C-S-g             | Org       | Goto the current org clock                                | 'org-clock-goto                                             |
 | C-c C-9           | Org       | Insert a new subheading and demote it                     | 'org-insert-subheading                                      |
