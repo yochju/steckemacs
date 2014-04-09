@@ -947,24 +947,6 @@ Github: https://github.com/steckerhalter/discover-my-major
 (quelpa '(discover-my-major :fetcher github :repo "steckerhalter/discover-my-major"))
 #+END_SRC
 
-*** elpy
-
-Elpy makes setting up a great Python IDE a breeze. It's written by [[http://www.jorgenschaefer.de/][Jorgen Schäfer]] also known as =forcer=.
-
-Github: https://github.com/jorgenschaefer/elpy
-
-#+BEGIN_SRC emacs-lisp
-(quelpa '(elpy
-          :fetcher github
-          :repo "jorgenschaefer/elpy"
-          :branch "release"
-          :files ("elpy.el" "elpy-refactor.el" "elpy-pkg.el.in" "snippets")))
-(elpy-enable)
-(delq 'flymake-mode elpy-default-minor-modes)
-#+END_SRC
-
-I'm using =flycheck= so please don't use =flymake= (which is old and bugly).
-
 *** eval-sexp-fu
 
 Flash some lights when evaluating expressions. See the EmacsWiki for some more info: http://www.emacswiki.org/emacs/EvalSexpFu
@@ -1724,6 +1706,8 @@ Relies on functions of `php-mode'."
 (defun setup-php-mode ()
   (require 'php-align nil t)
   (add-hook 'completion-at-point-functions 'my-php-completion-at-point nil t)
+  (set (make-local-variable 'company-backends)
+       '((company-capf :with company-dabbrev-code)))
   (php-align-setup)
   (set (make-local-variable 'electric-indent-mode) nil)
   (php-eldoc-enable))
