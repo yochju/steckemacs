@@ -2147,7 +2147,7 @@ Another library written by Drew Adams.
 
 Code: http://www.emacswiki.org/emacs/zoom-frm.el
 
-What I want I usually want is to have Emacs increase or decrease the text size for the whole frame (with mode-line and mini-buffer). There is nothing built in that can do that so I use this library.
+What I usually want is to have Emacs increase or decrease the text size for the whole frame (with mode-line and mini-buffer). There is nothing built in that can do that so I use this library.
 
 #+BEGIN_SRC emacs-lisp
 (quelpa 'zoom-frm)
