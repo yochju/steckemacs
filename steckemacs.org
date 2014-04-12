@@ -208,8 +208,9 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-p           | General   | Open file                                                 | 'find-file                                                  |
 | cg                | General   | Customize group                                           | 'customize-group                                            |
 | C-c m             | Interface | Toggle the menu bar                                       | 'menu-bar-mode                                              |
-| <C-mouse-5>       | Interface | Decrease the font size                                    | 'text-scale-decrease                                        |
-| <C-mouse-4>       | Interface | Increase the font size                                    | 'text-scale-increase                                        |
+| <C-mouse-5>       | Interface | Decrease the font size                                    | 'zoom-frm-out                                               |
+| <C-mouse-4>       | Interface | Increase the font size                                    | 'zoom-frm-in                                                |
+| C-S-z             | Interface | Zoom frame, give menu to reset size etc.                  | (lambda () (interactive) (zoom-in/out t))                   |
 | ln                | Interface | Show/hide the line numbers                                | 'linum-mode                                                 |
 | C-x C-u           | Internet  | Prompt for URL and insert contents at point               | 'my-url-insert-file-contents                                |
 | C-c C-w           | Internet  | Browse URL under cursor                                   | 'browse-url-at-point                                        |
@@ -472,15 +473,6 @@ sudo aptitude install ttf-ancient-fonts
 For the frame title either show a file or a buffer name (if the buffer isn't visiting a file).
 
 ** Custom Functions
-*** my-url-insert-file-contents
-
-#+BEGIN_SRC emacs-lisp
-(defun my-url-insert-file-contents (url)
-  "Prompt for URL and insert file contents at point."
-  (interactive "sURL: ")
-  (url-insert-file-contents url))
-#+END_SRC
-
 *** my-find-function-or-variable-at-point
 
 #+BEGIN_SRC emacs-lisp
@@ -499,17 +491,15 @@ For the frame title either show a file or a buffer name (if the buffer isn't vis
 
 I don't care if is a function or a variable... just go there, Emacs!
 
-*** show-file-name
+*** my-indent-whole-buffer
 
 #+BEGIN_SRC emacs-lisp
-(defun my-show-file-name ()
-  "Show the full path file name in the minibuffer."
+(defun my-indent-whole-buffer ()
   (interactive)
-  (message (buffer-file-name))
-  (kill-new (file-truename buffer-file-name)))
+  (indent-region (point-min) (point-max)))
 #+END_SRC
 
-Display and copy the full path of the file associated with the current buffer to the kill ring.
+Indent the whole buffer with one command. Bound to =C-h TAB=.
 
 *** my-isearch-goto-match-beginning
 
@@ -521,15 +511,17 @@ Display and copy the full path of the file associated with the current buffer to
 
 Make =isearch-forward= put the cursor at the start of the search, not the end, so that isearch can be used for navigation. See also http://www.emacswiki.org/emacs/IsearchOtherEnd.
 
-*** my-indent-whole-buffer
+*** my-show-file-name
 
 #+BEGIN_SRC emacs-lisp
-(defun my-indent-whole-buffer ()
+(defun my-show-file-name ()
+  "Show the full path file name in the minibuffer."
   (interactive)
-  (indent-region (point-min) (point-max)))
+  (message (buffer-file-name))
+  (kill-new (file-truename buffer-file-name)))
 #+END_SRC
 
-Indent the whole buffer with one command. Bound to =C-h TAB=.
+Display and copy the full path of the file associated with the current buffer to the kill ring.
 
 *** my-show-help
 
@@ -579,7 +571,6 @@ Call a second time to restore the original window configuration."
 I often use this to get back to the buffer I was editing just before. It has some problems and...
 
 **** TODO I should be improving my-split-window
-
 *** my-switch-to-minibuffer-window
 
 Sometimes the minibuffer loses focus and I almost can get back to it. This function does it quickly.
@@ -653,6 +644,14 @@ Usage example:
 #+END_SRC
 
 This function allows to get two vertically splitted windows into a horizontal split and back.
+*** my-url-insert-file-contents
+
+#+BEGIN_SRC emacs-lisp
+(defun my-url-insert-file-contents (url)
+  "Prompt for URL and insert file contents at point."
+  (interactive "sURL: ")
+  (url-insert-file-contents url))
+#+END_SRC
 
 ** Advices
 
@@ -2137,6 +2136,29 @@ An Emacs client for the command line web-browser =w3m=
                         (define-key w3m-mode-map "O" 'w3m-goto-new-session-url)
                         )))
   )
+#+END_SRC
+
+*** zoom-frm
+#+BEGIN_QUOTE
+Commands to zoom into and out of text.  They zoom a frame or a buffer, so that the text appears larger or smaller.
+#+END_QUOTE
+
+Another library written by Drew Adams.
+
+Code: http://www.emacswiki.org/emacs/zoom-frm.el
+
+What I want I usually want is to have Emacs increase or decrease the text size for the whole frame (with mode-line and mini-buffer). There is nothing built in that can do that so I use this library.
+
+#+BEGIN_SRC emacs-lisp
+(quelpa 'zoom-frm)
+#+END_SRC
+
+I bind the mouse wheel and =C-S-z=, similar to this:
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(global-set-key (kbd "C-S-z") (lambda () (interactive) (zoom-in/out t)))
+(global-set-key (kbd "<C-mouse-5>") 'zoom-frm-out)
+(global-set-key (kbd "<C-mouse-4>") 'zoom-frm-in)
 #+END_SRC
 
 ** end
