@@ -291,10 +291,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c l             | VCS       | Magit log                                                 | 'magit-log                                                  |
 | bm                | VCS       | Magit blame mode                                          | 'magit-blame-mode                                           |
 | C-c s             | Open      | Open emacs shell                                          | 'shell                                                      |
-| C-h r             | Open      | Open/hide dedicated term                                  | 'multi-term-dedicated-toggle                                |
-| C-h C-c           | Open      | Next multi-term buffer                                    | 'multi-term-next                                            |
-| C-h C-r           | Open      | Previous multi-term buffer                                | 'multi-term-prev                                            |
-| C-h n             | Open      | New multi-term buffer                                     | 'multi-term                                                 |
 | C-c c             | Open      | Open deft (quick notes tool)                              | 'deft                                                       |
 | nm                | Open      | Open mu4e                                                 | 'mu4e                                                       |
 | C-c e             | Open      | Open/connect with  ERC                                    | 'my-erc-connect                                             |
@@ -302,8 +298,11 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-<return>    | Open      | Emacs Web Wowser (internal Webbrowser)                    | 'eww                                                        |
 | C-h M-RET         | Open      | Emacs Web Wowser do what I mean                           | 'my-eww-browse-dwim                                         |
 | C-h C--           | Open      | Helm: Google                                              | 'helm-google                                                |
-| C-h C-4           | Open      | Google translate                                          | 'google-translate-query-translate                           |
-| C-h C-3           | Open      | Open Howdoi with query                                    | 'howdoi-query                                               |
+| C-h C-r           | Open      | Google translate                                          | 'google-translate-query-translate                           |
+| C-h r             | Open      | Google translate reverse                                  | 'google-translate-query-translate-reverse                   |
+| C-h n             | Open      | Open Howdoi with query                                    | 'howdoi-query                                               |
+| C-h C-c           | Open      | Helm: Google Suggest                                      | 'helm-google-suggest                                        |
+| C-S-h C-c         | Open      | Helm: Wikipedia Suggest                                   | 'helm-wikipedia-suggest                                     |
 | C-\"              | Open      | Open new terminal with shell-switcher                     | 'shell-switcher-new-shell                                   |
 | C-h o             | Org       | Helm: Org info manual                                     | 'helm-info-org                                              |
 | C-h C-n           | Org       | Open Org mode agenda                                      | (lambda () (interactive) (org-agenda nil "n"))              |
