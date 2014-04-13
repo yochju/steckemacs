@@ -545,7 +545,7 @@ Pass symbol-name to the function DOC-FUNCTION."
                         symbol 'variable-documentation t))))
     (if doc-string
         (pos-tip-show doc-string 'popup-tip-face (point) nil -1 60)
-      (message "No documentation for %s" s))))
+      (message "No documentation for %s" symbol))))
 (define-key lisp-mode-shared-map (kbd "C-c C-d")
   (lambda ()
     (interactive)
