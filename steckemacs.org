@@ -530,24 +530,26 @@ Display and copy the full path of the file associated with the current buffer to
           :fetcher github
           :files ("pos-tip.el")))
 (require 'pos-tip)
-(defun my-show-help (doc-function)
+(defun my-show-help ()
   "Show docs for symbol at point or at beginning of list if not on a symbol.
 Pass symbol-name to the function DOC-FUNCTION."
   (interactive)
-  (let ((s (symbol-name
-            (save-excursion
-              (or (symbol-at-point)
-                  (progn (backward-up-list)
-                         (forward-char)
-                         (symbol-at-point)))))))
-    (let ((doc-string (funcall doc-function s)))
-      (if doc-string
-          (pos-tip-show doc-string 'popup-tip-face (point) nil -1 60)
-        (message "No documentation for %s" s)))))
+  (let* ((symbol (save-excursion
+                   (or (symbol-at-point)
+                       (progn (backward-up-list)
+                              (forward-char)
+                              (symbol-at-point)))))
+         (doc-string (if (fboundp symbol)
+                         (documentation symbol t)
+                       (documentation-property
+                        symbol 'variable-documentation t))))
+    (if doc-string
+        (pos-tip-show doc-string 'popup-tip-face (point) nil -1 60)
+      (message "No documentation for %s" s))))
 (define-key lisp-mode-shared-map (kbd "C-c C-d")
   (lambda ()
     (interactive)
-    (my-show-help #'ac-symbol-documentation)))
+    (my-show-help)))
 #+END_SRC
 
 I wanted to be able to get a documentation popup without having to trigger auto-complete. It's mostly stolen from [[http://jaderholm.com/][Scott Jaderholm]] (the code is on [[http://www.emacswiki.org/emacs/AutoComplete][Emacswiki]]), but has been made more general to also work with other completion functions.
