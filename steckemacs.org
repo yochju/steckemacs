@@ -239,6 +239,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-e           | Source    | Toggle debug on error                                     | 'toggle-debug-on-error                                      |
 | C-h C-j           | Source    | Pretty print the last sexp into the current buffer        | 'ipretty-last-sexp                                          |
 | C-h C-k           | Source    | Pretty print the last sexp into other buffer              | 'ipretty-last-sexp-other-buffer                             |
+| C-h N             | Source    | Revert the current hunk                                   | 'diff-hl-revert-hunk                                        |
 | C-h C-d           | Directory | Open dired in current file location                       | 'dired-jump                                                 |
 | sb                | Directory | Open the speedbar                                         | 'speedbar                                                   |
 | C-c T             | Directory | Open terminal in current directory                        | (lambda () (interactive) (my-open-terminal nil))            |
