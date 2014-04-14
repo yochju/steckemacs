@@ -806,6 +806,7 @@ http://company-mode.github.io/images/company-semantic.png
 (add-to-list 'company-backends 'company-ispell t)
 (add-to-list 'company-backends 'company-files t)
 (add-to-list 'company-backends 'company-cider)
+(setq company-backends (remove 'company-ropemacs company-backends))
 #+END_SRC
 
 I started using =company= because =auto-complete= seemed to be buggy and slow. Some of the company features are pretty cool, for example the ability to search within completions with =C-s= or to show the symbol definition with =C-w=. =<f1>= shows the full documentation of a symbol. I miss the popup from auto-complete a bit but I guess that's not so important in the end.
