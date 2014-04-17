@@ -1519,6 +1519,7 @@ Homepage: http://orgmode.org/
 (require 'ox-org)
 (require 'ox-md)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(setf (cdr (assoc "\\.pdf\\'" org-file-apps)) 'emacs) ; use emacs to open pdf
 (setq org-startup-folded t)
 (setq org-startup-indented nil)
 (setq org-startup-with-inline-images t)
