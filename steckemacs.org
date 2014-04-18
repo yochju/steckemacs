@@ -280,13 +280,14 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | <M-right>         | Windows   | Move the current buffer window right                      | 'buf-move-right                                             |
 | C-h C-8           | Windows   | Enable/disable dedicated minor-mode for current window    | 'dedicated-mode                                             |
 | vg                | Find/Grep | VC git grep                                               | 'vc-git-grep                                                |
-| C-h C-f           | Find/Grep | Grep find                                                 | 'grep-find                                                  |
-| C-S-h C-S-f       | Find/Grep | Find files in dired                                       | 'find-grep-dired                                            |
+| C-h C-f           | Find/Grep | Find function or variable                                 | (lambda () (interactive) (my-find-function-or-variable t))  |
+| C-h g             | Find/Grep | Grep find                                                 | 'grep-find                                                  |
+| C-S-h C-S-g       | Find/Grep | Find files in dired                                       | 'find-grep-dired                                            |
 | C-h C-o           | Find/Grep | list matching regexp                                      | 'occur                                                      |
 | C-h C-g           | Find/Grep | Use the ag cli tool to grep project                       | 'ag-project                                                 |
 | C-h C-l           | Find/Grep | Helm locate                                               | 'helm-locate                                                |
 | C-h C-z           | Find/Grep | Projectile find file                                      | 'projectile-find-file                                       |
-| C-h g             | Find/Grep | Projectile grep                                           | 'projectile-grep                                            |
+| C-h G             | Find/Grep | Projectile grep                                           | 'projectile-grep                                            |
 | C-h z             | Find/Grep | Projectile ack                                            | 'projectile-ack                                             |
 | C-c g             | VCS       | Magit status - manual: http://magit.github.io/magit/      | 'magit-status                                               |
 | C-c l             | VCS       | Magit log                                                 | 'magit-log                                                  |
@@ -473,24 +474,6 @@ sudo aptitude install ttf-ancient-fonts
 For the frame title either show a file or a buffer name (if the buffer isn't visiting a file).
 
 ** Custom Functions
-*** my-find-function-or-variable-at-point
-
-#+BEGIN_SRC emacs-lisp
-(defun my-find-function-or-variable-at-point ()
-  "Find directly the function/variable at point in the other window."
-  (interactive)
-  (let ((var (variable-at-point))
-        (func (function-called-at-point)))
-    (cond
-     ((not (eq var 0)) (find-variable-other-window var))
-      (func (find-function-other-window func))
-       (t (message "Neither function nor variable found!")))))
-(define-key emacs-lisp-mode-map (kbd "M-.") 'my-find-function-or-variable-at-point)
-(define-key lisp-interaction-mode-map (kbd "M-.") 'my-find-function-or-variable-at-point)
-#+END_SRC
-
-I don't care if is a function or a variable... just go there, Emacs!
-
 *** my-indent-whole-buffer
 
 #+BEGIN_SRC emacs-lisp
@@ -947,6 +930,27 @@ Github: https://github.com/steckerhalter/discover-my-major
 
 #+BEGIN_SRC emacs-lisp
 (quelpa '(discover-my-major :fetcher github :repo "steckerhalter/discover-my-major"))
+#+END_SRC
+
+*** elisp-slime-nav
+#+BEGIN_QUOTE
+Slime-style navigation for Emacs Lisp
+
+Slime allows very convenient navigation to the symbol at point (using M-.), and the ability to pop back to previous marks (using M-,).
+
+This plugin provides similar navigation for Emacs Lisp, supporting navigation to the definitions of variables, functions, libraries and faces.
+#+END_QUOTE
+
+Github: https://github.com/purcell/elisp-slime-nav
+
+Don't spend so much time trying to get to the source of Elisp code (and back to where you were...)
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(elisp-slime-nav :repo "purcell/elisp-slime-nav" :fetcher github))
+(dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook lisp-interaction-mode-hook))
+  (add-hook hook 'elisp-slime-nav-mode))
+(define-key elisp-slime-nav-mode-map (kbd "C-c C-d") 'my-show-help)
+(define-key elisp-slime-nav-mode-map (kbd "C-c d") 'elisp-slime-nav-describe-elisp-thing-at-point)
 #+END_SRC
 
 *** eval-sexp-fu
