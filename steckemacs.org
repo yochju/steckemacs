@@ -924,6 +924,14 @@ Github: https://github.com/steckerhalter/discover-my-major
 (quelpa '(discover-my-major :fetcher github :repo "steckerhalter/discover-my-major"))
 #+END_SRC
 
+*** easy-kill
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(easy-kill :fetcher github :repo "leoliu/easy-kill"))
+(global-set-key [remap kill-ring-save] 'easy-kill)
+(global-set-key [remap mark-sexp] 'easy-mark)
+#+END_SRC
+
 *** elisp-slime-nav
 #+BEGIN_QUOTE
 Slime-style navigation for Emacs Lisp
