@@ -753,8 +753,6 @@ It was formerly called =nrepl.el= and is written by Bozhidar Batsov.
 
 Github: https://github.com/clojure-emacs/cider
 
-I wrote a company-backend for Cider which is living at https://github.com/clojure-emacs/company-cider.
-
 #+BEGIN_SRC emacs-lisp
 (quelpa '(cider :fetcher github :repo "clojure-emacs/cider" :old-names (nrepl)))
 (setq cider-popup-stacktraces nil)
@@ -778,7 +776,6 @@ http://company-mode.github.io/images/company-semantic.png
 
 #+BEGIN_SRC emacs-lisp
 (quelpa '(company :repo "company-mode/company-mode" :fetcher github))
-(quelpa '(company-cider :fetcher github :repo "clojure-emacs/company-cider"))
 (require 'company)
 (setq company-idle-delay 0.3)
 (setq company-tooltip-limit 20)
@@ -789,7 +786,6 @@ http://company-mode.github.io/images/company-semantic.png
 (add-to-list 'company-backends 'company-dabbrev t)
 (add-to-list 'company-backends 'company-ispell t)
 (add-to-list 'company-backends 'company-files t)
-(add-to-list 'company-backends 'company-cider)
 (setq company-backends (remove 'company-ropemacs company-backends))
 #+END_SRC
 
