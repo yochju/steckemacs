@@ -1707,7 +1707,11 @@ Github: https://github.com/ejmr/php-mode
 Relies on functions of `php-mode'."
   (let ((pattern (php-get-pattern)))
     (when pattern
-      (list (- (point) (length pattern)) (point) (php-completion-table) :exclusive 'no))))
+      (list (- (point) (length pattern))
+            (point)
+            (or php-completion-table
+                (php-completion-table))
+            :exclusive 'no))))
 
 (defun setup-php-mode ()
   (require 'php-align nil t)
