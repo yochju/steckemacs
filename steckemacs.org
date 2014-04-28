@@ -131,12 +131,10 @@ Github: https://github.com/quelpa/quelpa
 
 #+BEGIN_SRC emacs-lisp
 (if (require 'quelpa nil t)
-    (quelpa '(quelpa :repo "quelpa/quelpa" :fetcher github :branch "url-fetcher-feature") :upgrade t)
+    (quelpa '(quelpa :repo "quelpa/quelpa" :fetcher github) :upgrade t)
   (with-temp-buffer
     (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
-    (eval-buffer))
-  (quelpa '(quelpa :repo "quelpa/quelpa" :fetcher github :branch "url-fetcher-feature") :upgrade t) ;upgrade to the fetcher branch immediately
-  (load-library "quelpa"))
+    (eval-buffer)))
 #+END_SRC
 
 Bootstrapping =quelpa= here. The =quelpa= command is used throughout this config to install all the packages.
