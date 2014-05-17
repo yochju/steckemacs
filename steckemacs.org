@@ -1640,6 +1640,14 @@ Homepage: http://orgmode.org/
 (setq org-clock-clocked-in-display 'both)
 #+END_SRC
 
+**** org-journal
+#+BEGIN_SRC emacs-lisp
+(quelpa '(org-journal :repo "bastibe/org-journal" :fetcher github))
+(let ((dir "~/Dropbox/journal/"))
+  (when (file-exists-p dir)
+    (setq org-journal-dir dir)))
+#+END_SRC
+
 **** org-mode-blog
 
 Load the project template for my blog
