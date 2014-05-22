@@ -1111,7 +1111,7 @@ https://raw.github.com/flycheck/flycheck/master/doc/images/screenshot.png
 (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
 (add-hook 'lisp-interaction-mode-hook 'flycheck-mode)
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)) ;disable the annoying doc checker
-(setq flycheck-indication-mode 'left-fringe)
+(setq flycheck-indication-mode 'right-fringe)
 #+END_SRC
 
 The modes where flycheck should be enabled.
