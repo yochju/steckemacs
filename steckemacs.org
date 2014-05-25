@@ -1842,7 +1842,7 @@ Code navigation, documentation lookup and completion for Ruby
 Github: https://github.com/dgutov/robe
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(robe :repo "dgutov/robe" :fetcher github :files ("robe*.el" "lib")))
+(quelpa '(robe :repo "dgutov/robe" :fetcher github :files ("robe*.el" "company-robe.el" "lib")))
 (push 'company-robe company-backends)
 (add-hook 'ruby-mode-hook 'robe-mode)
 #+END_SRC
