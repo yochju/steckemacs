@@ -1648,18 +1648,6 @@ Homepage: http://orgmode.org/
     (setq org-journal-dir dir)))
 #+END_SRC
 
-**** org-mode-blog
-
-Load the project template for my blog
-
-#+BEGIN_SRC emacs-lisp
-(let ((file (expand-file-name "elisp/org-mode-blog-setup.el" "~/org-mode-blog")))
-  (when (file-exists-p file)
-    (load file t t t)))
-#+END_SRC
-
-Don't forget to set =org-mode-blog-publishing-directory= to the desired export location in =~/.user.el=.
-
 **** org-mobile-sync-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1890,7 +1878,6 @@ EmacsWiki: http://www.emacswiki.org/emacs/sequential-command.el
 #+END_SRC
 
 Pressing =C-a= once goes back to the indentation, pressing it twice goes the beginning of the line.
-Pressing =C-e= once goes back to the end of the line, pressing it twice advances to the next line's indentation.
 
 *** shell-switcher
 #+BEGIN_QUOTE
