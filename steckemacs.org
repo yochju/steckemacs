@@ -1936,7 +1936,7 @@ Github: https://github.com/Bruce-Connor/smart-mode-line
 (sml/apply-theme 'respectful)
 #+END_SRC
 
-Show the encoding and add VC information to the mode-line. Respect the theme-colors and customize some of the =sml= colors.
+Show the encoding and add VC information to the mode-line.
 
 *** smartparens
 
