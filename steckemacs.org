@@ -588,6 +588,7 @@ Usage example:
                  (rest (mod (nth 3 entry) 60))
                  (hours (/ (nth 3 entry) 60))
                  (mins (cond
+                        ((= rest 0) 0)
                         ((<= rest 15) 0.25)
                         ((<= rest 30) 0.5)
                         ((<= rest 45) 0.75)
@@ -1520,7 +1521,6 @@ Homepage: http://orgmode.org/
 (require 'ox-org)
 (require 'ox-md)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(setf (cdr (assoc "\\.pdf\\'" org-file-apps)) 'emacs) ; use emacs to open pdf
 (setq org-startup-folded t)
 (setq org-startup-indented nil)
 (setq org-startup-with-inline-images t)
