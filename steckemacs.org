@@ -900,6 +900,7 @@ I often use =dired-jump= (mapped to =C-h C-d=) which jumps to Dired buffer corre
 #+BEGIN_SRC emacs-lisp
 (quelpa '(dired+ :fetcher wiki))
 (setq dired-auto-revert-buffer t)
+(setq dired-no-confirm '(byte-compile chgrp chmod chown copy delete load move symlink))
 (setq wdired-allow-to-change-permissions t) ; allow changing of file permissions
 (toggle-diredp-find-file-reuse-dir 1)
 (setq diredp-hide-details-initially-flag nil)
