@@ -1934,6 +1934,7 @@ Github: https://github.com/Bruce-Connor/smart-mode-line
 #+BEGIN_SRC emacs-lisp
 (quelpa '(smart-mode-line :repo "Bruce-Connor/smart-mode-line" :fetcher github))
 (setq sml/vc-mode-show-backend t)
+(setq sml/no-confirm-load-theme t)
 (sml/setup)
 (sml/apply-theme 'respectful)
 #+END_SRC
