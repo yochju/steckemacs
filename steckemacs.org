@@ -300,8 +300,8 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-<return>    | Open      | Emacs Web Wowser (internal Webbrowser)                    | 'eww                                                        |
 | C-h M-RET         | Open      | Emacs Web Wowser do what I mean                           | 'my-eww-browse-dwim                                         |
 | C-h C--           | Open      | Helm: Google                                              | 'helm-google                                                |
-| C-h C-r           | Open      | Google translate                                          | 'google-translate-query-translate                           |
-| C-h r             | Open      | Google translate reverse                                  | 'google-translate-query-translate-reverse                   |
+| C-h r             | Open      | Google translate                                          | 'google-translate-query-translate                           |
+| C-h C-r           | Open      | Google translate reverse                                  | 'google-translate-query-translate-reverse                   |
 | C-h n             | Open      | Open Howdoi with query                                    | 'howdoi-query                                               |
 | C-h C-c           | Open      | Helm: Google Suggest                                      | 'helm-google-suggest                                        |
 | C-S-h C-c         | Open      | Helm: Wikipedia Suggest                                   | 'helm-wikipedia-suggest                                     |
