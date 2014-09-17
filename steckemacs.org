@@ -1393,8 +1393,6 @@ See the [[http://magit.github.io/magit/magit.html][Magit manual]] for more infor
 (quelpa '(magit :fetcher github
                 :repo "magit/magit"
                 :files ("magit.el" "magit-bisect.el" "magit-blame.el" "magit-key-mode.el" "magit-popup.el" "magit-wip.el" "magit.texi" "AUTHORS.md" "README.md")))
-(quelpa '(helm-git :repo "maio/helm-git" :fetcher github)) ; helm-git needs magit
-(require 'helm-git)
 (when (fboundp 'file-notify-add-watch)
   (quelpa '(magit-filenotify :fetcher github :repo "magit/magit-filenotify"))
   (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
