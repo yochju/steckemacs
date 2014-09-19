@@ -1864,21 +1864,6 @@ Many editors (e.g. Vim) have the feature of saving minibuffer history to an exte
 
 I'm adding a few variables like the =extended-command-history= that I would like to persist too.
 
-*** seqential-command
-
-Do different things on repeated keypresses.
-
-EmacsWiki: http://www.emacswiki.org/emacs/sequential-command.el
-
-#+BEGIN_SRC emacs-lisp
-(quelpa '(sequential-command :fetcher wiki :files ("sequential-command.el" "sequential-command-config.el")))
-(require 'sequential-command)
-(define-sequential-command my-beg back-to-indentation beginning-of-line)
-(global-set-key "\C-a" 'my-beg)
-#+END_SRC
-
-Pressing =C-a= once goes back to the indentation, pressing it twice goes the beginning of the line.
-
 *** shell-switcher
 #+BEGIN_QUOTE
 An emacs minor mode to easily switch between shell buffers (like with alt+tab)
