@@ -676,6 +676,19 @@ Bury *scratch* buffer instead of killing it. I can't stand having to re-create *
 
 Now get ready for setting up all the modes I use...
 
+*** anaconda-mode
+#+BEGIN_QUOTE
+Code navigation, documentation lookup and completion for Python.
+#+END_QUOTE
+
+Github: https://github.com/proofit404/anaconda-mode
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(anaconda-mode :fetcher github :repo "proofit404/anaconda-mode" :files ("*.el" "*.py" "vendor/jedi/jedi" ("jsonrpc" "vendor/jsonrpc/jsonrpc/*.py"))))
+(add-hook 'python-mode-hook 'anaconda-mode)
+(add-hook 'python-mode-hook 'eldoc-mode)
+#+END_SRC
+
 *** auctex-mode
 
 #+BEGIN_QUOTE
@@ -755,6 +768,8 @@ It was formerly called =nrepl.el= and is written by Bozhidar Batsov.
 Github: https://github.com/clojure-emacs/cider
 
 #+BEGIN_SRC emacs-lisp
+;; cider needs queue which is in the ELPA repo but I have disabled that
+(quelpa '(queue :url "http://www.dr-qubit.org/download.php?file=predictive/queue.el" :fetcher url :version original))
 (quelpa '(cider :fetcher github :repo "clojure-emacs/cider" :old-names (nrepl)))
 (setq cider-popup-stacktraces nil)
 (setq cider-repl-popup-stacktraces nil)
