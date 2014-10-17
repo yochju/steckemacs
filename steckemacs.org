@@ -372,6 +372,7 @@ Kind of a sweeping blow to make sure UTF-8 is used everywhere.
  custom-unlispify-menu-entries nil      ;M-x customize should not cripple menu entries
  custom-unlispify-tag-names nil         ;M-x customize should not cripple tags
  show-paren-delay 0
+ load-prefer-newer t                    ;prefer newer .el instead of the .elc
  )
 
 (put 'narrow-to-region 'disabled nil)   ;narrow to region should be enabled by default
