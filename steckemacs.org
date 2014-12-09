@@ -1379,6 +1379,11 @@ Github: https://github.com/joshwnj/json-mode
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 #+END_SRC
 
+*** livedown
+#+BEGIN_SRC emacs-lisp
+(quelpa '(livedown :fetcher github :repo "shime/emacs-livedown"))
+(require 'livedown)
+#+END_SRC
 *** magit
 
 Magit is the king of Git interaction for Emacs.
@@ -1549,6 +1554,7 @@ Homepage: http://orgmode.org/
 (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
 (setq org-refile-use-outline-path 'file)
 (setq org-default-notes-file (concat org-directory "/notes.org"))
+(setq org-agenda-dim-blocked-tasks t)
 (add-to-list 'org-modules 'org-habit)
 (setq org-habit-graph-column 60)
 
