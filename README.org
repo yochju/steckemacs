@@ -8,6 +8,6 @@ It is built with [[http://orgmode.org/worg/org-contrib/babel/][Babel]] and [[htt
 
 Please visit [[https://postmomentum.ch/steckemacs.html]] to find:
 
-- installation [[http://steckerhalter.co.vu/stuff/steckemacs.html#sec-1-1][instructions]]
-- a list of [[http://steckerhalter.co.vu/stuff/steckemacs.html#sec-1-3][keyboard shortcuts]]
-- source code [[http://steckerhalter.co.vu/stuff/steckemacs.html#sec-2][documentation]]
+- installation [[https://postmomentum.ch/steckemacs.html#sec-1-1][instructions]]
+- a list of [[https://postmomentum.ch/steckemacs.html#sec-1-3][keyboard shortcuts]]
+- source code [[https://postmomentum.ch/steckemacs.html#sec-2][documentation]]
