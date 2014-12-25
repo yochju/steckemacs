@@ -18,7 +18,7 @@
 
 The source code is hosted on Github: [[https://github.com/steckerhalter/steckemacs]]
 
-*To use this setup please use Emacs 24.3.50 or later (currently that's the development snapshot). Older versions don't work because I use some of the new features of what is to become Emacs 24.4*
+*To use this setup please use Emacs 24.3.50 or later*
 
 I once thought this could become sort of a [[https://github.com/bbatsov/prelude][prelude]] kind of thing but going forward I realized that an Emacs configuration should really just be my (or your) own baby.
 
@@ -180,11 +180,9 @@ We need to turn the mode on here so that we can map keys further below. We lower
 The code for the keys is generated from data in an Org table named =keys= using a bit of Elisp code =gen-keys= and is spit out inside a code block via [[http://orgmode.org/manual/noweb.html][Noweb syntax]]. The same data is also used in the [[Keyboard%20shortcuts][Keyboard shortcuts]] section to generate the documentation. I'd like to be able to have only one place to change key information and have it updated wherever necessary.
 
 #+BEGIN_SRC emacs-lisp
-(define-key key-translation-map (kbd "C-t") (kbd "C-p"))
 (define-key my-keys-minor-mode-map (kbd "<C-return>") 'helm-mini)
 #+END_SRC
 
-=C-t= is translated to =C-p= (move up), this helps me with navigating using the [[http://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard][Dvorak keyboard layout]].
 =my-keys-minor-mode-map= is used to set =C-return= in this case in a way so that other minor modes cannot override it.
 
 **** Key definition table                                          :noexport:
