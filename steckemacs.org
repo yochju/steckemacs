@@ -1219,6 +1219,7 @@ Not yet perfect but quite handy not having to resort to the browser for searches
 
 #+BEGIN_SRC emacs-lisp
 (quelpa '(helm-google :fetcher github :repo "steckerhalter/helm-google"))
+(setq helm-google-use-regexp-parsing t)
 #+END_SRC
 
 *** helm-swoop
