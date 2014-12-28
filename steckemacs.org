@@ -1119,6 +1119,8 @@ Github: https://github.com/flycheck/flycheck
 https://raw.github.com/flycheck/flycheck/master/doc/images/screenshot.png
 
 #+BEGIN_SRC emacs-lisp
+;; let-alist would be in GNU ELPA but I have disabled that, so I need to fetch it before flycheck (which demands that):
+(quelpa '(let-alist :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/let-alist/let-alist.el" :fetcher url :version original))
 (quelpa '(flycheck :repo "flycheck/flycheck" :fetcher github))
 (add-hook 'php-mode-hook 'flycheck-mode)
 (add-hook 'sh-mode-hook 'flycheck-mode)
