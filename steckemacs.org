@@ -284,7 +284,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-h C-o           | Find/Grep | list matching regexp                                      | 'occur                                                      |
 | C-h C-g           | Find/Grep | Use the ag cli tool to grep project                       | 'ag-project                                                 |
 | C-h C-l           | Find/Grep | Helm locate                                               | 'helm-locate                                                |
-| C-h C-z           | Find/Grep | Projectile find file                                      | 'projectile-find-file                                       |
+| C-h C-y           | Find/Grep | Projectile find file                                      | 'projectile-find-file                                       |
 | C-h G             | Find/Grep | Projectile grep                                           | 'projectile-grep                                            |
 | C-h z             | Find/Grep | Projectile ack                                            | 'projectile-ack                                             |
 | C-c g             | VCS       | Magit status - manual: http://magit.github.io/magit/      | 'magit-status                                               |
@@ -1112,7 +1112,7 @@ I had tried similar modes like =fic-ext=mode= but fount them lacking a bit. Let'
 
 Supports many languages:  AsciiDoc, C/C++, CFEngine, Chef cookbooks, CoffeeScript, CSS, D, Elixir, Emacs Lisp, Erlang, Go, Haml, Handlebars, Haskell, HTML, Javascript, JSON, LESS, Lua, Perl, PHP, Puppet, Python, Ruby, Rust, RST (ReStructuredText), Sass, Scala, SCSS, Slim, Shell scripts (POSIX Shell, Bash and Zsh), TeX/LaTeX, XML, YAML
 
-Flycheck is written by [[http://lunaryorn.com/][Sebastian Wiesner]] a.ka =lunaryorn=.
+Flycheck is written by [[http://lunaryorn.com/][Sebastian Wiesner]] a.k.a =lunaryorn=.
 
 Github: https://github.com/flycheck/flycheck
 
@@ -2021,6 +2021,12 @@ Github: https://github.com/slime/slime
 (when (file-exists-p "~/quicklisp/slime-helper.el") (load "~/quicklisp/slime-helper.el"))
 #+END_SRC
 
+*** stylus-mode
+
+#+BEGIN_SRC emacs-lisp
+(stylus-mode :fetcher github :repo "brianc/jade-mode" :files ("stylus-mode.el"))
+#+END_SRC
+
 *** term-mode
 
 #+BEGIN_QUOTE
@@ -2071,6 +2077,12 @@ Unique buffer names dependent on file name
 (setq uniquify-min-dir-content 2)
 #+END_SRC
 
+*** yaml-mode
+
+#+BEGIN_SRC emacs-lisp
+(quelpa '(yaml-mode :repo "yoshiki/yaml-mode" :fetcher github))
+#+END_SRC
+
 *** vlf
 #+BEGIN_QUOTE
 Emacs minor mode that allows viewing, editing, searching and comparing large files in batches. Batch size can be adjusted on the fly and bounds the memory that is to be used for operations on the file. This way multiple large files can be instantly and simultaneously accessed without swapping and degraded performance.
@@ -2100,6 +2112,7 @@ Github: https://github.com/fxbois/web-mode
 #+BEGIN_SRC emacs-lisp
 (quelpa '(web-mode :repo "fxbois/web-mode" :fetcher github))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.ejs?\\'" . web-mode))
 #+END_SRC
 
 Enable web-mode for html buffers. Disable font-locking in web-mode because it's conflicting with other modes that do font-locking.
