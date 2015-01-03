@@ -2111,6 +2111,7 @@ Github: https://github.com/fxbois/web-mode
 
 #+BEGIN_SRC emacs-lisp
 (quelpa '(web-mode :repo "fxbois/web-mode" :fetcher github))
+(setq web-mode-markup-indent-offset 2)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs?\\'" . web-mode))
 #+END_SRC
