@@ -2024,7 +2024,7 @@ Github: https://github.com/slime/slime
 *** stylus-mode
 
 #+BEGIN_SRC emacs-lisp
-(stylus-mode :fetcher github :repo "brianc/jade-mode" :files ("stylus-mode.el"))
+(quelpa '(stylus-mode :fetcher github :repo "brianc/jade-mode" :files ("stylus-mode.el")))
 #+END_SRC
 
 *** term-mode
