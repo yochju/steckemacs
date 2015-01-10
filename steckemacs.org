@@ -1438,11 +1438,23 @@ When Emacs has been compiled with inotiy support...
 
 #+BEGIN_SRC emacs-lisp
 (quelpa '(markdown-mode :url "git://jblevins.org/git/markdown-mode.git" :fetcher git))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
+(setq gfm-liquid-font-lock-keywords
+      (append
+       gfm-font-lock-keywords
+       '(("{%\\|%}\\|{{\\|}}" . font-lock-comment-face)
+         ("{%\s*\\(quote\\|endquote\\|blockquote\\|endblockquote\\|codeblock\\|endcodeblock\\|pullquote\\|endpullquote\\|img\\|link\\|rawblock\\|endrawblock\\)" (1 font-lock-keyword-face))
+         ("{%\s*\\(?:quote\\|blockquote\\|codeblock\\|pullquote\\|img\\|link\\|rawblock\\)\s+\\(\\(?:\\w\\|\\.\\|_\\)+\\)" (1 font-lock-variable-name-face))
+         ("{{\s*\\(\\(?:\\w\\|\\.\\)+\\)" (1 font-lock-variable-name-face))
+         ("\s+|\s+" . font-lock-comment-face))))
+(define-derived-mode gfm-liquid-mode gfm-mode
+  "Major mode for editing GitHub Flavored Markdown files with Liquid highlighting."
+  (set (make-local-variable 'font-lock-defaults)
+       '(gfm-liquid-font-lock-keywords)))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-liquid-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-liquid-mode))
 #+END_SRC
 
-Enable markdown-mode when the file suffixes match.
+Enhance =gfm-mode= with liquid keywords hightlighting and enable =gfm-liquid-mode= when the file suffixes match.
 
 *** move-text
 
