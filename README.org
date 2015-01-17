@@ -1,5 +1,7 @@
 * Steckemacs
 
+*DEPRECATION WARNING: I went back to a plain and simple Elisp init file and will not maintain this setup any longer* 
+
 [[https://travis-ci.org/steckerhalter/steckemacs][https://travis-ci.org/steckerhalter/steckemacs.svg?branch=master]]
 
 *Steckemacs* is an Emacs configuration that integrates around 60 modes (packages).
