@@ -1,6 +1,6 @@
 * Steckemacs
 
-*DEPRECATION WARNING: I went back to a plain and simple Elisp init file and will not maintain this setup any longer* 
+*DEPRECATION WARNING: I went back to a [[https://github.com/steckerhalter/steckemacs.el][plain and simple Elisp init file]] and will not maintain this setup any longer* 
 
 [[https://travis-ci.org/steckerhalter/steckemacs][https://travis-ci.org/steckerhalter/steckemacs.svg?branch=master]]
 
